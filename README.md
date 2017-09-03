@@ -1,24 +1,29 @@
 ## What is ScaIA ?
 
-ScaIA (Scalable Individuals/activities Algorithms) is a library of algorithms which
-aim at forming coalitions of individuals around some activities.
+ScaIA (Scalable Individuals/activities Algorithms) is a library of
+algorithms which aim at forming coalitions of individuals around some
+activities.
 
+We consider here a particular coalition game called, the
+individuals/activities (IA) problem.  In such a problem, some
+individuals must be assigned to the activities they enjoy with their
+favorite partners.
 
-We consider here a particular coalition game called, the individuals/activities (IA) problem. 
-In such a problem, some individuals must be assigned to the activities they enjoy with 
-their favorite partners.
-
-We have implemented our prototype with the [Scala](https://www.scala-lang.org/) programming 
-language and the [Akka](http://akka.io/) toolkit.  
-The latter, which is based on the actor model, allows us to fill the gap between 
-the specification and its implementation.
+We have implemented our prototype with the
+[Scala](https://www.scala-lang.org/) programming language and the
+[Akka](http://akka.io/) toolkit. The latter, which is based on the
+actor model, allows us to fill the gap between the specification and
+its implementation.
 
 ## Requirements
 
-In order to run the demonstration you need: the Java virtual machine [JVM 1.8.0_60](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+In order to run the demonstration you need: the Java virtual machine
+[JVM 1.8.0_60](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 
 In order to compile the code you need:
+
 - the programming language [Scala 2.11.8](http://www.scala-lang.org/download/);
+
 - the interactive build tool [SBT 0.13](http://www.scala-sbt.org/download.html).
 
 ## Tests
