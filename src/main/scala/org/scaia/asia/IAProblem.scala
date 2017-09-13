@@ -306,6 +306,7 @@ object IAProblem {
     *  Generates a pseudo-random problem instance with valuation in  ]0;1]
     *  @param n number of activities
     *  @param m number of individuals
+    *  @param capacity of the activities
     */
   def generatePositiveRandom(n: Int, m: Int, capacity: Int): IAProblem = {
     var activities = Set[Activity]()
