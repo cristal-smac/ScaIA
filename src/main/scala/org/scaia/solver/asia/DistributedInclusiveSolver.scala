@@ -16,7 +16,7 @@ import scala.language.postfixOps
   *  @param pb to solve
   *  @param system of Actors
   *  @param restricted true if only subgroups of size -1 are investigated
-  *  @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
+  *  @param rule to apply (maximize the utilitarian/egalitarian welfare
   *
   */
 class DistributedInclusiveSolver(pb : IAProblem, system: ActorSystem, restricted: Boolean, rule: SocialRule) extends ASIASolver(pb){
