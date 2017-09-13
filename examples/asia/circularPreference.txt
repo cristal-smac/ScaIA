@@ -1,0 +1,13 @@
+m : 3
+n : 2
+activities : a
+individuals : i1 i2 i3
+i1 a 0.5
+i1 i2 1.0
+i1 i3 -1.0
+i2 a 0.5
+i2 i3 1.0
+i2 i1 -1.O
+i3 a 0.5
+i3 i1 1.0
+i3 i2 -1.0
