@@ -1,7 +1,7 @@
-m : 3
-n : 2
-activities : a
-individuals : i1 i2 i3
+m: 3
+n: 2
+activities: a (2)
+individuals: i1 i2 i3
 i1 a 0.5
 i1 i2 1.0
 i1 i3 -1.0

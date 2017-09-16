@@ -47,7 +47,7 @@ class Individual(val name: String, val m : Int){
     */
   def w(i: String): Double = {
     if (! wMap.contains(i)) throw new RuntimeException(name+" cannot valuate the individual "+i)
-    vMap(i)
+    wMap(i)
   }
 
   /**

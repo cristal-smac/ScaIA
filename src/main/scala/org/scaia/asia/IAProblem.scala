@@ -9,8 +9,8 @@ import scala.util.Random
   * @param individuals the individuals
   * @param activities the activities
   */
-class IAProblem(val individuals: Group, val activities: Set[Activity]) {
-
+@SerialVersionUID(1L)// TODO https://alvinalexander.com/scala/how-to-use-serialization-in-scala-serializable-trait
+class IAProblem(val individuals: Group, val activities: Set[Activity]) extends Serializable{
   /**
     * the debugging random generation of IAProblem
     */
@@ -29,7 +29,22 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) {
   /**
     * Returns a string describing the IAProblem
     */
-  override def toString: String = "Activities: " + activities.mkString("{",",","}") + "\n" + "Individuals: " + individuals
+  override def toString: String = {
+    //"Activities: " + activities.mkString("{",",","}") + "\n" + "Individuals: " + individuals
+    var s="m: "+m+"\n"
+    s+="n: "+n+"\n"
+    s+="activities: "+activities.mkString("", " ", "")+"\n"
+    s+="individuals: "+individuals.toSeq.sortBy(_.name).mkString("", " ", "")+"\n"
+    individuals.toSeq.sortBy(_.name).foreach{ i =>
+      activities.toSeq.sortBy(_.name).foreach{ a =>
+        s+=i+" "+a.name+" "+i.v(a.name)+"\n"
+      }
+      (individuals-i).toSeq.sortBy(_.name).foreach{ j =>
+        s+=i+" "+j+" "+i.w(j.name)+"\n"
+      }
+    }
+    s
+  }
 
   /**
     * Returns a string which fully describing the IAProblem
@@ -43,6 +58,7 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) {
       }
     }
     return s
+
   }
 
   /**
