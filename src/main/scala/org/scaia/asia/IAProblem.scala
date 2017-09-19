@@ -37,10 +37,10 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
     s+="individuals: "+individuals.toSeq.sortBy(_.name).mkString("", " ", "")+"\n"
     individuals.toSeq.sortBy(_.name).foreach{ i =>
       activities.toSeq.sortBy(_.name).foreach{ a =>
-        s+=i+" "+a.name+" "+i.v(a.name)+"\n"
+        s+=i+": "+a.name+" "+i.v(a.name)+"\n"
       }
       (individuals-i).toSeq.sortBy(_.name).foreach{ j =>
-        s+=i+" "+j+" "+i.w(j.name)+"\n"
+        s+=i+": "+j+" "+i.w(j.name)+"\n"
       }
     }
     s
