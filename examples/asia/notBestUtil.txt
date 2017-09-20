@@ -1,15 +1,18 @@
 //Firstly, the size (m,n) should be setup as strict positive integer
-m: 2
-n: 1
+m: 3
+n: 2
 //Secondly, The entities should be setup as non-empty
-activities: a(2)
+activities: a(2) b(2)
 individuals: i1 i2 i3
-i1: a 0.5
-i1: i2 1.0
+i1: a 1.0
+i1: b 0.0
+i1: i2 0.0
 i1: i3 -1.0
-i2: a 0.5
+i2: a 1.0
+i2: b 0.9
+i2: i1 0.0
 i2: i3 1.0
-i2: i1 -1.O
-i3: a 0.5
-i3: i1 1.0
-i3: i2 -1.0
+i3: a 0.0
+i3: b 1.0
+i3: i1 -1.0
+i3: i2 1.0

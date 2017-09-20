@@ -9,7 +9,6 @@ import scala.util.Random
   * @param individuals the individuals
   * @param activities the activities
   */
-@SerialVersionUID(1L)// TODO https://alvinalexander.com/scala/how-to-use-serialization-in-scala-serializable-trait
 class IAProblem(val individuals: Group, val activities: Set[Activity]) extends Serializable{
   /**
     * the debugging random generation of IAProblem
