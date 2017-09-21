@@ -4,6 +4,7 @@ n: 2
 //Secondly, The entities should be setup as non-empty
 activities: a(2) b(2)
 individuals: i1 i2 i3
+//Thirdly, the individuals/preferences can be declared in any order
 i1: a 1.0
 i1: b 0.0
 i1: i2 0.0

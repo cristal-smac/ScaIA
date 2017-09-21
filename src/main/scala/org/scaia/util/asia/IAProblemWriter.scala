@@ -25,7 +25,7 @@ object IAProblemWriter extends App{
 
   val pb= new IAProblem(Group(i1, i2, i3), Set(a))
   // FileWriter
-  val file = new File("examples/asia/circularPreference2.txt")
+  val file = new File("examples/asia/circularPreference.txt")
   val bw = new BufferedWriter(new FileWriter(file))
   bw.write(pb.toString)
   bw.close()

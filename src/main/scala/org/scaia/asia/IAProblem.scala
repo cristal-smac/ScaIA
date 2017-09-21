@@ -18,12 +18,12 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
   /**
     *   Return the numbers of individuals
     */
-  def m() = individuals.size
+  def m(): Int = individuals.size
 
   /**
     *Returns the number of activities
     */
-  def n() = activities.size
+  def n(): Int = activities.size
 
   /**
     * Returns a string describing the IAProblem
@@ -56,8 +56,7 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
         s+= "u_"+i+"("+a+")="+i.v(a.name)+"\n"
       }
     }
-    return s
-
+    s
   }
 
   /**
@@ -79,17 +78,18 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
     }
   }
 
-  /*
+  /**
   * Returns an individual
   * @param name the name fo the individual
    */
   @throws(classOf[RuntimeException])
-  def getIndividual(name : String) : Individual = {
-    individuals.find(_.name==name) match {
-      case Some(s) => s
-      case None => throw new RuntimeException("No activity "+name+" has been found")
-    }
-  }
+  def getIndividual(name : String) : Individual = individuals.getIndividual(name)
+
+  /**
+    * Returns true if the preferences of the individuals wrt peers/activities are total (i.e. fully specified)
+    */
+  def isTotalPreferences() : Boolean = individuals.forall(i => i.vMap.keys.size== n) && individuals.forall(i => i.wMap.keys.size== (m-1))
+
 
   /**
     * Returns all the potential coalitions

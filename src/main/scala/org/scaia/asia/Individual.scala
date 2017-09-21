@@ -17,7 +17,7 @@ class Individual(val name: String, val m : Int){
   var vMap= Map[String,Double]()
 
   /**
-    * The valuation of the individuals
+    * The weight of the individuals
     */
   var wMap= Map[String,Double]()
 
@@ -86,22 +86,22 @@ class Individual(val name: String, val m : Int){
   /**
     *   Returns true if a is preferred to b
     */
-  def prefA(a: String, b: String) = v(a)>=v(b)
+  def prefA(a: String, b: String): Boolean = v(a)>=v(b)
 
   /**
     * Returns true if the activity called a is strictly preferred to the activity called b
     */
-  def sprefA(a: String, b: String) = v(a)>v(b)
+  def sprefA(a: String, b: String): Boolean = v(a)>v(b)
 
   /**
     *   Returns true if the group with g1 is preferred to the group with name g2
     */
-  def prefG(g1: Set[String], g2: Set[String]) = w(g1)>=w(g2)
+  def prefG(g1: Set[String], g2: Set[String]): Boolean = w(g1)>=w(g2)
 
   /***
     * Returns true if the group with g1 is strictly preferred to the group with name g2
     */
-  def sprefG(g1: Set[String], g2: Set[String]) = w(g1)>w(g2)
+  def sprefG(g1: Set[String], g2: Set[String]): Boolean = w(g1)>w(g2)
 
   /**
     * Returns true if c1 is preferred to c2

@@ -37,6 +37,30 @@ class Group(individuals: Individual*) extends Set[Individual] with SetLike[Indiv
     */
   def names(): Set[String] = this.toList.sortWith(_.name < _.name).foldLeft(Set[String]())((r: Set[String], i: Individual) => r + i.name)
 
+  /**
+    * Returns true if
+    * @param name is given to one of the individuals
+    */
+  def isNameOfAIndividual(name: String) : Boolean = {
+    individuals.find(i => i.name.equals(name)) match {
+      case Some(s) => true
+      case None => false
+    }
+  }
+
+  /**
+  * Returns an individual
+  * @param name the name fo the individual
+  */
+  @throws(classOf[RuntimeException])
+  def getIndividual(name : String) : Individual = {
+    individuals.find(i => i.name.equals(name)) match {
+      case Some(s) => s
+      case None => throw new RuntimeException("No activity "+name+" has been found")
+    }
+  }
+
+
 
   /**
     * Returns the utility of the group to be together for practicing the activity
