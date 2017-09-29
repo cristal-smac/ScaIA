@@ -145,6 +145,6 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
   * Test IAProblemParser
   */
 object IAProblemParser extends App {
-  val parser =new IAProblemParser("examples/asia/", "circularPreference.txt")//"notBestUtil.txt"
+  val parser =new IAProblemParser("examples/asia/", "circularPreferencePb.txt")// eventually "notBestUtil.txt"
   println(parser.parse()) //Run main
 }

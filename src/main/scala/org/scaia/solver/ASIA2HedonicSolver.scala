@@ -2,7 +2,6 @@
 package org.scaia.solver
 
 import org.scaia.asia._
-import org.scaia.hedonic
 import org.scaia.hedonic.Game
 import org.scaia.solver.asia.ASIASolver
 import org.scaia.solver.hedonic.CISSolver
