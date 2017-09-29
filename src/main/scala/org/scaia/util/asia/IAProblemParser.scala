@@ -8,6 +8,8 @@ import scala.util.matching.Regex
 
 /**
   * Build a IAProblem object from a text file
+  * @param directoryName path where the file is put
+  * @param fileName of the IAProblem
   *
   */
 class IAProblemParser(val directoryName: String, val fileName: String ) {
