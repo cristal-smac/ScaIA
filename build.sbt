@@ -9,7 +9,7 @@ scalacOptions += "-Yrepl-sync"
 javaOptions in run += "-Xms8G"
 javaOptions in run += "-Xmx8G"
 
-mainClass in (Compile, run) := Some("org.scaia.util.asia.IAProblemSolver")
+mainClass in (Compile,run) := Some("org.scaia.util.asia.IAProblemSolver")
 mainClass in assembly := Some("org.scaia.util.asia.IAProblemSolver")
 
 fork := true
