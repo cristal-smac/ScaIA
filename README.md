@@ -1,7 +1,6 @@
 ## What is ScaIA ?
 
-ScaIA (Scalable Individuals/activities Algorithms) is a library of
-algorithms which aim at forming coalitions of individuals around some
+ScaIA is a library of algorithms which aim at forming coalitions of individuals around some
 activities.
 
 We consider here a particular coalition game called, the
@@ -28,11 +27,11 @@ In order to compile the code you need:
 
 ## Tests
 
-    sbt run
+    sbt "run org.scaia.util.asia.IAProblemSolver -a -h -i -d -e examples/asia/circularPreferencePb.txt examples/asia/circularPreferenceMatching.txt"
 
 or 
 
-    java -jar ./ScaIA-assembly-0.3.jar
+    java -jar ScaIA-assembly-0.3.jar -a -h -i -d examples/asia/circularPreferencePb.txt examples/asia/circularPreferenceMatching.txt
 
 The programm prints a CSV file nbwWorkers,speedup.
 
