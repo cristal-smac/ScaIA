@@ -1,14 +1,16 @@
 // Copyright (C) Maxime MORGE 2017
 package org.scaia.util.asia
 
-import java.nio.file.{Files, Paths}
-
-import akka.actor.ActorSystem
 import org.scaia.solver.asia._
+
+import java.nio.file.{Files, Paths}
+import akka.actor.ActorSystem
+
 
 /**
   * Solve a particular IAProblem instance
-  * TODO test the undesired guest example
+  * TODO test somme examples
+  * TODO IAProblem generator
   * sbt "run org.scaia.util.asia.IAProblemSolver -a -h -i -d -e examples/asia/circularPreferencePb.txt examples/asia/circularPreferenceMatching.txt"
   * java -jar target/scala-2.11/ScaIA-assembly-0.3.jar -a -h -i -d examples/asia/circularPreferencePb.txt examples/asia/circularPreferenceMatching.txt
   */
@@ -46,13 +48,18 @@ object IAProblemSolver extends App {
   }
   var argList = args.toList.drop(1)// drop Classname
   parseFilenames() // parse filenames
+  println(s"input:$inputFilename output:$outputFilename")
   if (!nextOption(argList)) System.exit(1)// parse options
   val parser =new IAProblemParser(inputPath, inputName)
   val pb= parser.parse() // parse problem
   if (debug) println(pb)
+  println(s"hillclimbing:$hillclimbing approximation:$approximation inclusive:$inclusive distributed:$distributed $socialRule")
   val solver= selectSolver()
   val matching= solver.solve()
-  println(matching)
+  val writer=new MatchingWriter(outputFilename,matching)
+  writer.write()
+  println("Utilitarian welfare: "+matching.utilitarianWelfare())
+  println("Egalitarian welfare: "+matching.egalitarianWelfare())
   println("That's all folk !")
   System.exit(0)
 
@@ -61,13 +68,11 @@ object IAProblemSolver extends App {
     * @return inputPath inputFilename outputFile
     */
   def parseFilenames() : Unit= {
-    val outputFilename = argList.last.trim
+    outputFilename = argList.last.trim
     argList = argList.dropRight(1)// drop outputFile
-    val inputFilename = argList.last.trim
+    inputFilename = argList.last.trim
     val i = inputFilename.lastIndexOf("/")
-
     argList = argList.dropRight(1) //drop inputFile
-    if (debug) println(s"input: -$inputFilename- output:  -$outputFilename-")
     if (!Files.exists(Paths.get(inputFilename)) || Files.exists(Paths.get(outputFilename))) {
       println(s"Either $inputFilename does not exist or $outputFilename already exist")
       System.exit(1)
@@ -99,7 +104,6 @@ object IAProblemSolver extends App {
     * @return the ASIA Solver
     */
   def selectSolver() : ASIASolver= {
-    println(s"hillclimbing:$hillclimbing approximation:$approximation inclusive:$inclusive distributed:$distributed $socialRule")
     hillclimbing match {
       case true => // Local search techniques
         inclusive match {

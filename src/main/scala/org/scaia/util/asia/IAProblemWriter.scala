@@ -3,9 +3,24 @@ package org.scaia.util.asia
 import java.io._
 
 import org.scaia.asia.{Activity, Group, IAProblem, Individual}
+import org.scaia.util.asia.IAProblemWriter.pb
 
 /**
   * Build a IAProblem object from a text file
+  * @param pathName the output filename
+  * @param pb is a IAProblem
+  */
+class IAProblemWriter(pathName: String, pb : IAProblem){
+  val file = new File(pathName)
+  def write() = {
+    val bw = new BufferedWriter(new FileWriter(file))
+    bw.write(pb.toString)
+    bw.close()
+  }
+}
+
+/**
+  * Test IAProblemWriter
   */
 object IAProblemWriter extends App{
   // The IAProblem instance
@@ -22,11 +37,7 @@ object IAProblemWriter extends App{
     vMap+=("a" -> 0.5)
     wMap+=("i1" -> 1.0, "i2" -> -1.0)
   }
-
   val pb= new IAProblem(Group(i1, i2, i3), Set(a))
-  // FileWriter
-  val file = new File("examples/asia/circularPreferencePb.txt")
-  val bw = new BufferedWriter(new FileWriter(file))
-  bw.write(pb.toString)
-  bw.close()
+  val writer=new IAProblemWriter("examples/asia/circularPreferencePb.txt",pb)
+  writer.write()
 }
