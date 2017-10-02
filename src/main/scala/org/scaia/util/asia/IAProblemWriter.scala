@@ -2,8 +2,7 @@ package org.scaia.util.asia
 
 import java.io._
 
-import org.scaia.asia.{Activity, Group, IAProblem, Individual}
-import org.scaia.util.asia.IAProblemWriter.pb
+import org.scaia.asia.{IAProblem, Individual, Activity, Group}
 
 /**
   * Build a IAProblem object from a text file

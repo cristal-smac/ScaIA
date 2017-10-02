@@ -27,11 +27,10 @@ In order to compile the code you need:
 
 ## Tests
 
-    sbt "run org.scaia.util.asia.IAProblemSolver -a -h -i -d -e examples/asia/circularPreferencePb.txt examples/asia/circularPreferenceMatching.txt"
-
+    sbt "run org.scaia.util.asia.IAProblemSolver -h -a -v -i -d -e examples/asia/undesiredGuestPb.txt examples/asia/undesiredGuestMatching.txt"
 or 
 
-    java -jar ScaIA-assembly-0.3.jar -a -h -i -d examples/asia/circularPreferencePb.txt examples/asia/circularPreferenceMatching.txt
+    java -jar ScaIA-assembly-0.3.jar org.scaia.util.asia.IAProblemSolver  -h -a -v -i -d -e examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
 
 The programm prints a CSV file nbwWorkers,speedup.
 

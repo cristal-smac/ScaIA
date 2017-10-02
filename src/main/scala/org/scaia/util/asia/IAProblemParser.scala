@@ -4,7 +4,6 @@ package org.scaia.util.asia
 import org.scaia.asia._
 
 import scala.io.Source
-import scala.util.matching.Regex
 
 /**
   * Build a IAProblem object from a text file
@@ -18,8 +17,8 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
   val path = directoryName + fileName
   var lineNumber = 0
 
-  var m=0
-  var n=0
+  var m=0 // number of individuals
+  var n=0 // number of activities
   var activities = Set[Activity]()
   var individuals = Group()
 
@@ -35,7 +34,7 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
         if (debug) println(s"parse $path line$lineNumber: comment $line")
       } else parseLine(line)
     }
-    bufferedSource.close
+    bufferedSource.close()
     val pb = new IAProblem(individuals, activities)
     if (pb.isTotalPreferences()) pb
     else throw new RuntimeException(s"ERROR parse incomplete preferences")
@@ -43,8 +42,8 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
   }
 
   /**
-    * Parse a
-    * @param line
+    * Parse a line
+    * @param line of the file to parse
     */
   def parseLine(line: String) : Unit= {
     val couple = line.split(":").map(_.trim)
@@ -104,7 +103,7 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
 
   /**
     * Parse the individuals
-    * @param names e.g. a string i1 i2 i3
+    * @param names e.g. a string "i1 i2 i3"
     */
   def parseIndividuals(names: String): Unit={
     val array:Array[String]=names.split(" ").map(_.trim)
@@ -145,6 +144,6 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
   * Test IAProblemParser
   */
 object IAProblemParser extends App {
-  val parser =new IAProblemParser("examples/asia/", "circularPreferencePb.txt")// eventually "notBestUtil.txt"
+  val parser =new IAProblemParser("examples/asia/", "circularPreferencePb.txt")// eventually "notBestUtilPb.txt"
   println(parser.parse()) //Run main
 }
