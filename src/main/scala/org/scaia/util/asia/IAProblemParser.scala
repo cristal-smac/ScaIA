@@ -7,14 +7,12 @@ import scala.io.Source
 
 /**
   * Build a IAProblem object from a text file
-  * @param directoryName path where the file is put
   * @param fileName of the IAProblem
   *
   */
-class IAProblemParser(val directoryName: String, val fileName: String ) {
+class IAProblemParser(val fileName: String ) {
   val debug = false
 
-  val path = directoryName + fileName
   var lineNumber = 0
 
   var m=0 // number of individuals
@@ -26,12 +24,12 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
     * Parse file
     */
   def parse(): IAProblem = {
-    val bufferedSource = Source.fromFile(path)
+    val bufferedSource = Source.fromFile(fileName)
     for (line <- bufferedSource.getLines) {
       lineNumber += 1
-      if (debug) println(s"parse $path line$lineNumber: $line")
+      if (debug) println(s"parse $fileName line$lineNumber: $line")
       if (line.startsWith("//")) { //Drop comment
-        if (debug) println(s"parse $path line$lineNumber: comment $line")
+        if (debug) println(s"parse $fileName line$lineNumber: comment $line")
       } else parseLine(line)
     }
     bufferedSource.close()
@@ -47,7 +45,7 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
     */
   def parseLine(line: String) : Unit= {
     val couple = line.split(":").map(_.trim)
-    if (couple.length != 2) throw new RuntimeException(s"ERROR parseLine $path line$lineNumber: comment $line")
+    if (couple.length != 2) throw new RuntimeException(s"ERROR parseLine $fileName line$lineNumber: comment $line")
     val (key, value) = (couple(0), couple(1))
     //Firstly, the size (m,n) should be setup as strict positive integer
     if (m == 0 || n == 0) parseSize(key, value)
@@ -69,7 +67,7 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
   def parseSize(key: String, value: String): Unit = key match {
     case "m" => m = value.toInt
     case "n" => n = value.toInt
-    case _ => throw new RuntimeException("ERROR parseSize" + path + " L" + lineNumber + "=" + key + "," + value)
+    case _ => throw new RuntimeException("ERROR parseSize" + fileName + " L" + lineNumber + "=" + key + "," + value)
   }
 
   /**
@@ -80,7 +78,7 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
   def parseEntities(key: String, value: String): Unit = key match {
     case "activities" => parseActivities(value)
     case "individuals" => parseIndividuals(value)
-    case _ => throw new RuntimeException(s"ERROR parseEntities $path line$lineNumber: $key")
+    case _ => throw new RuntimeException(s"ERROR parseEntities $fileName line$lineNumber: $key")
   }
 
   /**
@@ -89,14 +87,14 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
     */
   def parseActivities(namesAndCapacities: String): Unit={
     val array:Array[String]=namesAndCapacities.split(" ").map(_.trim)
-    if (array.length!=n) throw new RuntimeException(s"ERROR parseActivities $path line$lineNumber: the number of activities  $n is wrong: ${array.size}")
+    if (array.length!=n) throw new RuntimeException(s"ERROR parseActivities $fileName line$lineNumber: the number of activities  $n is wrong: ${array.size}")
     val pattern = """(\w+)\s?\(([0-9]+)\)""".r
     array.foreach{ str: String =>
       str match {
         case pattern(activity, capacity) =>
           if (debug) println(s"parseActivities: $activity($capacity)")
           activities += new Activity(activity, capacity.toInt)
-        case _ => throw new RuntimeException(s"ERROR parseEntities $path line$lineNumber: $str")
+        case _ => throw new RuntimeException(s"ERROR parseEntities $fileName line$lineNumber: $str")
       }
     }
   }
@@ -122,11 +120,11 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
     if (debug) println(s"parsePreferences $key")
     val source=individuals.getIndividual(key)
     val couple:Array[String]=value.split(" ").map(_.trim)
-    if (couple.size!=2) throw new RuntimeException(s"ERROR parsePreferences $path line$lineNumber: $value")
+    if (couple.size!=2) throw new RuntimeException(s"ERROR parsePreferences $fileName line$lineNumber: $value")
     val target = couple(0)
     val valuation : Double = try {
       couple(1).toDouble }catch{
-      case e: NumberFormatException => throw  new RuntimeException(s"ERROR parsePreferences $path line$lineNumber: ${couple(1)}")
+      case e: NumberFormatException => throw  new RuntimeException(s"ERROR parsePreferences $fileName line$lineNumber: ${couple(1)}")
     }
     //The individuals/preferences can be declared in any order
     if (individuals.isNameOfAIndividual(target)) {
@@ -144,6 +142,6 @@ class IAProblemParser(val directoryName: String, val fileName: String ) {
   * Test IAProblemParser
   */
 object IAProblemParser extends App {
-  val parser =new IAProblemParser("examples/asia/", "circularPreferencePb.txt")// eventually "notBestUtilPb.txt"
+  val parser =new IAProblemParser("examples/asia/circularPreferencePb.txt")// eventually "notBestUtilPb.txt"
   println(parser.parse()) //Run main
 }

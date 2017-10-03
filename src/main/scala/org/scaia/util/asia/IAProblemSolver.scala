@@ -43,8 +43,7 @@ object IAProblemSolver extends App {
   // Default fileNames/path for the input/output
   var inputFilename= new String()
   var outputFilename= new String()
-  var inputPath= new String()
-  var inputName= new String()
+
 
   if (args.length <= 2){
     println(usage)
@@ -60,7 +59,7 @@ object IAProblemSolver extends App {
     println(s"ERROR IAProblemSolver: options cannot be parsed ")
     System.exit(1)
   }// fail if options cannot be parsed
-  val parser =new IAProblemParser(inputPath, inputName)
+  val parser =new IAProblemParser(inputFilename)
   val pb= parser.parse() // parse problem
   if (verbose) println(pb)
   if (verbose) println(
@@ -84,14 +83,11 @@ object IAProblemSolver extends App {
     outputFilename = argList.last.trim
     argList = argList.dropRight(1)// drop outputFile
     inputFilename = argList.last.trim
-    val i = inputFilename.lastIndexOf("/")
     argList = argList.dropRight(1) //drop inputFile
     if (!Files.exists(Paths.get(inputFilename)) || Files.exists(Paths.get(outputFilename))) {
       println(s"ERROR parseFilename: either $inputFilename does not exist or $outputFilename already exist")
       System.exit(1)
     }
-    inputPath = inputFilename.substring(0, i)
-    inputName = inputFilename.substring(i)
   }
 
   /**

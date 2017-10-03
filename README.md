@@ -25,7 +25,7 @@ In order to compile the code you need:
 
 - the interactive build tool [SBT 0.13](http://www.scala-sbt.org/download.html).
 
-## Tests
+## Test
 
     sbt "run org.scaia.util.asia.IAProblemSolver -h -a -v -i -d -e examples/asia/undesiredGuestPb.txt examples/asia/undesiredGuestMatching.txt"
 or 
