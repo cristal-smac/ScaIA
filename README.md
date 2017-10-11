@@ -36,7 +36,7 @@ Usage:
     -a: approximation (false by default)
     -t: trace (false by default)
     -h: hillclimbing (false by default)
-|   -i: inclusive (false by default)
+    -i: inclusive (false by default)
     -v: verbose (false by default)
     -d: distributed (false by default)
     -e: egalitarian (utilitarian by default)
