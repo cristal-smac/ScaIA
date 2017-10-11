@@ -12,8 +12,8 @@ import akka.actor.ActorSystem
   * Solve a particular IAProblem instance
   * TODO IAProblem generator
   * TODO make experiments with an inclusive hillClimbing
-  * sbt "run org.scaia.util.asia.IAProblemSolver -h -a -v -i -d -e examples/asia/undesiredGuestPb.txt examples/asia/undesiredGuestMatching.txt"
-  * java -jar ScaIA-assembly-0.3.jar org.scaia.util.asia.IAProblemSolver  -h -a -v -i -d -e examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
+  * sbt "run org.scaia.util.asia.IAProblemSolver -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt examples/asia/undesiredGuestMatching.txt"
+  * java -jar ScaIA-assembly-0.3.jar org.scaia.util.asia.IAProblemSolver -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
   *
   */
 object IAProblemSolver extends App {
@@ -22,23 +22,25 @@ object IAProblemSolver extends App {
   val system = ActorSystem("IAProblemSolver") //The Actor system
   val usage =
     """
-    Usage: java -jar ScaIA-assembly-X.Y.jar [-havide] inputFilename outputFilename
+    Usage: java -jar ScaIA-assembly-X.Y.jar [-athived] inputFilename outputFilename
     The following options are available:
-    -h: hillclimbing (false by default)
     -a: approximation (false by default)
+    -t: trace (false by default)
+    -h: hillclimbing (false by default)
+|   -i: inclusive (false by default)
     -v: verbose (false by default)
-    -i: inclusive (false by default)
     -d: distributed (false by default)
     -e: egalitarian (utilitarian by default)
   """
 
   // Default parameters for the solver
-  var hillClimbing = false
   var approximation = false
-  var verbose = false
+  var trace = false
+  var hillClimbing = false
   var inclusive = false
-  var distributed = false
+  var verbose = false
   var socialRule: SocialRule = Utilitarian
+  var distributed = false
 
   // Default fileNames/path for the input/output
   var inputFilename= new String()
@@ -65,10 +67,11 @@ object IAProblemSolver extends App {
   if (verbose) println(
     s"""
     Run solver with the following parameters:
-    hillclimbing:$hillClimbing approximation:$approximation inclusive:$inclusive distributed:$distributed $socialRule
+    hillclimbing:$hillClimbing approximation:$approximation inclusive:$inclusive distributed:$distributed $socialRule trace:$trace
     ...
   """)
   val solver= selectSolver()
+  solver.debug=trace
   val matching= solver.solve()
   val writer=new MatchingWriter(outputFilename,matching)
   writer.write()
@@ -101,6 +104,7 @@ object IAProblemSolver extends App {
       case "h" => hillClimbing=true
       case "e" => socialRule= Egalitarian
       case "a" => approximation=true
+      case "t" => trace=true
       case "i" => inclusive=true
       case "d" => distributed=true
       case "v" => verbose=true

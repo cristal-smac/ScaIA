@@ -27,18 +27,29 @@ In order to compile the code you need:
 
 ## Test
 
-    sbt "run org.scaia.util.asia.IAProblemSolver -h -a -v -i -d -e examples/asia/undesiredGuestPb.txt examples/asia/undesiredGuestMatching.txt"
-or 
+    java -jar ScaIA-assembly-0.3.jar org.scaia.util.asia.IAProblemSolver -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
 
-    java -jar ScaIA-assembly-0.3.jar org.scaia.util.asia.IAProblemSolver  -h -a -v -i -d -e examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
+Usage: 
 
-The programm prints a CSV file nbwWorkers,speedup.
+    Usage: java -jar ScaIA-assembly-X.Y.jar [-athived] inputFilename outputFilename
+    The following options are available:
+    -a: approximation (false by default)
+    -t: trace (false by default)
+    -h: hillclimbing (false by default)
+|   -i: inclusive (false by default)
+    -v: verbose (false by default)
+    -d: distributed (false by default)
+    -e: egalitarian (utilitarian by default)
 
 ## Installation
 
     sbt compile
 
-and eventually 
+then
+
+    sbt "run org.scaia.util.asia.IAProblemSolver -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt examples/asia/undesiredGuestMatching.txt"
+ 
+and eventually
 
     sbt assembly
 

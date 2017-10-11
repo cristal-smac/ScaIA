@@ -10,6 +10,7 @@ import org.scaia.asia._
   */
 class HillClimbingInclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
 
+  var step= 1
 
   override def solve() : Matching =  {
     var current = pb.generateRandomPositiveInclusiveMatching()
@@ -25,6 +26,7 @@ class HillClimbingInclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIA
         case Egalitarian => current.egalitarianWelfare()
       }
       if (nu <= cu) return current
+      step+=1
       current= neighbor
     }
     return current//Only required for compilation
