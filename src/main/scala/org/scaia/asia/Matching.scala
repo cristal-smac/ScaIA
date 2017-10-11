@@ -182,6 +182,7 @@ class Matching(val pb: IAProblem){
     */
   def isIndividuallyRational() : Boolean ={
     pb.individuals.forall(i => i.prefA(this.a(i).name, Activity.VOID.name) && i.prefG(this.g(i).names,Group(i).names))
+    //TODO pb.individuals.forall(i => i.u(this.g(i).names, this.a(i).name)>= 0)
   }
 
   /**
