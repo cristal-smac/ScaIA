@@ -2,6 +2,7 @@
 package org.scaia.asia
 
 import scala.util.Random
+import org.scaia.util.MathUtils._
 
 /**
   * Class representing the Individuals/Activities problem
@@ -139,6 +140,44 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
     }
     return allMatchings
   }
+
+  /**
+    * Returns all the sound matchings which maximize the utilitarian welfare
+    */
+  def allMaxUtilitarian(): Set[Matching] = {
+    var u = -Double.MaxValue
+    var matchings = Set[Matching]()
+    allSoundMatchings().foreach { m =>
+      if (u ~= m.utilitarianWelfare()) {
+        u = m.utilitarianWelfare()
+        matchings += m
+      } else if (m.utilitarianWelfare() > u) {
+        u = m.utilitarianWelfare()
+        matchings = Set[Matching](m)
+      }
+    }
+    matchings
+  }
+
+
+  /**
+    * Returns all the sound matchings which maximize the egalitarian welfare
+    */
+  def allMaxEgalitarian(): Set[Matching] = {
+    var u = -Double.MaxValue
+    var matchings = Set[Matching]()
+    allSoundMatchings().foreach { m =>
+      if (u ~= m.egalitarianWelfare()) {
+        u = m.egalitarianWelfare()
+        matchings += m
+      } else if (m.egalitarianWelfare() > u) {
+        u = m.egalitarianWelfare()
+        matchings = Set[Matching](m)
+      }
+    }
+    matchings
+  }
+
 
   /**
     * Returns a random matching with a random number of inactive individual
