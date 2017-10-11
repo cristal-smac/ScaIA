@@ -53,4 +53,20 @@ class TestDilemmaPref extends FlatSpec {
     //println(s"Egalitarian matchings: $maxEgalitarianMatchings")
     assert(! maxEgalitarianMatchings.contains(m2))
   }
+
+  "M1" should "be not core stable" in {
+    val matchings= allMatchings.filter(m => m.isCoreStable())
+    println(s"Number of core stable matchings: ${matchings.size} ")
+    assert(! m1.isCoreStable())// since club(2): magenta strongly blocks this matching
+  }
+
+  "The dilemma problem" should "have no core stable matching" in {
+    assert(allMatchings.filter(m => m.isCoreStable()).isEmpty)
+  }
+
+  "The dilemma problem" should "have no Nash stable" in {
+    assert(allMatchings.filter(m => m.isNashStable()).isEmpty)
+  }
+
+
 }
