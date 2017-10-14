@@ -30,15 +30,22 @@ class TestDilemmaPref extends FlatSpec {
   }
 
   "Inclusive solver egalitarian" should "be club={blue,cyan} ball{magenta, red}" in {
-    //println("InculsiveSolver with egalitarian")
+    println("InculsiveSolver with egalitarian")
     val solver = new InclusiveSolver(pb, Egalitarian)
+    //solver.debug=true
     val result =solver.solve()
     //println(s"result: $result")
     assert(result.equals(m2))//result.equals(m2)
   }
 
   "M1" should "be Pareto-optimal" in {
-    //println("Number of Pareto-optimal: "+pb.allSoundMatchings().size)
+    println("Number of Pareto-optimal: "+pb.allSoundMatchings().size)
+    /*
+    println("U(M1)= "+m1.utilitarianWelfare())
+    println("E(M1)= "+m1.egalitarianWelfare())
+    println("U(M2)= "+m2.utilitarianWelfare())
+    println("E(M2)= "+m2.egalitarianWelfare())
+  */
     assert(m1.isParetoOptimal())
   }
 
@@ -66,6 +73,12 @@ class TestDilemmaPref extends FlatSpec {
 
   "The dilemma problem" should "have no Nash stable" in {
     assert(allMatchings.filter(m => m.isNashStable()).isEmpty)
+  }
+
+  "The dilemma problem" should "have individual stable matching" in {
+    val matchings=allMatchings.filter(m => m.isIndividuallyStable())
+    println(s"Number of individualy stable  matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
   }
 
 
