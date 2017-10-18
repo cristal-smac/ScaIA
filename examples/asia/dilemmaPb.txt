@@ -1,0 +1,30 @@
+//4 individuals and 2 activities
+m: 4
+n: 2
+// Passing with clubs or balls
+activities: club(2) ball(2)
+individuals: blue cyan magenta red
+// Everyone prefers club
+blue: ball 0.25
+blue: club 0.5
+blue: cyan 1.0
+blue: magenta -0.5
+blue: red -1.0
+cyan: ball 0.25
+cyan: club 0.5
+cyan: blue 1.0
+// Blue and cyan prefer to stay together
+cyan: magenta 0.5
+cyan: red -1.0
+// Magenta and red both like blue and cyan
+// However they dislike each other
+magenta: ball 0.25
+magenta: club 0.5
+magenta: blue 1.0
+magenta: cyan 0.5
+magenta: red -1.0
+red: ball 0.25
+red: club 0.5
+red: blue 1.0
+red: cyan 1.0
+red: magenta -1.0
