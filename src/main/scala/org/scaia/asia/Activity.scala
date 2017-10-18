@@ -8,12 +8,15 @@ package org.scaia.asia
   * @param c capacity of the activity
   */
 class Activity(val name: String, val c: Int){
-  override def toString: String = name+"("+c+")"
+  override def toString: String = {
+    if (name.equals("void")) return name
+    name+"("+c+")"
+  }
 }
 
 /**
   * Factory for [[Activity]] instances
   */
 object Activity{
-  val VOID= new Activity("phantom", Int.MaxValue)
+  val VOID= new Activity("void", Int.MaxValue)
 }
