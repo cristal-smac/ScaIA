@@ -30,7 +30,7 @@ class Group(individuals: Individual*) extends Set[Individual] with SetLike[Indiv
   /**
     *   Returns the string describing the individuals
     */
-  override def toString: String = individuals.mkString("", " ", "")
+  override def toString: String = individuals.mkString("[", ", ", "]")
 
   /**
     * Returns the set of names of individuals in the group
