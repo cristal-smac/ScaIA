@@ -75,8 +75,8 @@ object IAProblemSolver extends App {
   val matching= solver.solve()
   val writer=new MatchingWriter(outputFilename,matching)
   writer.write()
-  println("utilitarianWelfare: "+matching.utilitarianWelfare())
-  println("egalitarianWelfare: "+matching.egalitarianWelfare())
+  println(f"U(M): ${matching.utilitarianWelfare()}")
+  println(f"E(M): ${matching.egalitarianWelfare()}")
   System.exit(0)
 
   /**
