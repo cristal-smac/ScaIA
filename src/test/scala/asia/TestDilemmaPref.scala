@@ -20,6 +20,15 @@ class TestDilemmaPref extends FlatSpec {
   m2.a= Map(blue -> club, cyan -> club, magenta -> ball, red -> ball )
   m2.g= Map(blue -> Group(blue, cyan), cyan -> Group(blue, cyan), magenta-> Group(magenta, red), red -> Group(magenta, red))
 
+  "M1 with club={blue,cyan} ball{magenta} void{red}" should "be IR" in {
+    assert(m1.isIndividuallyRational())
+  }
+
+  "M2 with club={blue,cyan} ball{magenta, red}" should "be IR" in {
+    assert(m2.isIndividuallyRational())
+  }
+
+
   "MNSolver utilitarian" should "be club={blue,cyan} ball{magenta} void{red}" in {
     val solver = new MNSolver(pb, false, Utilitarian)
     //println("MNSolver with utilitarian (no approximation)")
@@ -71,15 +80,18 @@ class TestDilemmaPref extends FlatSpec {
     assert(allMatchings.filter(m => m.isCoreStable()).isEmpty)
   }
 
-  "The dilemma problem" should "have no Nash stable" in {
-    assert(allMatchings.filter(m => m.isNashStable()).isEmpty)
+  "The dilemma problem" should "have (3) Nash stable matchings" in {
+    val matchings= allMatchings.filter(m => m.isNashStable())
+    println(s"Number of Nash stable matchings: ${matchings.size} ")
+    assert(! matchings.isEmpty)
   }
 
-  "The dilemma problem" should "have individual stable matching" in {
+  "The dilemma problem" should "have individual stable matchings" in {
     val matchings=allMatchings.filter(m => m.isIndividuallyStable())
-    println(s"Number of individualy stable  matchings: ${matchings.size} ")
+    println(s"Number of individualy stable matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
   }
+
 
 
 }

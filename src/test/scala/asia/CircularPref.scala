@@ -18,7 +18,7 @@ object CircularPref {
     * The individual i1 prefers i2
     */
   val i1: Individual = new Individual("i1",3) {
-    vMap+=("a" -> 0.5)
+    vMap+=("a" -> 0.25)
     wMap+=("i2"-> 1.0, "i3" -> -1.0)
   }
 
@@ -26,7 +26,7 @@ object CircularPref {
     * The individual i2 prefers i3
     */
   val i2: Individual = new Individual("i2",3) {
-    vMap += ("a" -> 0.5)
+    vMap += ("a" -> 0.25)
     wMap += ("i3" -> 1.0, "i1" -> -1.0)
   }
 
@@ -34,7 +34,7 @@ object CircularPref {
     * The individual i3 prefers i1
     */
   val i3: Individual = new Individual("i3",3) {
-    vMap+=("a" -> 0.5)
+    vMap+=("a" -> 0.25)
     wMap+=("i1" -> 1.0, "i2" -> -1.0)
   }
 
