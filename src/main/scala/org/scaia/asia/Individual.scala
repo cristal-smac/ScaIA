@@ -106,12 +106,14 @@ class Individual(val name: String, val m : Int){
   /**
     * Returns true if c1 is preferred to c2
     */
-  def prefC(c1: Coalition, c2: Coalition) : Boolean= w(c1.group.names)>=w(c2.group.names) &&  v(c1.activity.name)>=v(c2.activity.name)
+  def prefC(c1: Coalition, c2: Coalition) : Boolean= u(c1.group.names,c1.activity.name) >= u(c2.group.names,c2.activity.name)
+  //w(c1.group.names)>=w(c2.group.names) &&  v(c1.activity.name)>=v(c2.activity.name)
 
   /**
     *  Returns true if c1 is strictly preferred to c2
     */
-  def sprefC(c1: Coalition, c2: Coalition) : Boolean= prefC(c1,c2) && (w(c1.group.names) > w(c2.group.names) ||  v(c1.activity.name)>v(c2.activity.name))
+  def sprefC(c1: Coalition, c2: Coalition) : Boolean= u(c1.group.names,c1.activity.name) > u(c2.group.names,c2.activity.name)
+    //prefC(c1,c2) && (w(c1.group.names) > w(c2.group.names) ||  v(c1.activity.name)>v(c2.activity.name))
 
   /**
     * Returns true if m1 is preferred to m2
