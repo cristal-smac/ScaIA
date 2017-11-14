@@ -8,7 +8,7 @@ import org.scalatest.FlatSpec
 
 class TestDilemmaPref extends FlatSpec {
 
-  val allMatchings= pb.allSoundMatchings()
+  val allSoundMatchings= pb.allSoundMatchings()
 
   //Result for the MNSolver with the utilitarian rule (no approximation)
   val m1= new Matching(pb)
@@ -20,13 +20,53 @@ class TestDilemmaPref extends FlatSpec {
   m2.a= Map(blue -> club, cyan -> club, magenta -> ball, red -> ball )
   m2.g= Map(blue -> Group(blue, cyan), cyan -> Group(blue, cyan), magenta-> Group(magenta, red), red -> Group(magenta, red))
 
+  val cMagentaVoid = new Coalition(Activity.VOID, Group(magenta))
+  val cRedVoid = new Coalition(Activity.VOID, Group(red))
+  val cMagentaRedBall =  new Coalition(ball, Group(magenta,red))
+  val cMagentaRedClub =  new Coalition(club, Group(magenta,red))
+
+
   "M1 with club={blue,cyan} ball{magenta} void{red}" should "be IR" in {
     assert(m1.isIndividuallyRational())
   }
 
-  "M2 with club={blue,cyan} ball{magenta, red}" should "be IR" in {
-    assert(m2.isIndividuallyRational())
+  "M2 with club={blue,cyan} ball{magenta, red}" should "be not IR" in {
+    assert(!m2.isIndividuallyRational())
   }
+
+
+  "Dilemma pref " should "have a IR matching" in {
+    var IRMatchings=allSoundMatchings.filter(m => m.isIndividuallyRational())
+    println("Number of Sound matchingq: "+allSoundMatchings.size)//63
+    println("Number of IR (Sound) matchings: "+IRMatchings.size)//51
+    assert(!IRMatchings.isEmpty)
+
+  }
+
+  "magenta" should "strictly prefers stay alone doing nothing rather than being with red and ball" in {
+    println("uMagenta(MagentaVoid)= "+magenta.u(cMagentaVoid.group.names, cMagentaVoid.activity.name))
+    println("uMagenta(MagentaRedBall)= "+magenta.u(cMagentaRedBall.group.names, cMagentaRedBall.activity.name))
+    assert(magenta.sprefC(cMagentaVoid,cMagentaRedBall))
+  }
+
+  "magenta" should "strictly strictly prefers club with red rather staying alone doing nothing" in {
+    println("uMagenta(MagentaVoid)= "+magenta.u(cMagentaVoid.group.names, cMagentaVoid.activity.name))
+    println("uMagenta(MagentaRedClub= "+magenta.u(cMagentaRedClub.group.names, cMagentaRedClub.activity.name))
+    assert(magenta.sprefC(cMagentaRedClub, cMagentaVoid))
+  }
+
+  "red" should "strictly prefers stay alone doing nothing rather than being with magenta and ball" in {
+    println("uRed(RedVoid)= "+red.u(cRedVoid.group.names, cRedVoid.activity.name))
+    println("uRed(MagentaRedBall)= "+red.u(cMagentaRedBall.group.names, cMagentaRedBall.activity.name))
+    assert(red.sprefC(cRedVoid, cMagentaRedBall))
+  }
+  
+  "red" should "strictly strictly prefers club with magenta rather than staying alone doing nothing" in {
+    println("uRed(RedVoid)= "+red.u(cRedVoid.group.names, cRedVoid.activity.name))
+    println("uRed(MagentaRedClub)= "+red.u(cMagentaRedClub.group.names, cMagentaRedClub.activity.name))
+    assert(red.sprefC(cMagentaRedClub,cRedVoid))
+  }
+
 
 
   "MNSolver utilitarian" should "be club={blue,cyan} ball{magenta} void{red}" in {
@@ -71,23 +111,23 @@ class TestDilemmaPref extends FlatSpec {
   }
 
   "M1" should "be not core stable" in {
-    val matchings= allMatchings.filter(m => m.isCoreStable())
+    val matchings= allSoundMatchings.filter(m => m.isCoreStable())
     println(s"Number of core stable matchings: ${matchings.size} ")
     assert(! m1.isCoreStable())// since club(2): magenta strongly blocks this matching
   }
 
   "The dilemma problem" should "have no core stable matching" in {
-    assert(allMatchings.filter(m => m.isCoreStable()).isEmpty)
+    assert(allSoundMatchings.filter(m => m.isCoreStable()).isEmpty)
   }
 
   "The dilemma problem" should "have (3) Nash stable matchings" in {
-    val matchings= allMatchings.filter(m => m.isNashStable())
+    val matchings= allSoundMatchings.filter(m => m.isNashStable())
     println(s"Number of Nash stable matchings: ${matchings.size} ")
     assert(! matchings.isEmpty)
   }
 
   "The dilemma problem" should "have individual stable matchings" in {
-    val matchings=allMatchings.filter(m => m.isIndividuallyStable())
+    val matchings=allSoundMatchings.filter(m => m.isIndividuallyStable())
     println(s"Number of individualy stable matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
   }
