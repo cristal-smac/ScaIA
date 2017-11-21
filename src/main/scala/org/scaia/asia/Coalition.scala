@@ -12,11 +12,11 @@ import org.scaia.hedonic.Player
 class Coalition(val activity: Activity, val group: Group) {
 
   override def toString: String = activity + ": " + group
-
+  
   /**
     * Return true if the coalition is individually rational for i
     */
-  def isIndividuallyRational(i: Individual) = i.w(group.names) >= 0 && i.v(activity.name) >= 0
+  def isIndividuallyRational(i: Individual) = i.u(group.names(), activity.name) >= 0
 
   /**
     * Returns true if the coalition is empty
