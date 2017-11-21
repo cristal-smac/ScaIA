@@ -145,7 +145,7 @@ class Matching(val pb: IAProblem){
     */
   def isCoreStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
-    val coalitions = pb.allSoundCoalitions().filterNot(c => c.group.isEmpty)
+    val coalitions = pb.allSoundNonEmptyCoalitions()
     coalitions.foreach{ coalition =>
       if (coalition.stronglyBlock(this)) {
         if (debug) println("Coalition "+ coalition + " strongly blocks this matching")
@@ -160,7 +160,7 @@ class Matching(val pb: IAProblem){
     */
   def isStrictCoreStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
-    val coalitions = pb.allSoundCoalitions().filterNot(c => c.group.isEmpty)
+    val coalitions = pb.allSoundNonEmptyCoalitions()
     coalitions.foreach{ coalition =>
       if (coalition.weaklyBlock(this)) {
         if (debug) println("Coalition "+ coalition + " weakly blocks this matching")
@@ -176,11 +176,16 @@ class Matching(val pb: IAProblem){
   def isNashStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.individuals.foreach{ i =>
+      val trivialC = new Coalition(Activity.VOID,Group(i))
+      if (! i.prefC(coalitionFor(i), trivialC)){
+        if (debug) println("This matching is not Nash-stable since "+i+" strictly prefers the coalition "+trivialC)
+        return false
+      }
       val otherActivities=pb.activities - this.a(i)
-      otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity =>
-        val c=new Coalition(a,p(a)+i)
-        if (! i.prefC(coalitionFor(i),c)){
-          if (debug) println("This matching is not Nash-stable since "+i+" strictly prefers the coalition "+a)
+      otherActivities.foreach{ a : Activity =>
+        val c= new Coalition(a,p(a)+i)
+        if (c.isSound() && !i.prefC(coalitionFor(i),c)){
+          if (debug) println("This matching is not Nash-stable since "+i+" strictly prefers the coalition "+c)
           return false
         }
       }
@@ -194,7 +199,12 @@ class Matching(val pb: IAProblem){
   def isIndividuallyStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.individuals.foreach { i => // foreach individual i
-      val otherActivities=pb.activities - this.a(i)
+      val trivialC = new Coalition(Activity.VOID,Group(i))
+      if (! i.prefC(coalitionFor(i), trivialC)){
+        if (debug) println("This matching is not IS since "+i+" strictly prefers the coalition "+trivialC)
+        return false
+      }
+      val otherActivities=pb.activities  - this.a(i)
       otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity => // foreach other activity a
         if (i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
           // i can benefit by moving to another under-subscribed activity
@@ -212,7 +222,12 @@ class Matching(val pb: IAProblem){
   def isContractuallyIndividuallyStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.individuals.foreach { i => // foreach individual i
-      val otherActivities=pb.activities - this.a(i)
+      val trivialC = new Coalition(Activity.VOID,Group(i))
+      if (i.sprefC(coalitionFor(i), trivialC) && (this.g(i)-i).forall(j => j.prefC(new Coalition(this.a(i), this.g(i) - i),coalitionFor(j)))){
+        if (debug) println("This matching is not CIS since "+i+" strictly prefers"+trivialC+" to the coalition "+coalitionFor(i)+" and his old partners are not worst off")
+        return false
+      }
+      val otherActivities=pb.activities  - this.a(i)
       otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity => // foreach other activity a
         if (i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
             // i can benefit by moving to another under-subscribed activity

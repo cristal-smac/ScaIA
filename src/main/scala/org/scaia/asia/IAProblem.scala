@@ -97,7 +97,7 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
     */
   def allNonEmptyCoalitions() : Set[Coalition] = {
     var allCoalitions = Set[Coalition]()
-    activities.foreach { a => // foreach activity
+    (activities+Activity.VOID).foreach { a => // foreach activity
       individuals.subgroups.filterNot(_.isEmpty).foreach { g  => // for each group
         allCoalitions+=new Coalition(a, g)
       }
@@ -287,18 +287,21 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
   }
 
   /**
-    * Returns all the potential sound coalitions, i.e. which are not all overloaded
+    * Returns all the potential non-empty and sound coalitions
     */
-  def allSoundCoalitions() : Set[Coalition] = {
+  def allSoundNonEmptyCoalitions() : Set[Coalition] = {
     var results = Set[Coalition]()
     val allgroups = individuals.subgroups()
     allgroups.foreach { group =>
-      activities.foreach{ activity =>
-        if (activity.c >= group.size) results+= new Coalition(activity, group)
+      (activities+Activity.VOID).foreach{ activity =>
+        val c= new Coalition(activity, group)
+        if (c.isSound() && ! c.isEmpty()) results+=c
       }
     }
     results
   }
+
+
 }
 
 /**

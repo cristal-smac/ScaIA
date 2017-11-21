@@ -12,11 +12,16 @@ import org.scaia.hedonic.Player
 class Coalition(val activity: Activity, val group: Group) {
 
   override def toString: String = activity + ": " + group
-  
+
   /**
-    * Return true if the coalition is individually rational for i
+    *   Returns the size of the coalition
     */
-  def isIndividuallyRational(i: Individual) = i.u(group.names(), activity.name) >= 0
+  def size() = group.size
+
+  /**
+    *   Returns the capacity of the coalition
+    */
+  def capacity() = if (activity.equals(Activity.VOID)) 1 else activity.c
 
   /**
     * Returns true if the coalition is empty
@@ -24,12 +29,23 @@ class Coalition(val activity: Activity, val group: Group) {
   def isEmpty() = group.isEmpty
 
   /**
+    * Returns true if the coalition is sound
+    */
+  def isSound() = this.size() <= this.capacity()
+
+  /**
+    * Returns true if the coalition is individually rational for i
+    */
+  def isIndividuallyRational(i: Individual) = i.u(group.names(), activity.name) >= 0
+
+
+  /**
     * Returns true if the coalition strongly blocks the matching
     */
   @throws(classOf[RuntimeException])
   def stronglyBlock(matching: Matching): Boolean = {
-    if (group.isEmpty) throw new RuntimeException(this+" is an empty coalition "+this)
-    (group.size <= activity.c) &&
+    if (this.isEmpty()) throw new RuntimeException(this+" is an empty coalition ")
+    if (!this.isSound()) throw new RuntimeException(this+" is not a sound coalition")
       group.forall(i => i.sprefC(this,new Coalition(matching.a(i),matching.g(i))))
   }
 
@@ -38,9 +54,9 @@ class Coalition(val activity: Activity, val group: Group) {
     */
   @throws(classOf[RuntimeException])
   def weaklyBlock(matching: Matching): Boolean = {
-    if (group.isEmpty) throw new RuntimeException(this+" is an empty coalition "+this)
-    (group.size <= activity.c) &&
-      group.forall(i => i.prefC(this,new Coalition(matching.a(i),matching.g(i))) &&
+    if (this.isEmpty()) throw new RuntimeException(this+" is an empty coalition ")
+    if (!this.isSound()) throw new RuntimeException(this+" is not a sound coalition")
+    (group.forall(i => i.prefC(this,new Coalition(matching.a(i),matching.g(i)))) &&
         group.exists(i => i.sprefC(this,new Coalition(matching.a(i),matching.g(i)))))
   }
 }

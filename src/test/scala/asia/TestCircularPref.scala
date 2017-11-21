@@ -6,17 +6,20 @@ import org.scalatest.FlatSpec
 
 class TestCircularPref extends FlatSpec {
 
-  val allMatchings= pb.allSoundMatchings()
+  val allSoundMatchings= pb.allSoundMatchings()
 
   "The example with circular social preference" should "have no CS matching" in {
-    assert(! allMatchings.exists(m => m.isCoreStable))
+    assert(! allSoundMatchings.exists(m => m.isCoreStable))
   }
   "The example with circular social preference" should "have no SCS matching" in {
-    assert(! allMatchings.exists(m => m.isStrictCoreStable))
+    assert(! allSoundMatchings.exists(m => m.isStrictCoreStable))
   }
 
   "The example with circular social preference" should "have no NS matching" in {
-    assert(! allMatchings.exists(m => m.isNashStable))
+    val matchings = allSoundMatchings.filter(m => m.isNashStable)
+    println(s"Number of NS sound matchings: ${matchings.size} ")
+    println(matchings)
+    assert(! allSoundMatchings.exists(m => m.isNashStable))
   }
 
   val m1= new Matching(pb)
