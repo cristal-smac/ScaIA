@@ -132,9 +132,19 @@ class Matching(val pb: IAProblem){
   }
 
   /**
+    * Return true if the matching is individually rational
+    */
+  def isIndividuallyRational() : Boolean ={
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
+    // Cardinal rationality
+    pb.individuals.forall(i => i.u(this.g(i).names, this.a(i).name)>= 0)
+  }
+
+  /**
     *   Returns true if the matching is core stable
     */
   def isCoreStable() : Boolean = {
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     val coalitions = pb.allSoundCoalitions().filterNot(c => c.group.isEmpty)
     coalitions.foreach{ coalition =>
       if (coalition.stronglyBlock(this)) {
@@ -149,6 +159,7 @@ class Matching(val pb: IAProblem){
     *  Returns true if the matching is strict core stable
     */
   def isStrictCoreStable() : Boolean = {
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     val coalitions = pb.allSoundCoalitions().filterNot(c => c.group.isEmpty)
     coalitions.foreach{ coalition =>
       if (coalition.weaklyBlock(this)) {
@@ -163,12 +174,12 @@ class Matching(val pb: IAProblem){
     * Returns true if the matching is Nash stable
     */
   def isNashStable() : Boolean = {
-    if (!this.isSound() || !this.isIndividuallyRational()) return false
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.individuals.foreach{ i =>
       val otherActivities=pb.activities - this.a(i)
-      otherActivities.foreach{ a : Activity =>
+      otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity =>
         val c=new Coalition(a,p(a)+i)
-        if (!isFull(a) && ! i.prefC(coalitionFor(i),c)){
+        if (! i.prefC(coalitionFor(i),c)){
           if (debug) println("This matching is not Nash-stable since "+i+" strictly prefers the coalition "+a)
           return false
         }
@@ -178,31 +189,14 @@ class Matching(val pb: IAProblem){
   }
 
   /**
-    * Return true if the matching is individually rational
-    */
-  def isIndividuallyRational() : Boolean ={
-    // Ordinal rationality
-    //pb.individuals.forall(i => i.prefA(this.a(i).name, Activity.VOID.name) && i.prefG(this.g(i).names,Group(i).names))
-    // Ordinal rationality
-    pb.individuals.forall(i => i.u(this.g(i).names, this.a(i).name)>= 0)
-  }
-
-  /**
   * Returns true if the matching is individually stable
    */
   def isIndividuallyStable() : Boolean = {
-    if (!isSound()) {
-      if (debug) println("This matching is not stable since it is not sound")
-      return  false
-    }
-    if (!isIndividuallyRational()) {
-      if (debug) println("This matching is not stable since it is not individually rational")
-      return  false
-    }
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.individuals.foreach { i => // foreach individual i
       val otherActivities=pb.activities - this.a(i)
-      otherActivities.foreach{ a : Activity => // foreach other activity a
-        if (!isFull(a) && i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
+      otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity => // foreach other activity a
+        if (i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
           // i can benefit by moving to another under-subscribed activity
           if (p(a).forall(j => j.prefC(new Coalition(a, p(a) + i), coalitionFor(j)))) return false
           // while not making the posts of that activity worse off
@@ -216,13 +210,14 @@ class Matching(val pb: IAProblem){
     *   Return true if the matching is contractually individually stable
     */
   def isContractuallyIndividuallyStable() : Boolean = {
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.individuals.foreach { i => // foreach individual i
       val otherActivities=pb.activities - this.a(i)
-      otherActivities.foreach{ a : Activity => // foreach other activity a
-        if (!isFull(a) && i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
+      otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity => // foreach other activity a
+        if (i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
             // i can benefit by moving to another under-subscribed activity
           if (p(a).forall(j => j.prefC(new Coalition(a, p(a) + i), coalitionFor(j)))////while not making the posts of that activity worse off
-            ||
+            &&
             (this.g(i)-i).exists(j2 => j2.sprefC(coalitionFor(j2),new Coalition(this.a(i), this.g(i) - i)))  // or the posts of the previous activity worse off
           )
             return false
@@ -236,6 +231,7 @@ class Matching(val pb: IAProblem){
     *   Return true if the matching is contractually strict core stable
     */
   def isContractuallyStrictCore(): Boolean = {
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.allNonEmptyCoalitions.foreach{ c =>
       if (c.weaklyBlock(this)){ //if any weakly blocking coalition makes at least
         pb.individuals.filterNot(c.group.contains(_)).foreach{ j =>
@@ -248,11 +244,18 @@ class Matching(val pb: IAProblem){
   }
 
   /**
+    * Retun true if this matching is perfect
+    */
+  def isPerfect(): Boolean = {
+    false //TODO
+  }
+
+  /**
   *Returns true if this matching Pareto-dominates m
    */
   def paretoDominate(m: Matching): Boolean = {
-    if (!m.isSound()) throw new RuntimeException(m+" is not sound")
-    if (!this.isSound() ) throw new RuntimeException(this+" is not sound")
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
+    if (!m.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     //this matching  is strictly better than m for at least one individual and not worst for the others
     (pb.individuals.forall(i => i.prefC(this.coalitionFor(i), m.coalitionFor(i)))
       &&

@@ -88,7 +88,6 @@ class TestDilemmaPref extends FlatSpec {
   }
 
   "M1" should "be Pareto-optimal" in {
-    println("Number of Pareto-optimal: "+pb.allSoundMatchings().size)
     /*
     println("U(M1)= "+m1.utilitarianWelfare())
     println("E(M1)= "+m1.egalitarianWelfare())
@@ -116,22 +115,73 @@ class TestDilemmaPref extends FlatSpec {
     assert(! m1.isCoreStable())// since club(2): magenta strongly blocks this matching
   }
 
-  "The dilemma problem" should "have no core stable matching" in {
-    assert(allSoundMatchings.filter(m => m.isCoreStable()).isEmpty)
+  "The dilemma problem" should "have no Perfect sound matching" in {
+    val matchings= allSoundMatchings.filter(m => m.isPerfect())
+    println(s"Number of Perfect sound matchings: ${matchings.size} ")
+
   }
 
-  "The dilemma problem" should "have (3) Nash stable matchings" in {
+  "The dilemma problem" should "have no sound CS matching" in {
+    val matchings= allSoundMatchings.filter(m => m.isCoreStable())
+    println(s"Number of CS sound matchings: ${matchings.size} ")
+    assert(matchings.isEmpty)
+  }
+
+  "The dilemma problem" should "have no sound SCS matching" in {
+    val matchings= allSoundMatchings.filter(m => m.isStrictCoreStable())
+    println(s"Number of SCS sound matchings: ${matchings.size} ")
+    assert(matchings.isEmpty)
+  }
+
+  "The dilemma problem" should "have (10) NS sound matchings" in {
     val matchings= allSoundMatchings.filter(m => m.isNashStable())
-    println(s"Number of Nash stable matchings: ${matchings.size} ")
+    println(s"Number of NS sound matchings: ${matchings.size} ")
     assert(! matchings.isEmpty)
   }
 
-  "The dilemma problem" should "have individual stable matchings" in {
+  "The dilemma problem" should "have (9) IS sound matchings" in {
     val matchings=allSoundMatchings.filter(m => m.isIndividuallyStable())
-    println(s"Number of individualy stable matchings: ${matchings.size} ")
+    println(s"Number of IS sound matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
   }
 
+  "The dilemma problem" should "have (12) CIS sound matchings" in {
+    val matchings=allSoundMatchings.filter(m => m.isContractuallyIndividuallyStable())
+    println(s"Number of CIS sound matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
+  }
+
+  "The dilemma problem" should "have (15) PO sound matchings" in {
+    val matchings=allSoundMatchings.filter(m => m.isParetoOptimal())
+    println(s"Number of PO sound matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
+  }
+
+
+  "The dilemma problem" should "have (51) IR sound matchings" in {
+    val matchings=allSoundMatchings.filter(m => m.isIndividuallyRational())
+    println(s"Number of IR sound matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
+  }
+
+
+  "The dilemma problem" should "have (63) sound matchings" in {
+    val matchings=allSoundMatchings
+    println(s"Number of sound matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
+  }
+
+  "The dilemma problem" should "have (2) MaxUtil matchings" in {
+    val matchings=pb.allMaxUtilitarian()
+    println(s"Number of MaxUtil matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
+  }
+
+  "The dilemma problem" should "have (2) MaxEgal matchings" in {
+    val matchings=pb.allMaxEgalitarian()
+    println(s"Number of MaxEgal matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
+  }
 
 
 }
