@@ -13,7 +13,7 @@ class Matching(val pb: IAProblem){
   /**
     * The debugging of the properties checking
     */
-  val debug = true
+  val debug = false
 
   /**
     * The data structure which contains the assignments
