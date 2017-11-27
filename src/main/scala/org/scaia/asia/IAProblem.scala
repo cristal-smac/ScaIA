@@ -96,7 +96,8 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
     * Returns all the groups which contains  G(i) = {G ⊆ I | i ∈ G}
     * @param i the individual
     */
-  def G(i: Individual) : Set[Group] = (individuals-i).subgroups()
+  def G(i: Individual) : Set[Group] = (individuals-i).subgroups().map(g => g+i)
+
 
   /**
     * Returns all the potential coalitions

@@ -141,6 +141,7 @@ class Matching(val pb: IAProblem){
   /**
     * Return true if the matching is individually rational
     */
+  @throws(classOf[RuntimeException])
   def isIndividuallyRational() : Boolean ={
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     // Cardinal rationality
@@ -150,6 +151,7 @@ class Matching(val pb: IAProblem){
   /**
     *   Returns true if the matching is core stable
     */
+  @throws(classOf[RuntimeException])
   def isCoreStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     val coalitions = pb.allSoundNonEmptyCoalitions()
@@ -165,6 +167,7 @@ class Matching(val pb: IAProblem){
   /**
     *  Returns true if the matching is strict core stable
     */
+  @throws(classOf[RuntimeException])
   def isStrictCoreStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     val coalitions = pb.allSoundNonEmptyCoalitions()
@@ -180,6 +183,7 @@ class Matching(val pb: IAProblem){
   /**
     * Returns true if the matching is Nash stable
     */
+  @throws(classOf[RuntimeException])
   def isNashStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.individuals.foreach { i =>
@@ -197,20 +201,17 @@ class Matching(val pb: IAProblem){
   /**
   * Returns true if the matching is individually stable
    */
+  @throws(classOf[RuntimeException])
   def isIndividuallyStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
-    pb.individuals.foreach { i => // foreach individual i
-      val trivialC = new Coalition(Activity.VOID,Group(i))
-      if (! i.prefC(coalitionFor(i), trivialC)){
-        if (debug) println("This matching is not IS since "+i+" strictly prefers the coalition "+trivialC)
-        return false
-      }
-      val otherActivities=pb.activities  - this.a(i)
-      otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity => // foreach other activity a
-        if (i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
-          // i can benefit by moving to another under-subscribed activity
-          if (p(a).forall(j => j.prefC(new Coalition(a, p(a) + i), coalitionFor(j)))) return false
-          // while not making the posts of that activity worse off
+    pb.individuals.foreach { i =>
+      (pb.activities + Activity.VOID - this.a(i)).foreach { a =>
+        val thread = new Coalition(a, o(a) + i)
+        if (!isFull(a) && i.sprefC(thread, coalitionFor(i))) {
+          if (o(a).forall(j => j.prefC(new Coalition(a, o(a) + i), coalitionFor(j)))) {
+            if (debug) println("This matching is not individually stable  since " + i + " strictly prefers the coalition " + thread + " and all the future partners in " + o(a) + " likes him")
+            return false
+          }
         }
       }
     }
@@ -220,23 +221,19 @@ class Matching(val pb: IAProblem){
   /**
     *   Return true if the matching is contractually individually stable
     */
+  @throws(classOf[RuntimeException])
   def isContractuallyIndividuallyStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
-    pb.individuals.foreach { i => // foreach individual i
-      val trivialC = new Coalition(Activity.VOID,Group(i))
-      if (i.sprefC(coalitionFor(i), trivialC) && (this.g(i)-i).forall(j => j.prefC(new Coalition(this.a(i), this.g(i) - i),coalitionFor(j)))){
-        if (debug) println("This matching is not CIS since "+i+" strictly prefers"+trivialC+" to the coalition "+coalitionFor(i)+" and his old partners are not worst off")
-        return false
-      }
-      val otherActivities=pb.activities  - this.a(i)
-      otherActivities.filterNot(a => isFull(a)).foreach{ a : Activity => // foreach other activity a
-        if (i.sprefC(new Coalition(a, p(a) + i), coalitionFor(i))){
-            // i can benefit by moving to another under-subscribed activity
-          if (p(a).forall(j => j.prefC(new Coalition(a, p(a) + i), coalitionFor(j)))////while not making the posts of that activity worse off
-            &&
-            (this.g(i)-i).exists(j2 => j2.sprefC(coalitionFor(j2),new Coalition(this.a(i), this.g(i) - i)))  // or the posts of the previous activity worse off
-          )
+    pb.individuals.foreach { i =>
+      (pb.activities + Activity.VOID - this.a(i)).foreach { a =>
+        val thread = new Coalition(a, o(a) + i)
+        if (!isFull(a) && i.sprefC(thread, coalitionFor(i))) {
+          if (this.o(a).forall(j => j.prefC(new Coalition(a, o(a) + i), coalitionFor(j))) && (this.g(i)-i).forall(j => j.prefC(new Coalition(this.a(i), g(i)-i), coalitionFor(i) ) ) ) {
+            if (debug) println(s"This matching is not individually stable  since $i strictly prefers the coalition $thread and" +
+              s" either all the future partners in ${o(a)} likes him " +
+              s" or all the previous partner dislikes him")
             return false
+          }
         }
       }
     }
@@ -246,6 +243,7 @@ class Matching(val pb: IAProblem){
   /**
     *   Return true if the matching is contractually strict core stable
     */
+  @throws(classOf[RuntimeException])
   def isContractuallyStrictCore(): Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
     pb.allNonEmptyCoalitions.foreach{ c =>
@@ -260,10 +258,23 @@ class Matching(val pb: IAProblem){
   }
 
   /**
-    * Retun true if this matching is perfect
+    * Returns true if this matching is perfect
     */
+  @throws(classOf[RuntimeException])
   def isPerfect(): Boolean = {
-    false //TODO
+    if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
+    pb.individuals.foreach { i =>
+      (pb.activities + Activity.VOID - this.a(i)).foreach { a =>
+        (pb.G(i)).foreach { g =>
+          val thread = new Coalition(a, g)
+          if (i.sprefC(thread, this.coalitionFor(i))) {
+            if (debug) println(s"This matching is not perfect since $i strictly prefers $thread to ${coalitionFor(i)}")
+            return false
+          }
+        }
+      }
+    }
+    true
   }
 
   /**

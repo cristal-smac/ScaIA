@@ -87,6 +87,11 @@ class TestDilemmaPref extends FlatSpec {
     assert(result.equals(m2))//result.equals(m2)
   }
 
+  "M1" should "not be Perfect" in {
+    assert(!m1.isPerfect())
+  }
+
+
   "M1" should "be Pareto-optimal" in {
     /*
     println("U(M1)= "+m1.utilitarianWelfare())
@@ -118,7 +123,7 @@ class TestDilemmaPref extends FlatSpec {
   "The dilemma problem" should "have no Perfect sound matching" in {
     val matchings= allSoundMatchings.filter(m => m.isPerfect())
     println(s"Number of Perfect sound matchings: ${matchings.size} ")
-
+    assert(matchings.isEmpty)
   }
 
   "The dilemma problem" should "have no sound CS matching" in {
