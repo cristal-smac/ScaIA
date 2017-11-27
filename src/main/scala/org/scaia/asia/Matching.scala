@@ -92,6 +92,13 @@ class Matching(val pb: IAProblem){
   }
 
   /**
+    * Returns the futur potential partners by practicing an activity
+    * @param activity the activity
+    */
+  @throws(classOf[RuntimeException])
+  def p(activity: Activity) : Group = if (activity.equals(Activity.VOID)) new Group() else p(activity)
+  
+  /**
     * Returns true if the activity is overloaded
     * @param activity the activity
     * */
