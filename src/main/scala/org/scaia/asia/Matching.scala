@@ -13,7 +13,7 @@ class Matching(val pb: IAProblem){
   /**
     * The debugging of the properties checking
     */
-  val debug = false
+  val debug = true
 
   /**
     * The data structure which contains the assignments
@@ -96,8 +96,8 @@ class Matching(val pb: IAProblem){
     * @param activity the activity
     */
   @throws(classOf[RuntimeException])
-  def p(activity: Activity) : Group = if (activity.equals(Activity.VOID)) new Group() else p(activity)
-  
+  def o(activity: Activity) : Group = if (activity.equals(Activity.VOID)) new Group() else p(activity)
+
   /**
     * Returns true if the activity is overloaded
     * @param activity the activity
@@ -182,17 +182,11 @@ class Matching(val pb: IAProblem){
     */
   def isNashStable() : Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
-    pb.individuals.foreach{ i =>
-      val trivialC = new Coalition(Activity.VOID,Group(i))
-      if (! i.prefC(coalitionFor(i), trivialC)){
-        if (debug) println("This matching is not Nash-stable since "+i+" strictly prefers the coalition "+trivialC)
-        return false
-      }
-      val otherActivities=pb.activities - this.a(i)
-      otherActivities.foreach{ a : Activity =>
-        val c= new Coalition(a,p(a)+i)
-        if (c.isSound() && !i.prefC(coalitionFor(i),c)){
-          if (debug) println("This matching is not Nash-stable since "+i+" strictly prefers the coalition "+c)
+    pb.individuals.foreach { i =>
+      (pb.activities + Activity.VOID - this.a(i)).foreach{ a =>
+        val thread =new Coalition(a, o(a) + i)
+        if (!isFull(a) && i.sprefC(thread, coalitionFor(i))){
+          if (debug) println("This matching is not Nash-stable since "+i+" strictly prefers the coalition "+thread)
           return false
         }
       }
