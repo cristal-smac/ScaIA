@@ -34,15 +34,6 @@ class TestDilemmaPref extends FlatSpec {
     assert(!m2.isIndividuallyRational())
   }
 
-
-  "Dilemma pref " should "have a IR matching" in {
-    var IRMatchings=allSoundMatchings.filter(m => m.isIndividuallyRational())
-    println("Number of Sound matchingq: "+allSoundMatchings.size)//63
-    println("Number of IR (Sound) matchings: "+IRMatchings.size)//51
-    assert(!IRMatchings.isEmpty)
-
-  }
-
   "magenta" should "strictly prefers stay alone doing nothing rather than being with red and ball" in {
     println("uMagenta(MagentaVoid)= "+magenta.u(cMagentaVoid.group.names, cMagentaVoid.activity.name))
     println("uMagenta(MagentaRedBall)= "+magenta.u(cMagentaRedBall.group.names, cMagentaRedBall.activity.name))
@@ -68,15 +59,15 @@ class TestDilemmaPref extends FlatSpec {
   }
 
 
-
   "MNSolver utilitarian" should "be club={blue,cyan} ball{magenta} void{red}" in {
     val solver = new MNSolver(pb, false, Utilitarian)
-    //println("MNSolver with utilitarian (no approximation)")
+    //solver.debug=true
     val result =solver.solve()
     //println(s"result: $m1")
     //println(s"result: $result")
     assert(result.equals(m1))
   }
+
 
   "Inclusive solver egalitarian" should "be club={blue,cyan} ball{magenta, red}" in {
     println("InculsiveSolver with egalitarian")
@@ -91,16 +82,6 @@ class TestDilemmaPref extends FlatSpec {
     assert(!m1.isPerfect())
   }
 
-
-  "M1" should "be Pareto-optimal" in {
-    /*
-    println("U(M1)= "+m1.utilitarianWelfare())
-    println("E(M1)= "+m1.egalitarianWelfare())
-    println("U(M2)= "+m2.utilitarianWelfare())
-    println("E(M2)= "+m2.egalitarianWelfare())
-  */
-    assert(m1.isParetoOptimal())
-  }
 
   "M1" should "be MaxUtilitarian" in {
     val maxUtilitarianMatchings=pb.allMaxUtilitarian()
@@ -138,7 +119,7 @@ class TestDilemmaPref extends FlatSpec {
     assert(matchings.isEmpty)
   }
 
-  "The dilemma problem" should "have (10) NS sound matchings" in {
+  "The dilemma problem" should "have (7) NS sound matchings" in {
     val matchings= allSoundMatchings.filter(m => m.isNashStable())
     println(s"Number of NS sound matchings: ${matchings.size} ")
     assert(! matchings.isEmpty)
@@ -150,7 +131,7 @@ class TestDilemmaPref extends FlatSpec {
     assert(!matchings.isEmpty)
   }
 
-  "The dilemma problem" should "have (12) CIS sound matchings" in {
+  "The dilemma problem" should "have (16) CIS sound matchings" in {
     val matchings=allSoundMatchings.filter(m => m.isContractuallyIndividuallyStable())
     println(s"Number of CIS sound matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
@@ -178,12 +159,14 @@ class TestDilemmaPref extends FlatSpec {
 
   "The dilemma problem" should "have (2) MaxUtil matchings" in {
     val matchings=pb.allMaxUtilitarian()
+    //println(s"Utilitarian matchings: $matchings ")
     println(s"Number of MaxUtil matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
   }
 
   "The dilemma problem" should "have (2) MaxEgal matchings" in {
     val matchings=pb.allMaxEgalitarian()
+    //println(s"Egalitarian matchings: $matchings ")
     println(s"Number of MaxEgal matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
   }
