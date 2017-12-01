@@ -63,19 +63,21 @@ class TestDilemmaPref extends FlatSpec {
     val solver = new MNSolver(pb, false, Utilitarian)
     //solver.debug=true
     val result =solver.solve()
-    //println(s"result: $m1")
-    //println(s"result: $result")
     assert(result.equals(m1))
   }
 
+  "MNSolver egalitarian" should "be club={blue,cyan} ball{magenta} void{red}" in {
+    val solver = new MNSolver(pb, false,Egalitarian)
+    //solver.debug=true
+    val result =solver.solve()
+    assert(result.equals(m1))
+  }
 
   "Inclusive solver egalitarian" should "be club={blue,cyan} ball{magenta, red}" in {
-    println("InculsiveSolver with egalitarian")
     val solver = new InclusiveSolver(pb, Egalitarian)
     //solver.debug=true
     val result =solver.solve()
-    //println(s"result: $result")
-    assert(result.equals(m2))//result.equals(m2)
+    assert(result.equals(m2))
   }
 
   "M1" should "not be Perfect" in {
