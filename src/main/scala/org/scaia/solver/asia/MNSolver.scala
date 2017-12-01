@@ -30,7 +30,6 @@ class MNSolver(pb : IAProblem, restricted: Boolean, rule: SocialRule) extends AS
           val a = concessions(i).head
           val g = result.p(a)
           val ng = g + i
-          if (debug) println(i.name + " considers " + a.name + " with group " + g)
           if (g.isEmpty) {
             if (debug) println(s"Since ${a.name} is empty ${i.name} is assigned to ${a.name}")
             result.a += (i -> a)
