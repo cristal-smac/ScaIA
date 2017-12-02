@@ -63,7 +63,7 @@ class InclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
                 bG = sg
               }
             }
-            if (debug) println(s"Since $bG is the best subgroup of $ng")
+            if (debug) println(s"Since <$a,$bG> is the best coalition")
             bG.foreach(j => result.g += (j -> bG))
             (g diff bG).foreach { j =>
               if (debug) println(s"${j.name} is disassigned from ${a.name}")

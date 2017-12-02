@@ -72,7 +72,7 @@ class MNSolver(pb : IAProblem, restricted: Boolean, rule: SocialRule) extends AS
                 bG = sg
               }
             }
-            if (debug) println(s"Since $bG is the best subgroup of $ng, ")
+            if (debug) println(s"Since <$a,$bG> is the best coalition, ")
             bG.foreach(j => result.g += (j -> bG))
             (g diff bG).foreach { j =>
               if (debug) println(s"${j.name} is disassigned from ${a.name}")
