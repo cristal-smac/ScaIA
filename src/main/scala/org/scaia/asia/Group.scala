@@ -66,7 +66,7 @@ class Group(individuals: Individual*) extends Set[Individual] with SetLike[Indiv
     * Returns the utility of the group to be together for practicing the activity
     * @param activity the shared activity
     */
-  def u(activity: String): Double = this.foldLeft(0.0)((sum,i) => sum +i.u(this.names,activity))
+  def usum(activity: String): Double = this.foldLeft(0.0)((sum, i) => sum +i.u(this.names,activity))
 
   /**
     * Returns the minimal utility for an individual in the group  to be together for practicing the activity

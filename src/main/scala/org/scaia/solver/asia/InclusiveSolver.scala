@@ -45,22 +45,22 @@ class InclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
               val s = ng.filterNot(_.equals(j))
               subgroups += s
             }
-            subgroups.foreach { g2 =>
+            subgroups.foreach { sg =>
               val u= rule match {
                 case Utilitarian => {
-                  val u=g2.u(a.name)
-                  if (debug) println(f"U(${a.name}%s,$g2%s)=$u%2.3f")
+                  val u=sg.usum(a.name)
+                  if (debug) println(f"$sg%s.uusum(${a.name}%s)=$u%2.3f")
                   u
                 }
                 case Egalitarian => {
-                  val u=g2.umin(a.name)
-                  if (debug) println(f"E(${a.name}%s,$g2%s)=$u%2.3f")
+                  val u=sg.umin(a.name)
+                  if (debug) println(f"$sg%s.umin(${a.name}%s)=$u%2.3f")
                   u
                 }
               }
               if (umax < u) {
                 umax = u
-                bG = g2
+                bG = sg
               }
             }
             if (debug) println(s"Since $bG is the best subgroup of $ng")

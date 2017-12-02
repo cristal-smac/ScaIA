@@ -31,7 +31,7 @@ class MNSolver(pb : IAProblem, restricted: Boolean, rule: SocialRule) extends AS
           val g = result.p(a)
           val ng = g + i
           if (g.isEmpty) {
-            if (debug) println(s"Since ${a.name} is empty ${i.name} is assigned to ${a.name}")
+            if (debug) println(s"Since ${a.name} is empty, ${i.name} is assigned to ${a.name}")
             result.a += (i -> a)
             result.g += (i -> new Group(i))
             free -= i
@@ -49,31 +49,30 @@ class MNSolver(pb : IAProblem, restricted: Boolean, rule: SocialRule) extends AS
               subgroups+=ng
             } else subgroups = ng.subgroups().filterNot(o => o.equals(Group()))
             if (a.c > g.size) {
-              if (debug) println("The quota of " + a.name + " is not reached")
+              //if (debug) println("The quota of " + a.name + " is not reached")
             }
             else {
               subgroups -= ng //we consider also the increasing of
             }
-            subgroups.foreach { g2 =>
+            subgroups.foreach { sg =>
               val u= rule match {
                 case Utilitarian => {
-                  val u=g2.u(a.name)
-                  if (debug) println(f"U(${a.name}%s,$g2%s)=$u%2.3f")
+                  val u=sg.usum(a.name)
+                  if (debug) println(f"$sg%s.usum(${a.name}%s)=$u%2.3f")//TODO
                   u
                 }
                 case Egalitarian => {
-                  val u=g2.umin(a.name)
-                  if (debug) println(f"E(${a.name}%s,$g2%s)=$u%2.3f")
+                  val u=sg.umin(a.name)
+                  if (debug) println(f"$sg%s.umin(${a.name}%s)=$u%2.3f")
                   u
                 }
               }
-              if (debug) println("The utility of the subgroup " + g2 + " is " + u)
-              if (umax < u || (umax == u && (g2.size> bG.size)) ) {
+              if (umax < u || (umax == u && (sg.size> bG.size)) ) {
                 umax = u
-                bG = g2
+                bG = sg
               }
             }
-            if (debug) println(s"Since $bG is the best subgroup of $ng")
+            if (debug) println(s"Since $bG is the best subgroup of $ng, ")
             bG.foreach(j => result.g += (j -> bG))
             (g diff bG).foreach { j =>
               if (debug) println(s"${j.name} is disassigned from ${a.name}")
