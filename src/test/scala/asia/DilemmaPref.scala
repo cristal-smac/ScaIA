@@ -9,7 +9,8 @@ import org.scaia.asia.{Activity, Group, IAProblem, Individual}
   * */
 object DilemmaPref {
   val debug = false
-
+  
+  /*
   val club = new Activity("club",2)
   val ball = new Activity("ball",2)
 
@@ -32,6 +33,30 @@ object DilemmaPref {
     vMap+=("club" -> 0.5, "ball" -> 0.25)
     wMap+=("blue" -> 1.0, "cyan" -> 1.0, "magenta" -> -1.0)
   }
+  */
+  val club = new Activity("a",2)
+  val ball = new Activity("b",2)
+
+  val blue: Individual = new Individual("1",4) {
+    vMap+=("a" -> .5, "b" -> .25)
+    wMap+=("2"-> 1.0, "3" -> -0.5, "4" -> -1.0)
+  }
+
+  val cyan: Individual = new Individual("2",4) {
+    vMap += ("a" -> 0.5, "b" -> 0.25)
+    wMap += ("1" -> 1.0, "3" -> 0.5, "4"-> -1.0)
+  }
+
+  val magenta: Individual = new Individual("3",4) {
+    vMap+=("a" -> 0.5, "b" -> 0.25)
+    wMap+=("1" -> 1.0, "2" -> 0.5, "4" -> -1.0)
+  }
+
+  val red: Individual = new Individual("4",4) {
+    vMap+=("a" -> 0.5, "b" -> 0.25)
+    wMap+=("1" -> 1.0, "2" -> 1.0, "3" -> -1.0)
+  }
+  
   val pb= new IAProblem(Group(blue, cyan, magenta, red), Set(club, ball))
 
 }

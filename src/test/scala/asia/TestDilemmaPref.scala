@@ -61,7 +61,7 @@ class TestDilemmaPref extends FlatSpec {
 
   "MNSolver utilitarian" should "be club={blue,cyan} ball{magenta} void{red}" in {
     val solver = new MNSolver(pb, false, Utilitarian)
-    //solver.debug=true
+    solver.debug=true
     val result =solver.solve()
     assert(result.equals(m1))
   }
