@@ -294,6 +294,20 @@ class Matching(val pb: IAProblem){
    */
   def isParetoOptimal(): Boolean = ! pb.allSoundMatchings().exists(m => m.paretoDominate(this))
 
+  /**
+    * Returns true if the matching is socially cohesive
+    */
+  def isCohesive(): Boolean= {
+    pb.individuals.filter(i => this.a(i).equals(Activity.VOID)).foreach{ i =>
+      pb.activities.filter(a => i.v(a.name)>=0).foreach{ a =>
+        if (!this.isFull(a)){
+          if (debug) println(s"This matching is not choesive since $a which is not full is attractive for $i")
+          return false
+        }
+      }
+    }
+    true
+  }
 
   /**
     * Return a copy of the matching

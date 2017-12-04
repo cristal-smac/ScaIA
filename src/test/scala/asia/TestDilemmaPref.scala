@@ -34,6 +34,14 @@ class TestDilemmaPref extends FlatSpec {
     assert(!m2.isIndividuallyRational())
   }
 
+  "M1 with club={blue,cyan} ball{magenta} void{red}" should "be not SC" in {
+    assert(!m1.isCohesive())
+  }
+
+  "M2 with club={blue,cyan} ball{magenta, red}" should "be SC" in {
+    assert(m2.isCohesive())
+  }
+
   "magenta" should "strictly prefers stay alone doing nothing rather than being with red and ball" in {
     println("uMagenta(MagentaVoid)= "+magenta.u(cMagentaVoid.group.names, cMagentaVoid.activity.name))
     println("uMagenta(MagentaRedBall)= "+magenta.u(cMagentaRedBall.group.names, cMagentaRedBall.activity.name))
