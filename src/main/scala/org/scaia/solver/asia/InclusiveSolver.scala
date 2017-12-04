@@ -30,14 +30,13 @@ class InclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
           val a = concessions(i).head
           val g = result.p(a)
           val ng = g + i
-          if (debug) println(i.name + " considers " + a.name + " with " + g)
           if (!result.isFull(a)) {
-            if (debug) println(s"Since ${a.name} is not full ${i.name} is assigned to ${a.name}")
+            if (debug) println(s"Since ${a.name} is not full, ${i.name} is assigned to ${a.name}")
             result.a += (i -> a)
             result.g += (i -> new Group(i))
             free -= i
           } else {
-            if (debug) println(s"${a.name} considers ${i.name} with ${result.p(a)}")
+            if (debug) println(s"${i.name} considers ${a.name} with ${result.p(a)}")
             var umax = Double.MinValue
             var bG = new Group()
             var subgroups = Set[Group]()
@@ -49,7 +48,7 @@ class InclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
               val u= rule match {
                 case Utilitarian => {
                   val u=sg.usum(a.name)
-                  if (debug) println(f"$sg%s.uusum(${a.name}%s)=$u%2.3f")
+                  if (debug) println(f"$sg%s.usum(${a.name}%s)=$u%2.3f")
                   u
                 }
                 case Egalitarian => {
@@ -63,7 +62,7 @@ class InclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
                 bG = sg
               }
             }
-            if (debug) println(s"Since <$a,$bG> is the best coalition")
+            if (debug) println(s"Since <$a,$bG> is the best coalition,")
             bG.foreach(j => result.g += (j -> bG))
             (g diff bG).foreach { j =>
               if (debug) println(s"${j.name} is disassigned from ${a.name}")
