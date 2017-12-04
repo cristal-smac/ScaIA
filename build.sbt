@@ -1,6 +1,6 @@
 name := "ScaIA"
 
-version := "0.3"
+version := "0.4"
 
 scalacOptions += "-deprecation"
 scalacOptions += "-feature"

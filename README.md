@@ -27,7 +27,7 @@ In order to compile the code you need:
 
 ## Test
 
-    java -jar ScaIA-assembly-0.3.jar org.scaia.util.asia.IAProblemSolver -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
+    java -jar ScaIA-assembly-X.Y.jar org.scaia.util.asia.IAProblemSolver -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
 
 Usage: 
 
