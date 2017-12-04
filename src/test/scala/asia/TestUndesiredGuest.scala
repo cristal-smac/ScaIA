@@ -18,9 +18,8 @@ class TestUndesiredGuest extends FlatSpec {
     assert(m1.isIndividuallyRational())
   }
 
-  "M1 with pM1(a)={i1,i2}" should "be Pareto and so CSC and so CIS" in {
+  "M1 with pM1(a)={i1,i2}" should "be Pareto and so CIS" in {
     assert(m1.isParetoOptimal())
-    assert(m1.isContractuallyStrictCore())
     assert(m1.isContractuallyIndividuallyStable())
   }
 

@@ -243,6 +243,7 @@ class Matching(val pb: IAProblem){
   /**
     *   Return true if the matching is contractually strict core stable
     */
+  @deprecated("Contractually strict core": String, "0.4")
   @throws(classOf[RuntimeException])
   def isContractuallyStrictCore(): Boolean = {
     if (!this.isSound()) throw new RuntimeException("The following matching is not sound "+this)
