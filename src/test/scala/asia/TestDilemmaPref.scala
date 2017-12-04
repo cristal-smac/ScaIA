@@ -167,19 +167,24 @@ class TestDilemmaPref extends FlatSpec {
     assert(!matchings.isEmpty)
   }
 
-  "The dilemma problem" should "have (2) MaxUtil matchings" in {
+  "The dilemma problem" should "have (2) MaxUtil sound matchings" in {
     val matchings=pb.allMaxUtilitarian()
-    //println(s"Utilitarian matchings: $matchings ")
-    println(s"Number of MaxUtil matchings: ${matchings.size} ")
+    //println(s"Utilitarian sound matchings: $matchings ")
+    println(s"Number of MaxUtil sound matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
   }
 
-  "The dilemma problem" should "have (2) MaxEgal matchings" in {
+  "The dilemma problem" should "have (2) MaxEgal sound matchings" in {
     val matchings=pb.allMaxEgalitarian()
-    //println(s"Egalitarian matchings: $matchings ")
-    println(s"Number of MaxEgal matchings: ${matchings.size} ")
+    //println(s"Egalitarian sound matchings: $matchings ")
+    println(s"Number of MaxEgal sound matchings: ${matchings.size} ")
     assert(!matchings.isEmpty)
   }
 
+  "The dilemma problem" should "have (X) social cohesive matchings" in {
+    val matchings=allSoundMatchings.filter(m => m.isCohesive())
+    println(s"Number of SC sound matchings: ${matchings.size} ")
+    assert(!matchings.isEmpty)
+  }
 
 }
