@@ -36,7 +36,7 @@ class MNSolver(pb : IAProblem, restricted: Boolean, rule: SocialRule) extends AS
             result.g += (i -> new Group(i))
             free -= i
           } else {
-            if (debug) println(s"${a.name} considers ${i.name} with ${result.p(a)}")
+            if (debug) println(s"${i.name} considers ${a.name} with ${result.p(a)}")
             var umax = Double.MinValue
             var bG = new Group()
             var subgroups = Set[Group]()
