@@ -11,7 +11,7 @@ import org.scaia.asia._
 class IndividualAgent(i: Individual) extends Actor{
   val debug = false
 
-  var supervisor : ActorRef = _
+  var solver : ActorRef = _
   var addresses= Map[String,ActorRef]()//White page of the activities
   var concessions = List[String]() // concessions list
 
@@ -26,35 +26,35 @@ class IndividualAgent(i: Individual) extends Actor{
       if (debug) println(i.name+" concession list: "+concessions)
     }
     case Start => {//Make a proposal to the best activity
-      supervisor = sender
+      solver = sender
       if (!concessions.isEmpty){
         if (debug) println(i.name+" proposes itself to "+concessions.head)
         addresses(concessions.head) ! Propose(i.name)
       }
       else {
-        if (debug) println(i.name+" stays alone")
-        supervisor ! Assignement(i.name,  Activity.VOID.name)
+        if (debug) println(i.name+" stays inactive")
+        solver ! Assignement(i.name,  Activity.VOID.name)
       }
     }
     case Accept => {//Assignment is confirmed
-      supervisor ! Assignement(i.name, concessions.head)
+      solver ! Assignement(i.name, concessions.head)
     }
     case Reject => {//Assignment is disconfirmed
       concessions = concessions.tail
       if (concessions.isEmpty) {//Either all concessions are made and i is inactive
-        supervisor ! Assignement(i.name, Activity.VOID.name)
+        solver ! Assignement(i.name, Activity.VOID.name)
       }else {//Or concession is made
         addresses(concessions.head) ! Propose(i.name)
       }
     }
     case Withdraw => {//Assignment is withdrawn
-      supervisor ! Disassignement(i.name)
+      solver ! Disassignement(i.name)
     }
-    case Confirm => {//Disassignement has been taken into account by the supervisor
+    case Confirm => {//Disassignement has been taken into account by the solver
       addresses(concessions.head) ! Confirm
       concessions = concessions.tail
       if (concessions.isEmpty){// Either all concessions are made and i is inactive
-        supervisor ! Assignement(i.name, Activity.VOID.name)
+        solver ! Assignement(i.name, Activity.VOID.name)
       } else {//Or concession is made
           if (debug) println(i.name+" proposes itself to "+concessions.head)
           addresses(concessions.head) ! Propose(i.name)
