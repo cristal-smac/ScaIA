@@ -143,7 +143,7 @@ object IAProblemSolver extends App {
                 new InclusiveSolver(pb,socialRule)
               case false =>
                 if (socialRule == Egalitarian) println(s"WARNING: socialRule($socialRule) and inclusive($inclusive) are contradictory")
-                new MNSolver(pb,approximation,socialRule)
+                new SelectiveSolver(pb,approximation,socialRule)
             }
         }
     }

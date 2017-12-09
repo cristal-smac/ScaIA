@@ -2,7 +2,7 @@ package asia
 
 import NotBestUtil._
 import org.scaia.asia.{Activity, Coalition, Group, Matching}
-import org.scaia.solver.asia.{MNSolver, Utilitarian}
+import org.scaia.solver.asia.{SelectiveSolver, Utilitarian}
 import org.scalatest.FlatSpec
 
 class TestNotBestUtil extends FlatSpec{
@@ -30,13 +30,13 @@ class TestNotBestUtil extends FlatSpec{
   }
 
   "The MNSolver" should "return M2 with pM2(a)={i1, i2} and pM2(b)={i3}" in {
-    val solver= new MNSolver(pb, false, Utilitarian)
+    val solver= new SelectiveSolver(pb, false, Utilitarian)
     val resultR = solver.solve()
     assert(m2.equals(resultR))
   }
 
   "The MNSolver" should "not return the maximum utilitarian matching" in {
-    val solver= new MNSolver(pb, false, Utilitarian)
+    val solver= new SelectiveSolver(pb, false, Utilitarian)
     val resultR = solver.solve()
     assert(! m1.equals(resultR))
   }

@@ -36,7 +36,7 @@ object LargeTestSolverWithRandomMatchings{
         for (o <- 1 to nbPb) {
           val pb = IAProblem.generateRandom(n, m)
 
-          val solverR = new MNSolver(pb,true,rule)
+          val solverR = new SelectiveSolver(pb,true,rule)
           var startingTime=System.currentTimeMillis()
           var result = solverR.solve()
           mnTime+=System.currentTimeMillis - startingTime

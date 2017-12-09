@@ -4,7 +4,7 @@ package org.scaia.experiments
 import akka.actor.ActorSystem
 import org.scaia.asia._
 import org.scaia.solver._
-import org.scaia.solver.asia.{MNSolver, Utilitarian}
+import org.scaia.solver.asia.{SelectiveSolver, Utilitarian}
 
 /**
   * Main app to test multiples random examples
@@ -29,7 +29,7 @@ object TestSolverWithAllMatchings{
         for (o <- 1 to nbPb) {
           val pb = IAProblem.generateRandom(n, m)
 
-          val solver = new MNSolver(pb, false, Utilitarian)
+          val solver = new SelectiveSolver(pb, false, Utilitarian)
           val result = solver.solve()
           utilitarian += result.utilitarianWelfare()
 

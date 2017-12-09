@@ -4,7 +4,7 @@ package org.scaia.experiments
 import akka.actor.ActorSystem
 import org.scaia.asia._
 import org.scaia.solver._
-import org.scaia.solver.asia.{ExhaustiveSolver, MNSolver, Utilitarian}
+import org.scaia.solver.asia.{ExhaustiveSolver, SelectiveSolver, Utilitarian}
 
 /**
   * Main app to test multiples random examples
@@ -32,7 +32,7 @@ object TestHedonicSolverWithRandomMatchings{
           val pb = IAProblem.generateRandom(n, m)
 
 
-          val solverR = new MNSolver(pb,true,Utilitarian)
+          val solverR = new SelectiveSolver(pb,true,Utilitarian)
           var startingTime=System.currentTimeMillis()
           val resultR = solverR.solve()
           meanCR+=System.currentTimeMillis - startingTime

@@ -3,7 +3,7 @@ package org.scaia.util.asia
 import java.io._
 
 import org.scaia.asia.{Activity, Group, IAProblem, Individual, Matching}
-import org.scaia.solver.asia.{MNSolver, Utilitarian}
+import org.scaia.solver.asia.{SelectiveSolver, Utilitarian}
 
 /**
   * Build a matching from a text file
@@ -38,7 +38,7 @@ object MatchingWriter extends App{
     wMap+=("i1" -> 1.0, "i2" -> -1.0)
   }
   val pb= new IAProblem(Group(i1, i2, i3), Set(a))
-  val solver = new MNSolver(pb, false,Utilitarian)
+  val solver = new SelectiveSolver(pb, false,Utilitarian)
   val matching= solver.solve()
   val writer=new MatchingWriter("examples/asia/circularPreferenceMatching.txt",matching)
   writer.write()

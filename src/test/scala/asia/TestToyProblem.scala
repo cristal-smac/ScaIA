@@ -2,7 +2,7 @@ package asia
 
 import asia.ToyExample._
 import org.scaia.asia.{Group, Matching}
-import org.scaia.solver.asia.{MNSolver, Utilitarian}
+import org.scaia.solver.asia.{SelectiveSolver, Utilitarian}
 import org.scalatest.FlatSpec
 
 class TestToyProblem extends FlatSpec{
@@ -34,7 +34,7 @@ class TestToyProblem extends FlatSpec{
 
 
   "The MNSolver" should "return M with pM(simu)={philippe,antoine} and pM(dps)={maxime, jeanchristophe}" in {
-    val solver= new MNSolver(pb, false, Utilitarian)
+    val solver= new SelectiveSolver(pb, false, Utilitarian)
     val resultR = solver.solve()
     assert(m.equals(resultR))
   }
