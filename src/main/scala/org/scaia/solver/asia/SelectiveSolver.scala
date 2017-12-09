@@ -7,21 +7,21 @@ import org.scaia.asia._
   *  Heuristics which returns a "good" matching
   *  @param pb to solved
   *  @param approximation true if only subgroups of size -1 are investigated
-  *  @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
+  *  @param rule to apply (i.e. maximize the utilitarian/egalitarian welfare)
   */
 class SelectiveSolver(pb : IAProblem, approximation: Boolean, rule: SocialRule) extends ASIASolver(pb){
   override def solve() = {
     val result = new Matching(pb)
     var free = pb.individuals// Initially all the individuals are free
     var concessions=  Map[Individual,List[Activity]]()
-    //Build the concession list of attractive activities for each individual
+    //Build the concession lists of attractive activities for each individual
     pb.individuals.foreach{ i =>
       concessions+= (i-> i.concessions(pb.activities))
     }
-    while (! free.isEmpty){ //While the inddivuals are not all assigned
+    while (! free.isEmpty){ //While the individuals are not all assigned
       free.foreach { i: Individual => // For each free individual
         if (debug) println("\n" + result)
-        if (concessions(i).isEmpty) { // Either he is deseperated
+        if (concessions(i).isEmpty){// Either he is deseperated
           if (debug) println(i + " can no more concede and so definitively inactive")
           result.a += (i -> Activity.VOID)
           result.g += (i -> new Group(i))
@@ -53,7 +53,7 @@ class SelectiveSolver(pb : IAProblem, approximation: Boolean, rule: SocialRule) 
               subgroups -= ng
             }
             subgroups.foreach { sg =>
-              val u= rule match { // Social rul
+              val u= rule match { // Social rule for the coalition
                 case Utilitarian => {
                   val u=sg.usum(a.name)
                   if (debug) println(f"$sg%s.usum(${a.name}%s)=$u%2.3f")
