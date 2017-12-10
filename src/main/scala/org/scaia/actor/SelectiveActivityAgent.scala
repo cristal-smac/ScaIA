@@ -11,7 +11,7 @@ import org.scaia.asia._
   * @param restricted true if only subgroups of size -1 are investigated
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
-class ActivityAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {
+class SelectiveActivityAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {
   val debug = false
 
   var g = Set[String]()

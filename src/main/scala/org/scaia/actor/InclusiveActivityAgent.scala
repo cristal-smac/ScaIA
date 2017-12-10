@@ -1,4 +1,4 @@
-// Copyright (C) Maxime MORGE 20167
+// Copyright (C) Maxime MORGE 2017
 package org.scaia.actor
 
 import akka.actor.{Actor, ActorRef, Stash}
@@ -6,9 +6,8 @@ import org.scaia.asia._
 import org.scaia.solver.asia.{Egalitarian, SocialRule, Utilitarian}
 
 /**
-  * Agent representing
+  * Agent representing a coalition in the inclusive procedure (at most one agent is excluded when the coalition is full)
   * @param a activity
-  * @param restricted true if only subgroups of size -1 are investigated
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
 class InclusiveActivityAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {

@@ -133,7 +133,7 @@ object IAProblemSolver extends App {
                 new DistributedInclusiveSolver(pb,system, approximation, socialRule)
               case false =>
                 if (socialRule == Egalitarian) println(s"WARNING: socialRule($socialRule) and inclusive($inclusive) are contradictory")
-                new DistributedMNSolver(pb, system, approximation, socialRule)
+                new DistributedSelectiveSolver(pb, system, approximation, socialRule)
 
             }
           case false => // Centralize algorithm

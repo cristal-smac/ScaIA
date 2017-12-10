@@ -4,7 +4,7 @@ package org.scaia.experiments
 import akka.actor.ActorSystem
 import org.scaia.asia.IAProblem
 import org.scaia.solver._
-import org.scaia.solver.asia.{DistributedMNSolver, Utilitarian}
+import org.scaia.solver.asia.{DistributedSelectiveSolver, Utilitarian}
 /**
  * Main app to compute a random example
  * */
@@ -32,7 +32,7 @@ object TestSolverWithRandomPb{
 			println("Best utilitarian welfare "+bestUtilitarian)
 			println("Best egalitarian welfare "+bestEgalitarian)
 
-			val solver = new DistributedMNSolver(pb,system,false,Utilitarian)
+			val solver = new DistributedSelectiveSolver(pb,system,false,Utilitarian)
 			val result= solver.solve()
 			println(result)
 			println("Result is stable ? "+result.isStrictCoreStable())

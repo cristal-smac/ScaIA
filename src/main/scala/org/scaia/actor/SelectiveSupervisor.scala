@@ -11,7 +11,7 @@ import org.scaia.solver.asia.SocialRule
   * @param restricted true if only subgroups of size -1 are investigated
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
-class Supervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) extends Actor{
+class SelectiveSupervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) extends Actor{
   val debug=false
 
   var solver : ActorRef = _
@@ -29,7 +29,7 @@ class Supervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) extends A
   override def preStart(): Unit = {
     //Start the activity agents
     pb.activities.foreach { case a: Activity =>
-      val actor = context.actorOf(Props(classOf[ActivityAgent], a, restricted, rule), a.name)
+      val actor = context.actorOf(Props(classOf[SelectiveActivityAgent], a, restricted, rule), a.name)
       activityAgents :+= actor
       addressesActivityAgents += (a.name -> actor)
     }//Start the individual agents

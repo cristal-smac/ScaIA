@@ -47,7 +47,7 @@ object TestSolverWithRandomMatchings{
             case Egalitarian => result.egalitarianWelfare()
           })
 
-          val disSolverR = new DistributedMNSolver(pb, system, true, rule)
+          val disSolverR = new DistributedSelectiveSolver(pb, system, true, rule)
           startingTime=System.currentTimeMillis()
           result = disSolverR.solve()
           dismnTime+=System.currentTimeMillis - startingTime
