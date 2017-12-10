@@ -7,81 +7,14 @@ import org.scaia.asia._
 import org.scaia.solver.asia.{Egalitarian, SocialRule, Utilitarian}
 
 /**
-  * Agent representing
+  * Agent representing a coalition in the selective procedure (at each integration some individuals can be excluded)
   * @param a activity
-  * @param restricted true if only subgroups of size -1 are investigated
+  * @param approximation true if only subgroups of size -1 are investigated
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
-class SelectiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {
-  val debug = false
+class SelectiveCoalitionAgent(a: Activity, approximation: Boolean, rule: SocialRule) extends  CoalitionAgent(a: Activity, approximation: Boolean, rule: SocialRule) {
 
-  var g = Set[String]() // The current set of individuals
-  var adr = Map[String, ActorRef]() // The adresses of the individual agents
-  var utilities = Map[Set[String], Double]() // The utilities of the groups
-
-  //Query the individual about the utilities in the subgroups of g
-  //and returns the number of expected replies
-  def query(group: Set[String]): Int = {
-    var waitingReplies = 0
-    if (debug) println(a.name + " queries about the utilities of the potential subgroups of "+group.toString)
-    var subgroups= Set[Set[String]]()
-    if (restricted) {
-      //subgroups= group.subsets().filter(sg => sg.size==(group.size-1) && ! sg.equals(Set()))
-      group.foreach { j =>
-        val s = group.filterNot(_.equals(j))
-        subgroups += s
-      }
-    }
-    else subgroups= group.subsets().filterNot(sg => sg.equals(group) || sg.isEmpty).toSet
-    subgroups.foreach { sg =>
-      //Initialisation depends on the welfare
-      rule match {
-        case Utilitarian => utilities += (sg -> 0.0)
-        case Egalitarian => utilities += (sg -> 1.0)
-      }
-      sg.foreach { j =>
-        adr(j) ! Query(sg, a.name)
-        waitingReplies += 1
-      }
-    }
-    waitingReplies
-  }
-
-  //Query the individual about the utilities in the subgroups of g
-  //and returns the number of expected replies
-  def queryAll(group: Set[String]): Int = {
-    var waitingReplies = 0
-    if (debug) println(a.name + " queries about the utilities of the potential subgroups of "+group.toString)
-    var subgroups= Set[Set[String]]()
-    if (restricted) {
-      group.foreach { j =>
-        val s = group.filterNot(_.equals(j))
-        subgroups += s
-      }
-      subgroups += group
-    }
-    else subgroups= group.subsets().filterNot(sg => sg.isEmpty).toSet
-    subgroups.foreach { sg =>
-      //Initialisation depends on the welfare
-      rule match {
-        case Utilitarian => utilities += (sg -> 0.0)
-        case Egalitarian => utilities += (sg -> 1.0)
-      }
-      sg.foreach { j =>
-        adr(j) ! Query(sg, a.name)
-        waitingReplies += 1
-      }
-    }
-    waitingReplies
-  }
-
-
-  /**
-    * Method invoked when a message is received
-    */
-  override def receive(): Receive = disposing()
-
-  def disposing(): Receive = {
+  override def disposing(): Receive = {
     case Propose(i) => {
       adr += (i -> sender)
       val lastProposer = i
@@ -112,7 +45,7 @@ class SelectiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
   }
 
 
-  def casting(lastProposer: String, waitingReplies: Int): Receive = {
+  override def casting(lastProposer: String, waitingReplies: Int): Receive = {
     case Propose(_) => stash()
     case Reply(group, activity, utility) => {
       utilities += (rule match {
@@ -125,7 +58,7 @@ class SelectiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
         var umax = Double.MinValue
         var bg = Set[String]()
         var subgroups= Set[Set[String]]()
-        if (restricted){
+        if (approximation){
           ng.foreach { j =>
             val s = ng.filterNot(_.equals(j))
             subgroups += s
@@ -172,7 +105,7 @@ class SelectiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
     case msg@_ => println(a.name + " in state casting receives a message which was not expected: " + msg)
   }
 
-  def firing(lastProposer: String, waitingConfirms: Int): Receive = {
+  override def firing(lastProposer: String, waitingConfirms: Int): Receive = {
     case Propose(_) => stash()
     case Confirm => {
       if (waitingConfirms == 1) {
