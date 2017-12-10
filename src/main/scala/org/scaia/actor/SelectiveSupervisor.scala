@@ -29,7 +29,7 @@ class SelectiveSupervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) 
   override def preStart(): Unit = {
     //Start the activity agents
     pb.activities.foreach { case a: Activity =>
-      val actor = context.actorOf(Props(classOf[SelectiveActivityAgent], a, restricted, rule), a.name)
+      val actor = context.actorOf(Props(classOf[SelectiveCoalitionAgent], a, restricted, rule), a.name)
       activityAgents :+= actor
       addressesActivityAgents += (a.name -> actor)
     }//Start the individual agents

@@ -10,7 +10,7 @@ import org.scaia.solver.asia.{Egalitarian, SocialRule, Utilitarian}
   * @param a activity
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
-class InclusiveActivityAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {
+class InclusiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {
   val debug = false
 
   var g = Set[String]()
