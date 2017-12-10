@@ -1,5 +1,6 @@
 package asia
 
+import akka.actor.ActorSystem
 import asia.DilemmaPref._
 import org.scaia.asia.{Activity, Coalition, Group, Matching}
 import org.scaia.solver.asia._
@@ -9,12 +10,19 @@ import org.scalatest.FlatSpec
 class TestDilemmaPref extends FlatSpec {
 
   val debug=false
+  val system = ActorSystem("IAProblemSolver") //The Actor system
+
   val allSoundMatchings= pb.allSoundMatchings()
 
   //Result for the SelectiveSolver with the utilitarian rule (no approximation)
   val m1= new Matching(pb)
   m1.a= Map(blue -> club, cyan -> club, magenta -> Activity.VOID, red -> ball )
   m1.g= Map(blue -> Group(blue, cyan), cyan -> Group(blue, cyan), magenta-> Group(magenta), red -> Group(red))
+
+  val m1bis= new Matching(pb)
+  m1bis.a= Map(blue -> club, cyan -> club, red -> Activity.VOID, magenta -> ball )
+  m1bis.g= Map(blue -> Group(blue, cyan), cyan -> Group(blue, cyan), magenta-> Group(magenta), red -> Group(red))
+
 
   //Result for the InculsiveSolver with the egalitarian rule
   val m2= new Matching(pb)
@@ -67,26 +75,42 @@ class TestDilemmaPref extends FlatSpec {
     assert(red.sprefC(cMagentaRedClub,cRedVoid))
   }
 
-  "SelectiveSolver utilitarian" should "be club={blue,cyan} ball{magenta} void{red}" in {
+  "SelectiveSolver utilitarian" should "be club={blue,cyan} ball={magenta} void={red}" in {
     val solver = new SelectiveSolver(pb, false, Utilitarian)
     //solver.debug=true
     val result =solver.solve()
     assert(result.equals(m1))
   }
 
-  "SelectiveSolver egalitarian" should "be club={blue,cyan} ball{magenta} void{red}" in {
-    val solver = new SelectiveSolver(pb, false,Egalitarian)
+  "DistributedSelectiveSolver utilitarian" should "be club={blue,cyan} ball={magenta} void={red}" in {
+    val solver = new DistributedSelectiveSolver(pb, system, false, Utilitarian)
     //solver.debug=true
     val result =solver.solve()
     assert(result.equals(m1))
   }
 
-  "Inclusive solver egalitarian" should "be club={blue,cyan} ball{magenta, red}" in {
+
+  "SelectiveSolver egalitarian" should "be club={blue,cyan} ball={magenta} void={red}" in {
+    val solver = new SelectiveSolver(pb, false, Egalitarian)
+    //solver.debug=true
+    val result =solver.solve()
+    assert(result.equals(m1))
+  }
+
+  "Inclusive solver egalitarian" should "be club={blue,cyan} ball={magenta, red}" in {
     val solver = new InclusiveSolver(pb, Egalitarian)
     //solver.debug=true
     val result =solver.solve()
     assert(result.equals(m2))
   }
+
+  "DistributedInclusive solver egalitarian" should "be club={blue,cyan} ball={magenta, red}" in {
+    val solver = new DistributedInclusiveSolver(pb, system, true, Egalitarian)
+    //solver.debug=true
+    val result =solver.solve()
+    assert(result.equals(m2))
+  }
+
 
   "Inclusive solver utilitarian" should "be club={blue,cyan} ball{magenta, red}" in {
     val solver = new InclusiveSolver(pb, Utilitarian)
@@ -94,6 +118,8 @@ class TestDilemmaPref extends FlatSpec {
     val result =solver.solve()
     assert(result.equals(m2))
   }
+
+
 
   "M1" should "not be Perfect" in {
     assert(!m1.isPerfect())
