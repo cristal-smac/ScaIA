@@ -42,6 +42,5 @@ object ToyExample {
   }
 
   val pb= new IAProblem(Group(philippe,maxime,jeanchristophe,antoine), Set(simu,dps))
-  println(pb)
 
 }

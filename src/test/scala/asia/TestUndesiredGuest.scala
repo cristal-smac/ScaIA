@@ -72,7 +72,7 @@ class TestUndesiredGuest extends FlatSpec {
     assert(!m3.isIndividuallyRational())
   }
 
-  "The InclusiveSolver with egaliatarian" should "return M3 with pM3(a)={i1, i2, i3}" in {
+  "The egaliatarian InclusiveSolver" should "return M3 with pM3(a)={i1, i2, i3}" in {
     val solver= new InclusiveSolver(pb, Egalitarian)
     val resultR = solver.solve()
     assert(m3.equals(resultR))

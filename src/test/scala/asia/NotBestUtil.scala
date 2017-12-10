@@ -26,21 +26,5 @@ object NotBestUtil {
   }
 
   val pb= new IAProblem(Group(i1, i2, i3), Set(a,b))
-  println(pb)
-
-/*
-  val allMatchings = pb.allSoundMatchings()
-  println("All rational matchings: ")
-  allMatchings.filter(_.isIndividuallyRational()).foreach{ m=>
-    println("U= "+m.utilitarianWelfare)
-  }
-
-  val solverR = new MNSolver(pb,true,Utilitarian)
-  var startingTime=System.currentTimeMillis()
-  val resultR = solverR.solve()
-  println("Find matching: "+resultR)
-  println("U= "+resultR.utilitarianWelfare)
-
-*/
 
 }

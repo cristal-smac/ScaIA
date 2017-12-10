@@ -33,7 +33,7 @@ class TestToyProblem extends FlatSpec{
   }
 
 
-  "The MNSolver" should "return M with pM(simu)={philippe,antoine} and pM(dps)={maxime, jeanchristophe}" in {
+  "The SelectiveSolver" should "return M with pM(simu)={philippe,antoine} and pM(dps)={maxime, jeanchristophe}" in {
     val solver= new SelectiveSolver(pb, false, Utilitarian)
     val resultR = solver.solve()
     assert(m.equals(resultR))

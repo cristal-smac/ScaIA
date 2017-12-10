@@ -5,7 +5,7 @@ import org.scaia.hedonic.{Coalition, Matching, Partition}
 import org.scaia.solver.hedonic.CISSolver
 import org.scalatest.FlatSpec
 
-class TestTwoIsACompagnyThreeIsIrational extends FlatSpec {
+class wTestTwoIsACompagnyThreeIsIrational extends FlatSpec {
 
   val matching1= new Matching(g, new Partition(new Coalition(player1,player2), new Coalition(player3)))
 

@@ -33,7 +33,6 @@ class TestNPCompletenessExample extends FlatSpec {
     assert(matching1.isContractuallyIndividuallyStable())
   }
 
-
   val matching2= new Matching(g, new Partition(new Coalition(player1,player2,player3)))
 
   "The matching {{1,2,3}}" should "be sound" in {

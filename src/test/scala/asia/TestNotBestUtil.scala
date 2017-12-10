@@ -24,18 +24,16 @@ class TestNotBestUtil extends FlatSpec{
         maxUtilMatching = m
       }
     }
-    print("m1 "+m1)
-    print("maxUtilMatching "+maxUtilMatching)
     assert(m1.equals(maxUtilMatching))
   }
 
-  "The MNSolver" should "return M2 with pM2(a)={i1, i2} and pM2(b)={i3}" in {
+  "The SelectiveSolver" should "return M2 with pM2(a)={i1, i2} and pM2(b)={i3}" in {
     val solver= new SelectiveSolver(pb, false, Utilitarian)
     val resultR = solver.solve()
     assert(m2.equals(resultR))
   }
 
-  "The MNSolver" should "not return the maximum utilitarian matching" in {
+  "The SelectiveSolver" should "not return the maximum utilitarian matching" in {
     val solver= new SelectiveSolver(pb, false, Utilitarian)
     val resultR = solver.solve()
     assert(! m1.equals(resultR))
