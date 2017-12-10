@@ -2,6 +2,7 @@
 package org.scaia.actor
 
 import akka.actor.{Actor, ActorRef, Props}
+import org.scaia.actor.coalition.SelectiveCoalitionAgent
 import org.scaia.asia._
 import org.scaia.solver.asia.SocialRule
 

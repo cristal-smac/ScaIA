@@ -19,10 +19,10 @@ class IndividualAgent(i: Individual) extends Actor{
     * Method invoked when a message is received
     */
   def receive = {
-    case Inform(addresses) => {//Receive white page
-      this.addresses=addresses
+    case Inform(adr) => {//Receive white page
+      this.addresses=adr
       //Build concession list
-      concessions=addresses.keys.toList.filter(a =>i.v(a)>=0).sortWith((left, right) => i.v(left) > i.v(right))
+      concessions=adr.keys.toList.filter(a =>i.v(a)>=0).sortWith((left, right) => i.v(left) > i.v(right))
       if (debug) println(i.name+" concession list: "+concessions)
     }
     case Start => {//Make a proposal to the best activity

@@ -1,23 +1,23 @@
 // Copyright (C) Maxime MORGE 2017
-package org.scaia.actor
+package org.scaia.actor.coalition
 
 import akka.actor.{Actor, ActorRef, Stash}
+import org.scaia.actor._
 import org.scaia.asia._
 import org.scaia.solver.asia.{Egalitarian, SocialRule, Utilitarian}
 
 /**
-  * Agent representing a coalition in the inclusive procedure (at most one agent is excluded when the coalition is full)
+  * Agent representing
   * @param a activity
+  * @param restricted true if only subgroups of size -1 are investigated
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
-class InclusiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {
+class SelectiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule) extends Actor with Stash {
   val debug = false
 
-  var g = Set[String]()
-  //The current set of individuals
-  var adr = Map[String, ActorRef]()
-  //The utilities of the groups
-  var utilities = Map[Set[String], Double]()
+  var g = Set[String]() // The current set of individuals
+  var adr = Map[String, ActorRef]() // The adresses of the individual agents
+  var utilities = Map[Set[String], Double]() // The utilities of the groups
 
   //Query the individual about the utilities in the subgroups of g
   //and returns the number of expected replies
@@ -37,7 +37,7 @@ class InclusiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
       //Initialisation depends on the welfare
       rule match {
         case Utilitarian => utilities += (sg -> 0.0)
-        case Egalitarian => utilities += (sg -> Double.MaxValue)
+        case Egalitarian => utilities += (sg -> 1.0)
       }
       sg.foreach { j =>
         adr(j) ! Query(sg, a.name)
@@ -79,30 +79,36 @@ class InclusiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
   /**
     * Method invoked when a message is received
     */
-  override def receive(): Receive = available()
+  override def receive(): Receive = disposing()
 
-  def available(): Receive = {
+  def disposing(): Receive = {
     case Propose(i) => {
       adr += (i -> sender)
       val lastProposer = i
       if (debug) println(a.name+" receives a proposal from "+i)
-      if (a.c > g.size) {
-        if (debug) println("Since the current group of " + a.name + " is undersubscribed " + lastProposer + " is assigned to the activity " + a.name)
+      if (g.isEmpty) {
+        if (debug) println("Since the current group of " + a.name + " is empty " + lastProposer + " is assigned to the activity " + a.name)
         g += lastProposer
         sender ! Accept
-        context.become(available())
+        context.become(disposing())
       } else {
         val ng = g + lastProposer
+        if (a.c > g.size) {
+          if (debug) println("The quota of " + a.name + " is not reached")
+          val waitingReplies = queryAll(ng)
+          context.become(casting(lastProposer,waitingReplies))
+        } else {
           if (debug) println("The quota of " + a.name + " is reached")
           val waitingReplies = query(ng)
           context.become(casting(lastProposer,waitingReplies))
+        }
       }
     }
     case Stop => {
       context.stop(self)
     }
     case Confirm => // Deprecated Confirm
-    case msg@_ => println(a.name + " in state available receives a message which was not expected: " + msg)
+    case msg@_ => println(a.name + " in state disposing receives a message which was not expected: " + msg)
   }
 
 
@@ -132,7 +138,6 @@ class InclusiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
         }
         subgroups.foreach { sg =>
           val u = utilities(sg)
-
           if (debug) println("The utility of the subgroup " + sg + " is " + u)
           if (umax < u) {
             umax = u
@@ -151,14 +156,14 @@ class InclusiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
           if (debug) println(a.name + " rejects the proposal from " + lastProposer)
           adr(lastProposer) ! Reject
           unstashAll()
-          context.become(available())
+          context.become(disposing())
         }else{
           if (waitingConfirms!=0) context.become(firing(lastProposer,waitingConfirms))
           else {
             g += lastProposer
             adr(lastProposer) ! Accept
             unstashAll()
-            context.become(available())
+            context.become(disposing())
           }
         }
       } else context.become(casting(lastProposer,waitingReplies - 1))
@@ -175,7 +180,7 @@ class InclusiveCoalitionAgent(a: Activity, restricted: Boolean, rule: SocialRule
         g += lastProposer
         adr(lastProposer) ! Accept
         unstashAll()
-        context.become(available())
+        context.become(disposing())
       } else context.become(firing(lastProposer,waitingConfirms - 1))
     }
     case msg@_ => println(a.name + " in state firing receives a message which was not expected: " + msg)
