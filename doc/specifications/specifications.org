@@ -2,37 +2,81 @@
 #+AUTHOR Maxime MORGE
 #+STARTUP: showall 
 
-#+BEGIN_SRC latex :imagemagick yes :border 1em :packages '(("" "tikz")) :exports results :file activityBehaviour.pdf
+
+#+BEGIN_SRC latex :imagemagick yes :border 1em :packages '(("" "tikz")) :exports results :file coalitionBehaviourSelectiveExact.pdf
 \usetikzlibrary{automata,arrows}
+\begin{center}
+Agent behaviour for the coalition $\langle a, g \rangle$ for the selective procedure without approximation
+\end{center}
 
 \begin{tikzpicture}[>=triangle 45]
-\node (Available) at (0,10) [state,initial]  {Available};
-\node (Raising) at (10,10) [state] {Raising};
-\node (Casting) at (10,0)  [state] {Casting};
-\node (Firing) at (10,-10) [state] {Firing};   
+  \node (Disposing) at (0,7) [state,initial] {Disposing}; 
 
-\path[->] 
-(Available) edge [loop above] node {$Propose(i) \wedge g=\emptyset \Rightarrow i!Accept$} ()
-            edge [above,out=45,in=135]  node {$q_a > |g| \Rightarrow query(g); query(g+i) $} (Raising)
-            edge [above,out=-90,in=180, looseness=0] node {$q_a \leq |g| \Rightarrow querySub(g+i)) $} (Casting)
-(Raising) edge [loop above] node {$Propose(j) \wedge stash()$} ()
-          edge [loop right] node[align=center] {$Reply(g',a,u) \wedge nbW\neq 1 \Rightarrow$\\$u(g')+=u; nbW--$} ()
-          edge [above,out=-135,in=-45]  node[align=center] {$Reply(g',a,u) \wedge nbW= 1 \wedge u(g+i) \geq u(g) \Rightarrow$\\$i!Accept; g+=i; unStashAll()$} (Available)
-          edge [right] node[align=center] {$Reply(g',a,u) \wedge nbW= 1 \wedge u(g+i) < u(g) \Rightarrow$\\$querySub(g+i)$} (Casting)
-(Casting) edge [right, out=330, in=300,looseness=8] node {$Propose(j) \Rightarrow stash()$} (Casting)
-          edge [right, out=25, in=55, looseness=8] node[align=center] {$Reply(g',a,u) \wedge nbW\neq 1 \Rightarrow$\\$u(g')+=u; nbW--$} (Casting)
-          edge [below,out=-180,in=-90, looseness=1] node[align=center] {$Reply(g',a,u) \wedge nbW= 1 \wedge i \notin Best \Rightarrow$\\$j!Reject ;unStashAll()$} (Available)
-          edge [right] node[align=center] {$Reply(g',a,u) \wedge nbW= 1 \wedge i \in Best \Rightarrow$\\$ g-best!Withdraw$} (Firing)
-(Firing) edge [loop below] node {$Propose(j) \wedge stash()$} ()
-         edge [loop right] node[align=center] {$Confirm \wedge nbC\neq 1 \Rightarrow$\\$nbC--$} ()
-         edge [below,out=-180,in=-90,looseness=1] node[align=center] {$Confirm \wedge nbC= 1 \Rightarrow$\\$i!Accept; g=best ;unStashAll()$} (Available)
+  \node (Casting) at (13,7) [state] {Casting}; 
+
+  \node (Firing) at (13,0) [state] {Firing}; 
+
+  \path[->] 
+  (Disposing) 
+  edge [loop above] node 
+  {Propose(i) if g.isEmpty $\rightarrow$ i!Accept} 
+  () 
+
+  edge [above,out=45,in=135] node[align=center] 
+  {Propose(i) if 0 $<$ g.size $\leq$ a.c
+    \\ 
+    $\rightarrow$
+    \\ 
+    sg=subroups(g+a,1,g.size+1); nbR=sgs.size;\\
+ sgs.foreach(sg => sg.foreach(k => k! Query(sg,a)))
+  } 
+  (Casting) 
+    
+  edge [below,out=0,in=180, looseness=0] node[align=center] 
+  {Propose(i) if g.size == a.c\\ $\rightarrow$\\ 
+    sg=subroups(g+a,1,g.size); nbR=sgs.size;\\
+ sgs.foreach(sg => sg.foreach(k => k! Query(sg,a)))
+  } 
+  (Casting) 
+
+  (Casting) edge [right, out=330, in=300,looseness=8] node 
+  {Propose(j) $\rightarrow$ stash()} 
+  (Casting) 
+  
+  edge [right, out=25, in=55, looseness=8] node[align=center] 
+  {Reply(sg,a,u) if nbR != 1\\ $\rightarrow$\\
+    nbR-=1;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\
+    rule match\{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\
+    ~~~case Utilitarian => usum(sg)+=u~~~~~~~~~~~~~~~~~~~\\
+    ~~~case Egalitarian => umin(sg)=min(umin(sg),u)\\
+    \}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\
+  } (Casting) 
+  
+  edge [below,out=-130,in=-40, looseness=1] node[align=center] 
+  {Reply(sg,a,u) if nbR==1 $\wedge$ i $\notin$ best()\\  $\rightarrow$ \\ j!Reject ;unStashAll()} 
+  (Disposing) 
+
+  edge [right] node[align=center] 
+  {Reply(sg,a,u) if nbR==1 $\wedge$ i $\in$ best()\\ $\rightarrow$\\ (g-best()).foreach(k => k!Eject)}
+  (Firing) 
+
+  (Firing) 
+  edge [loop below] node 
+  {Propose(j) $\rightarrow$ stash()} () 
+
+  edge [loop right] node[align=center] 
+  {Confirm if nbC != 1 $\rightarrow$ nbC-=1} 
+  () 
+
+  edge [below,out=-180,in=-90,looseness=1] node[align=center] 
+  {Confirm if nbC==1\\ $\rightarrow$\\ i!Accept; g=best() ;unStashAll()} 
+  (Disposing) 
+
 ;
 \end{tikzpicture}
 #+END_SRC
 
 #+RESULTS:
 #+BEGIN_LaTeX
-[[file:activityBehaviour.pdf]]
+[[file:coalitionBehaviourSelectiveExact.pdf]]
 #+END_LaTeX
-
-[[file:activityBehaviour.pdf]]
