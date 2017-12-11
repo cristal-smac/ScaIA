@@ -1,6 +1,8 @@
 // Copyright (C) Maxime MORGE 2017
 package org.scaia.actor
 
+import java.lang.RuntimeException
+
 import akka.actor.{Actor, ActorRef}
 import org.scaia.asia._
 
@@ -11,7 +13,7 @@ import org.scaia.asia._
 class IndividualAgent(individual: Individual) extends Actor{
   val debug = false
 
-  var solver : ActorRef = _
+  var solver = context.parent
   var addresses= Map[String,ActorRef]() // White page of the coalition agent
   var concessions = List[String]() // List of concessions
   val i=individual.name // Name of the agent
@@ -26,44 +28,42 @@ class IndividualAgent(individual: Individual) extends Actor{
     * The reactive behaviour of the agent
     */
   def behaviour(): Receive = {
-
     case Start => { // Make a proposal to the best activity
-      solver = sender
-      if (!concessions.isEmpty){
-        if (debug) println(s"$i proposes itself to "+concessions.head)
-        addresses(concessions.head) ! Propose(i)
+      if (this.isDesesperated){
+        if (debug) println(s"$i definitively stays inactive")
+        solver ! Assignement(i,  Activity.VOID.name)
       }
       else {
-        if (debug) println(s"$i stays inactive")
-        solver ! Assignement(i,  Activity.VOID.name)
+        if (debug) println(s"$i proposes itself to "+concessions.head)
+        addresses(concessions.head) ! Propose(i)
       }
     }
     case Accept => { // Assignment is confirmed
       solver ! Assignement(i, concessions.head)
     }
-    case Reject => { // Assignment is disconfirmed
-      concessions = concessions.tail
-      if (concessions.isEmpty) {//Either all concessions are made and i is inactive
+    case Reject => { // Assignment is rejected
+      this.concede()
+      if (this.isDesesperated) {//Either all concessions are made and i is inactive
         solver ! Assignement(i, Activity.VOID.name)
-      }else {//Or concession is made
-        addresses(concessions.head) ! Propose(i)
+      }else {//Or he proposes to the next preferred activiyt
+        addresses(this.preferredActiviy()) ! Propose(i)
       }
     }
     case Withdraw => { // Assignment is withdrawn
       solver ! Disassignement(i)
     }
     case Confirm => { // Disassignement has been taken into account by the solver
-      addresses(concessions.head) ! Confirm
-      concessions = concessions.tail
-      if (concessions.isEmpty){// Either all concessions are made and i is inactive
+      addresses(preferredActiviy()) ! Confirm
+      this.concede()
+      if (this.isDesesperated) { // Either all concessions are made and i is inactive
         solver ! Assignement(i, Activity.VOID.name)
-      } else {// Or concession is made
+      } else { // Or concession is made
           if (debug) println(s"$i proposes itself to "+concessions.head)
-          addresses(concessions.head) ! Propose(i)
+          addresses(this.preferredActiviy()) ! Propose(i)
       }
     }
-    case Query(group,activity) => {//Utility is requested
-      sender ! Reply(group,activity,individual.u(group,activity))
+    case Query(g,a) => {// Opinion is requested
+      sender ! Reply(g,a,individual.u(g,a))
     }
   }
 
@@ -87,4 +87,24 @@ class IndividualAgent(individual: Individual) extends Actor{
     */
   def buildConcessions(activityNames: Set[String]) : List[String] = activityNames.filter(a =>individual.v(a)>=0).toList.sortWith((left, right) => individual.v(left) > individual.v(right))
 
+  /**
+    * Returns true if the agent is deseperated
+    */
+  def isDesesperated() : Boolean = this.concessions.isEmpty
+
+  /**
+    * Returns the most preferred activity in the list of concession
+    */
+  @throws(classOf[RuntimeException])
+  def preferredActiviy() : String = {
+    if (this.concessions.isEmpty) throw new RuntimeException(s"$i can no more concede")
+    this.concessions.head
+  }
+
+  /**
+    * Considers the next
+    */
+  def concede() : Unit = {
+    concessions = concessions.tail
+  }
 }
