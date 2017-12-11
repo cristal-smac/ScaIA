@@ -10,7 +10,7 @@ import org.scaia.asia._
   * Agent representing an individual agent
   * @param individual the individual agent
   * */
-class IndividualAgent(individual: Individual) extends Actor{
+class IndividualAgent(individual: Individual) extends Actor with akka.actor.ActorLogging{
   val debug = false
 
   var solver = context.parent
@@ -23,18 +23,17 @@ class IndividualAgent(individual: Individual) extends Actor{
     */
   def receive(): Receive = behaviour() orElse handleManagement()
 
-
   /**
     * The reactive behaviour of the agent
     */
   def behaviour(): Receive = {
     case Start => { // Make a proposal to the best activity
       if (this.isDesesperated){
-        if (debug) println(s"$i definitively stays inactive")
+        if (debug)  log.debug(s"$i definitively stays inactive")
         solver ! Assignement(i,  Activity.VOID.name)
       }
       else {
-        if (debug) println(s"$i proposes itself to "+concessions.head)
+        if (debug)  log.debug(s"$i proposes itself to ${concessions.head}")
         addresses(concessions.head) ! Propose(i)
       }
     }
@@ -58,11 +57,11 @@ class IndividualAgent(individual: Individual) extends Actor{
       if (this.isDesesperated) { // Either all concessions are made and i is inactive
         solver ! Assignement(i, Activity.VOID.name)
       } else { // Or concession is made
-          if (debug) println(s"$i proposes itself to "+concessions.head)
+          if (debug)  log.debug(s"$i proposes itself to ${concessions.head}")
           addresses(this.preferredActiviy()) ! Propose(i)
       }
     }
-    case Query(g,a) => {// Opinion is requested
+    case Query(g,a) => { // Opinion is requested
       sender ! Reply(g,a,individual.u(g,a))
     }
   }
@@ -74,12 +73,12 @@ class IndividualAgent(individual: Individual) extends Actor{
     case Inform(adr: Map[String,ActorRef]) => { // Receive white page
       this.addresses=adr
       this.concessions=buildConcessions(adr.keySet)
-      if (debug) println(s"$i's list of concessions: "+concessions)
+      if (debug)  log.debug(s"$i's list of concessions: $concessions")
     }
     case Stop => { // Agent is stopped
       context.stop(self)
     }
-    case msg@_ => println(s"$i receives a message which was not expected: "+msg)
+    case msg@_ => log.error(s"$i receives a message which was not expected: $msg")
   }
 
   /**
@@ -97,7 +96,10 @@ class IndividualAgent(individual: Individual) extends Actor{
     */
   @throws(classOf[RuntimeException])
   def preferredActiviy() : String = {
-    if (this.concessions.isEmpty) throw new RuntimeException(s"$i can no more concede")
+    if (this.concessions.isEmpty) {
+      log.error(s"$i can no more concede")
+      throw new RuntimeException(s"$i can no more concede")
+    }
     this.concessions.head
   }
 
