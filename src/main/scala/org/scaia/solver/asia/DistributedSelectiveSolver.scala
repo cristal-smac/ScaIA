@@ -27,6 +27,7 @@ class DistributedSelectiveSolver(pb : IAProblem, system: ActorSystem, approximat
   override def solve() : Matching = {
     // Launch a new supervisor
     DistributedSelectiveSolver.id+=1
+    if (debug) system.eventStream.setLogLevel(akka.event.Logging.DebugLevel)
     val supervisor = system.actorOf(Props(classOf[SelectiveSupervisor], pb, approximation, rule), name = "supervisor"+DistributedSelectiveSolver.id)
     // The current thread is blocked and it waits for the supervisor to "complete" the Future with it's reply.
     val future = supervisor ? Start

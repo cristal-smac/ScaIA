@@ -19,15 +19,15 @@ class InclusiveCoalitionAgent(a: Activity, approximation: Boolean, rule: SocialR
     case Propose(i) => {
       adr += (i -> sender)
       val lastProposer = i
-      if (debug) println(a.name+" receives a proposal from "+i)
+      if (debug) log.debug(a.name+" receives a proposal from "+i)
       if (a.c > g.size) {
-        if (debug) println("Since the current group of " + a.name + " is undersubscribed " + lastProposer + " is assigned to the activity " + a.name)
+        if (debug) log.debug("Since the current group of " + a.name + " is undersubscribed " + lastProposer + " is assigned to the activity " + a.name)
         g += lastProposer
         sender ! Accept
         context.become(disposing())
       } else {
         val ng = g + lastProposer
-          if (debug) println("The quota of " + a.name + " is reached")
+          if (debug) log.debug("The quota of " + a.name + " is reached")
           val waitingReplies = query(ng)
           context.become(casting(lastProposer,waitingReplies))
       }
@@ -36,7 +36,7 @@ class InclusiveCoalitionAgent(a: Activity, approximation: Boolean, rule: SocialR
       context.stop(self)
     }
     case Confirm => // Deprecated Confirm
-    case msg@_ => println(a.name + " in state disposing receives a message which was not expected: " + msg)
+    case msg@_ => log.debug(a.name + " in state disposing receives a message which was not expected: " + msg)
   }
 
 
@@ -49,7 +49,7 @@ class InclusiveCoalitionAgent(a: Activity, approximation: Boolean, rule: SocialR
       })
       val ng = g + lastProposer
       if (waitingReplies == 1) {
-        if (debug) println(a.name + " evaluates the utilities of the potential subgroups")
+        if (debug) log.debug(a.name + " evaluates the utilities of the potential subgroups")
         var umax = Double.MinValue
         var bg = Set[String]()
         var subgroups= Set[Set[String]]()
@@ -61,28 +61,28 @@ class InclusiveCoalitionAgent(a: Activity, approximation: Boolean, rule: SocialR
         }
         else subgroups= ng.subsets().filterNot(sg => sg.isEmpty || sg.equals(ng)).toSet
         if (a.c > g.size) {
-          if (debug) println("The quota of " + a.name + " is reached")
+          if (debug) log.debug("The quota of " + a.name + " is reached")
           subgroups += ng//we consider also the increasing of
         }
         subgroups.foreach { sg =>
           val u = utilities(sg)
 
-          if (debug) println("The utility of the subgroup " + sg + " is " + u)
+          if (debug) log.debug("The utility of the subgroup " + sg + " is " + u)
           if (umax < u) {
             umax = u
             bg = sg
           }
         }
-        if (debug) println(bg.toString + " is the best subgroup of " + ng.toString)
+        if (debug) log.debug(bg.toString + " is the best subgroup of " + ng.toString)
         var waitingConfirms = 0
         (g diff bg).foreach { j =>
-          if (debug) println(j + " is disassigned from " + a.name)
+          if (debug) log.debug(j + " is disassigned from " + a.name)
           adr(j) ! Withdraw
           g -= j
           waitingConfirms += 1
         }
         if (!bg.contains(lastProposer)) {
-          if (debug) println(a.name + " rejects the proposal from " + lastProposer)
+          if (debug) log.debug(a.name + " rejects the proposal from " + lastProposer)
           adr(lastProposer) ! Reject
           unstashAll()
           context.become(disposing())
@@ -98,21 +98,21 @@ class InclusiveCoalitionAgent(a: Activity, approximation: Boolean, rule: SocialR
       } else context.become(casting(lastProposer,waitingReplies - 1))
     }
     case Confirm => // Deprecated Confirm
-    case msg@_ => println(a.name + " in state casting receives a message which was not expected: " + msg)
+    case msg@_ => log.debug(a.name + " in state casting receives a message which was not expected: " + msg)
   }
 
   override def firing(lastProposer: String, waitingConfirms: Int): Receive = {
     case Propose(_) => stash()
     case Confirm => {
       if (waitingConfirms == 1) {
-        if (debug) println(a.name + " accepts the proposal from " + lastProposer)
+        if (debug) log.debug(a.name + " accepts the proposal from " + lastProposer)
         g += lastProposer
         adr(lastProposer) ! Accept
         unstashAll()
         context.become(disposing())
       } else context.become(firing(lastProposer,waitingConfirms - 1))
     }
-    case msg@_ => println(a.name + " in state firing receives a message which was not expected: " + msg)
+    case msg@_ => log.debug(a.name + " in state firing receives a message which was not expected: " + msg)
   }
 
 }

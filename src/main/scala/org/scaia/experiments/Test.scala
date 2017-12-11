@@ -7,7 +7,7 @@ import org.scaia.solver._
 
 /**
   * Main app to test MSsolver vs DisMNSolver
-  * sbt "run org.scaia.test.LargeTestSolverWithRandomMatchings Utilitarian"
+  * sbt "run org.scaia.experiment.Test Utilitarian"
   * */
 object Test{
   val debug= true

@@ -1,6 +1,8 @@
 package asia
 
 import akka.actor.ActorSystem
+import com.typesafe.config.ConfigFactory
+
 import asia.DilemmaPref._
 import org.scaia.asia.{Activity, Coalition, Group, Matching}
 import org.scaia.solver.asia._
@@ -10,7 +12,8 @@ import org.scalatest.FlatSpec
 class TestDilemmaPref extends FlatSpec {
 
   val debug=false
-  val system = ActorSystem("IAProblemSolver") //The Actor system
+  //val config = ConfigFactory.load()
+  val system = ActorSystem("TestDilemmaPref")// config.getConfig("myDebugMode").withFallback(config)) //The Actor system with myDebugMode / myRunningMode
 
   val allSoundMatchings= pb.allSoundMatchings()
 
@@ -82,11 +85,11 @@ class TestDilemmaPref extends FlatSpec {
     assert(result.equals(m1))
   }
 
-  "DistributedSelectiveSolver utilitarian" should "be club={blue,cyan} ball={magenta} void={red}" in {
+  "DistributedSelectiveSolver utilitarian" should "be club={blue,cyan} ball={magenta} void={red} or  ball={red} void={maganta}" in {// Test distributed solver
     val solver = new DistributedSelectiveSolver(pb, system, false, Utilitarian)
-    //solver.debug=true
+    solver.debug=true
     val result =solver.solve()
-    assert(result.equals(m1))
+    assert(result.equals(m1) || result.equals(m1bis))
   }
 
 
@@ -104,13 +107,12 @@ class TestDilemmaPref extends FlatSpec {
     assert(result.equals(m2))
   }
 
-  "DistributedInclusive solver egalitarian" should "be club={blue,cyan} ball={magenta, red}" in {
+  "DistributedInclusive solver egalitarian" should "be club={blue,cyan} ball={magenta, red}" in {// Test distributed solver
     val solver = new DistributedInclusiveSolver(pb, system, true, Egalitarian)
     //solver.debug=true
     val result =solver.solve()
     assert(result.equals(m2))
   }
-
 
   "Inclusive solver utilitarian" should "be club={blue,cyan} ball{magenta, red}" in {
     val solver = new InclusiveSolver(pb, Utilitarian)
@@ -119,12 +121,9 @@ class TestDilemmaPref extends FlatSpec {
     assert(result.equals(m2))
   }
 
-
-
   "M1" should "not be Perfect" in {
     assert(!m1.isPerfect())
   }
-
 
   "M1" should "be MaxUtilitarian" in {
     val maxUtilitarianMatchings=pb.allMaxUtilitarian()

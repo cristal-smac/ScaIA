@@ -2,6 +2,7 @@
 package org.scaia.actor.coalition
 
 import akka.actor.{Actor, ActorRef, Stash}
+import akka.event.Logging
 import org.scaia.actor._
 import org.scaia.asia._
 import org.scaia.solver.asia.{Egalitarian, SocialRule, Utilitarian}
@@ -12,8 +13,10 @@ import org.scaia.solver.asia.{Egalitarian, SocialRule, Utilitarian}
   * @param approximation true if only subgroups of size -1 are investigated
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
-abstract class CoalitionAgent(a: Activity, approximation: Boolean, rule: SocialRule) extends Actor with Stash {
-  val debug = false
+abstract class CoalitionAgent(a: Activity, approximation: Boolean, rule: SocialRule) extends Actor with Stash with akka.actor.ActorLogging {
+  val debug = true
+
+  override val log = Logging(context.system.eventStream, "CoalitionAgent")
 
   var g = Set[String]() // The current set of individuals
   var adr = Map[String, ActorRef]() // The addresses of the individual agents
@@ -25,7 +28,7 @@ abstract class CoalitionAgent(a: Activity, approximation: Boolean, rule: SocialR
     */
   def query(group: Set[String]): Int = {
     var waitingReplies = 0
-    if (debug) println(a.name + " queries about the utilities of the potential subgroups of "+group.toString)
+    if (debug) log.debug(a.name + " queries about the utilities of the potential subgroups of "+group.toString)
     var subgroups= Set[Set[String]]()
     if (approximation) {
       //subgroups= group.subsets().filter(sg => sg.size==(group.size-1) && ! sg.equals(Set()))
@@ -53,7 +56,7 @@ abstract class CoalitionAgent(a: Activity, approximation: Boolean, rule: SocialR
   //and returns the number of expected replies
   def queryAll(group: Set[String]): Int = {
     var waitingReplies = 0
-    if (debug) println(a.name + " queries about the utilities of the potential subgroups of "+group.toString)
+    if (debug) log.debug(a.name + " queries about the utilities of the potential subgroups of "+group.toString)
     var subgroups= Set[Set[String]]()
     if (approximation) {
       group.foreach { j =>
