@@ -299,10 +299,10 @@ class Matching(val pb: IAProblem){
     * Returns true if the matching is socially cohesive
     */
   def isCohesive(): Boolean= {
-    pb.individuals.filter(i => this.a(i).equals(Activity.VOID)).foreach{ i =>
-      pb.activities.filter(a => i.v(a.name)>=0).foreach{ a =>
+    pb.individuals.foreach{ i =>
+      pb.activities.filter(a => i.v(a.name)>=0 && i.v(a.name)>=i.v(this.a(i).name)).foreach{ a =>
         if (!this.isFull(a)){
-          if (debug) println(s"This matching is not choesive since $a which is not full is attractive for $i")
+          if (debug) println(s"This matching is not cohesive since $a which is not full is preferred to ${this.a(i).name} by $i")
           return false
         }
       }
