@@ -1,0 +1,11 @@
+// Copyright (C) Maxime MORGE Antoine NONGAILLARD 2017
+
+/**
+* OPL 12.8.0.0 Data for the dilemma problem
+**/
+
+M = 4; // 4 individuals
+N = 2; // 2 activities
+V = [[0.5, 0.25], [0.5, 0.25], [0.5, 0.25], [0.5, 0.25]]; // Attractivity of the activities
+C = [2, 2]; // Capacities
+W = [[0, 1.0, -0.5, -1.0], [1.0, 0, .5, -1.0], [1, 0.5, 0, -1.0], [1.0, 1.0, -1.0, 0]]; // Affinity of the individuals
