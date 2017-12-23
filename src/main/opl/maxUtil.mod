@@ -14,6 +14,14 @@ int C[A] = ...; // The capacityes of the activities
 
 dvar int X[I][A] in 0..1; // The decision variables 
 
+/* Preprocessing */
+float startingTime;
+execute{
+	var before = new Date();
+	startingTime = before.getTime();
+}
+
+/* Solving the model */
 maximize 
 	// the utilitarian welfare
 	1.0/M * sum(i in I) sum(a in A)  0.5 * (X[i][a]*V[i][a] + 1.0/(M-1) * sum(j in I) X[i][a]*X[j][a]*W[i][j]);
@@ -26,4 +34,14 @@ subject to {
 	forall(i in I)
 	  ct_singleAssignement:
 	  	sum(a in A) X[i][a] <=1;
+}
+
+/* Postprocessing */
+execute{
+	var endTime = new Date();
+	var processingTime=endTime.getTime()-startingTime //ms
+	var outputFile = new IloOplOutputFile("../../../output.txt");
+	outputFile.writeln(cplex.getObjValue());//U(M)
+	outputFile.writeln(processingTime);//T in millisecond
+	outputFile.close();
 }
