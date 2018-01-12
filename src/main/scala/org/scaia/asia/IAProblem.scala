@@ -47,6 +47,37 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
   }
 
   /**
+    * Returns a string describing the IAProblem as a MIP Mixed Integrated Problem
+    */
+  def toOPL: String = {
+    var s="M = "+m+"; \n"
+    s+="N = "+n+"; \n"
+    s+="V = "+individuals.toSeq.sortBy(_.name).map( i =>
+      activities.toSeq.sortBy(_.name).map(a =>
+        i.v(a.name).toString
+      ).mkString("[", ", ", "]")
+    ).mkString("[", ", ", "] ;\n")
+    s+="C = "+activities.toSeq.sortBy(_.name).map( a =>
+      a.c.toString
+    ).mkString("[", ", ", "]") + "; \n"
+    //TODO W
+    s+="W = "+individuals.toSeq.sortBy(_.name).map( i =>
+      individuals.toSeq.sortBy(_.name).map(j =>
+        (if (j.equals(i)) 0 else i.w(j.name)).toString
+      ).mkString("[", ", ", "]")
+    ).mkString("[", ", ", "] ;\n")
+    s
+  }
+
+  /*
+  M = 4; // 4 individuals
+  N = 2; // 2 activities
+  V = [[0.5, 0.25], [0.5, 0.25], [0.5, 0.25], [0.5, 0.25]]; // Attractivity of the activities
+  C = [2, 2]; // Capacities
+  W = [[0, 1.0, -0.5, -1.0], [1.0, 0, .5, -1.0], [1, 0.5, 0, -1.0], [1.0, 1.0, -1.0, 0]]; // Affinity of the individuals
+  */
+
+  /**
     * Returns a string which fully describing the IAProblem
     */
   def describe: String ={

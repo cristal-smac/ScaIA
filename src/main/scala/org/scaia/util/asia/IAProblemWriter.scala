@@ -1,3 +1,4 @@
+// Copyright (C) Maxime MORGE 2017
 package org.scaia.util.asia
 
 import java.io._
