@@ -27,9 +27,11 @@ class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
       case _ =>
     }
 
+    // 1 - Reformulate the problem
     val writer=new IAOPLWriter(config.getString("path.scaia")+"/"+config.getString("path.input") ,pb)
     writer.write()
 
+    // 2 - Run the solver
     //See https://alvinalexander.com/scala/scala-execute-exec-external-system-commands-in-scala
     val command : String= config.getString("path.opl")+" "+
       config.getString("path.scaia")+"/"+config.getString("path.miqp")+" "+
@@ -39,7 +41,8 @@ class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
     val success : Int = (command #> new File("/dev/null")).!
     if (success != 0) throw new RuntimeException("MIQPSolver failed")
 
-    new Matching(pb)//TODO result has no meaning
+    // 3 - TODO Reformulate the output
+    new Matching(pb)
   }
 }
 
@@ -50,7 +53,8 @@ object MIQPSolver extends App{
 
   val config = ConfigFactory.load()
 
-  val pb = IAProblem.generateRandom(2, 200)// n activity m individuals
+  //val pb = IAProblem.generateRandom(2, 200)// n (2) activity m (200) individuals
+  import org.scaia.util.asia.DilemmaPref._
 
   val system = ActorSystem("MIQPSolver")//The Actor system
 

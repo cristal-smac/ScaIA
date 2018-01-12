@@ -3,6 +3,7 @@ package org.scaia.util.asia
 
 import java.io._
 
+import com.typesafe.config.ConfigFactory
 import org.scaia.asia.{Activity, Group, IAProblem, Individual}
 
 /**
@@ -23,31 +24,9 @@ class IAOPLWriter(pathName: String, pb : IAProblem){
   * Test IAOPLWriter
   */
 object IAOPLWriter extends App{
-  // The IAProblem instance
-  val club = new Activity("a",2)
-  val ball = new Activity("b",2)
-
-  val blue: Individual = new Individual("1",4) {
-    vMap+=("a" -> .5, "b" -> .25)
-    wMap+=("2"-> 1.0, "3" -> -0.5, "4" -> -1.0)
-  }
-
-  val cyan: Individual = new Individual("2",4) {
-    vMap += ("a" -> 0.5, "b" -> 0.25)
-    wMap += ("1" -> 1.0, "3" -> 0.5, "4"-> -1.0)
-  }
-
-  val magenta: Individual = new Individual("3",4) {
-    vMap+=("a" -> 0.5, "b" -> 0.25)
-    wMap+=("1" -> 1.0, "2" -> 0.5, "4" -> -1.0)
-  }
-
-  val red: Individual = new Individual("4",4) {
-    vMap+=("a" -> 0.5, "b" -> 0.25)
-    wMap+=("1" -> 1.0, "2" -> 1.0, "3" -> -1.0)
-  }
-  val pb= new IAProblem(Group(blue, cyan, magenta, red), Set(club, ball))
-  val writer=new IAOPLWriter("experiments/OPL/dilemma.dat",pb)
+  val config = ConfigFactory.load()
+  import org.scaia.util.asia.DilemmaPref._
+  val writer=new IAOPLWriter(config.getString("path.scaia")+"/"+config.getString("path.input"),pb)
   writer.write()
 }
 

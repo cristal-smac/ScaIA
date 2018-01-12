@@ -41,7 +41,17 @@ execute{
 	var endTime = new Date();
 	var processingTime=endTime.getTime()-startingTime //ms
 	var outputFile = new IloOplOutputFile("../../../experiments/OPL/miqplOutput.txt");//See application.cong
-	outputFile.writeln(cplex.getObjValue());//U(M)
-	outputFile.writeln(processingTime);//T in millisecond
+	//outputFile.writeln(cplex.getObjValue());//U(M)
+	//outputFile.writeln(processingTime);//T in millisecond
+    for(i in thisOplModel.I){
+        var activity = 0;
+        for(a in thisOplModel.A){
+            if (thisOplModel.X[i][a] == 1){
+                activity = a;
+                outputFile.writeln(activity);
+            }
+        }
+        if (activity = 0) outputFile.writeln(activity);
+     }
 	outputFile.close();
 }
