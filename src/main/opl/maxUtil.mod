@@ -40,7 +40,7 @@ subject to {
 execute{
 	var endTime = new Date();
 	var processingTime=endTime.getTime()-startingTime //ms
-	var outputFile = new IloOplOutputFile("../../../experiments/OPL/output.txt");
+	var outputFile = new IloOplOutputFile("../../../experiments/OPL/miqplOutput.txt");//See application.cong
 	outputFile.writeln(cplex.getObjValue());//U(M)
 	outputFile.writeln(processingTime);//T in millisecond
 	outputFile.close();

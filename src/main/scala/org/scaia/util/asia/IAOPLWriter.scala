@@ -14,7 +14,6 @@ class IAOPLWriter(pathName: String, pb : IAProblem){
   val file = new File(pathName)
   def write() : Unit = {
     val bw = new BufferedWriter(new FileWriter(file))
-    println("OPL write")
     bw.write(pb.toOPL)
     bw.close()
   }
