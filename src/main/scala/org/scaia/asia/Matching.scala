@@ -345,6 +345,7 @@ def copy(): Matching ={
   * Factory for a matching of ASIA problem
   */
 object Matching{
+  /* build an ASIA  matching from a hedonic matching */
   def apply(hM: org.scaia.hedonic.Matching, pb: IAProblem): Matching = {
     val matching= new Matching(pb)
     hM.partition.foreach{ c:  org.scaia.hedonic.Coalition =>

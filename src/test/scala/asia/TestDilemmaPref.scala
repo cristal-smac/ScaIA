@@ -3,7 +3,7 @@ package asia
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 
-import asia.DilemmaPref._
+import org.scaia.util.asia.DilemmaPref._
 import org.scaia.asia.{Activity, Coalition, Group, Matching}
 import org.scaia.solver.asia._
 import org.scaia.util.MathUtils._

@@ -1,8 +1,7 @@
 // Copyright (C) Maxime MORGE 2017
-package asia
+package org.scaia.util.asia
 
 import org.scaia.asia._
-import org.scaia.solver._
 
 /**
   * Toy example where the MNSolver  does not compute the best utilitarian matching

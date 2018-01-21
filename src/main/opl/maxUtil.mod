@@ -40,9 +40,9 @@ subject to {
 execute{
 	var endTime = new Date();
 	var processingTime=endTime.getTime()-startingTime //ms
-	var outputFile = new IloOplOutputFile("../../../experiments/OPL/miqplOutput.txt");//See application.cong
-	//outputFile.writeln(cplex.getObjValue());//U(M)
-	//outputFile.writeln(processingTime);//T in millisecond
+	var outputFile = new IloOplOutputFile("../../../experiments/OPL/miqplOutput.txt"); //See application.conf
+	outputFile.writeln(cplex.getObjValue());//U(M)
+	outputFile.writeln(processingTime);//T in millisecond
     for(i in thisOplModel.I){
         var activity = 0;
         for(a in thisOplModel.A){
@@ -51,7 +51,7 @@ execute{
                 outputFile.writeln(activity);
             }
         }
-        if (activity = 0) outputFile.writeln(activity);
+        if (activity == 0) outputFile.writeln(activity);
      }
 	outputFile.close();
 }

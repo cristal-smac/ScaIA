@@ -1,6 +1,6 @@
 package asia
 
-import CircularPref._
+import org.scaia.util.asia.CircularPref._
 import org.scaia.asia.{Activity, Coalition, Group, Matching}
 import org.scalatest.FlatSpec
 
