@@ -7,10 +7,10 @@ import org.scaia.solver._
 import org.scaia.solver.asia._
 
 /**
-  * Main app to test MSsolver vs DisMNSolver
-  * sbt "run-main org.scaia.test.LargeTestSolverWithRandomMatchings Utilitarian"
+  * Main app to test InclusiveSolver vs HillClimbing
+  * sbt "run org.scaia.test.TestWelfareSolver Utilitarian/Egalitarian"
   * */
-object LargeTestInclusiveSolverWithRandomMatchings{
+object TestWelfareSolver{
   val debug= true
   val system = ActorSystem("ScaIA")//The Actor system
   def main(args: Array[String]): Unit = {
@@ -18,45 +18,47 @@ object LargeTestInclusiveSolverWithRandomMatchings{
     val rule : SocialRule= criterion match {
       case "Utilitarian" => Utilitarian
       case "Egalitarian" => Egalitarian
-      case _ => {
-        throw new RuntimeException("My argument ("+criterion+") is not suppported")
-      }
+      case _ => throw new RuntimeException("The argument is not suppported")
     }
-    println("#n,m,mnU,dismnU,mnTime,dismnTime")
+    println("n,m,behaviourU,otherU,behaviourTime,otherTime")
     var n = 0
-    for (n <- 2 to 10) {//2 to 10
+    for (n <- 2 to 10){
       var m = 0
-      for (m <- 2 * n to 40 * n) {//2 * n to 40 * n
+      for (m <- 2 * n to 10 * n) {
         val nbPb = 100
-        var mnU=0.0
-        var dismnU =0.0
-        var mnTime = 0.0
-        var dismnTime = 0.0
+        var behaviourU=0.0
+        var otherU=0.0
+        var behaviourTime = 0.0
+        var otherTime= 0.0
         var o=0
         for (o <- 1 to nbPb) {
           val c= (Math.ceil(m.toDouble/n.toDouble)).toInt
-          //println("n: "+n+" m: "+m+" c: "+c)
           val pb = IAProblem.generatePositiveRandom(n, m, c)
-          val solverR = new InclusiveSolver(pb,rule)
+
+          val solverR : ASIASolver  = rule match {
+            case Utilitarian => new DistributedSelectiveSolver(pb, system, true, rule)
+            case Egalitarian => new DistributedInclusiveSolver(pb, system, true, rule)
+          }
           var startingTime=System.currentTimeMillis()
           var result = solverR.solve()
-          mnTime+=System.currentTimeMillis - startingTime
-          mnU += (rule match {
+          behaviourTime+=System.currentTimeMillis - startingTime
+          behaviourU += (rule match {
             case Utilitarian => result.utilitarianWelfare()
             case Egalitarian => result.egalitarianWelfare()
           })
 
-          val disSolverR = new DistributedInclusiveSolver(pb, system, true, rule)
+          val otherSolver = new HillClimbingInclusiveSolver(pb, rule)
+
           startingTime=System.currentTimeMillis()
-          result = disSolverR.solve()
-          dismnTime+=System.currentTimeMillis - startingTime
-          dismnU += (rule match {
+          result = otherSolver.solve()
+          otherTime+=System.currentTimeMillis - startingTime
+          otherU += (rule match {
             case Utilitarian => result.utilitarianWelfare()
             case Egalitarian => result.egalitarianWelfare()
           })
 
         }
-        println(n+","+m+","+mnU/nbPb+","+dismnU/nbPb+","+mnTime/nbPb+","+dismnTime/nbPb)
+        println(n+","+m+","+behaviourU/nbPb+","+otherU/nbPb+","+behaviourTime/nbPb+","+otherTime/nbPb)
       }
     }
   }

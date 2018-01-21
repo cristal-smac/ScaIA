@@ -8,7 +8,7 @@ import org.scaia.solver.asia.{DistributedSelectiveSolver, Utilitarian}
 /**
  * Main app to compute a random example
  * */
-object TestSolverWithRandomPb{
+object CheckSolverWithRandomPb{
 	val system = ActorSystem("ScaIA")//The Actor system
 	def main(args: Array[String]): Unit = {
 			val pb = IAProblem.generateRandom(2,3)

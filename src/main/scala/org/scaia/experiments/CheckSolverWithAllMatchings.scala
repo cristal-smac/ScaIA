@@ -9,7 +9,7 @@ import org.scaia.solver.asia.{SelectiveSolver, Utilitarian}
 /**
   * Main app to test multiples random examples
   * */
-object TestSolverWithAllMatchings{
+object CheckSolverWithAllMatchings{
   val debug= true
   val system = ActorSystem("ScaIA")//The Actor system
   def main(args: Array[String]): Unit = {

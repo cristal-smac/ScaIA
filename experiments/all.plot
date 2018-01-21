@@ -12,12 +12,13 @@ set ticslevel 0
 set style data lines
 set xlabel "Number of activities"
 set ylabel "Number of individuals"
-set zlabel "welfare"
-splot  "welfareUtilitarian.csv" using 1:2:3 with lines lc "blue" title 'Our algorithm',\
-       "welfareUtilitarian.csv" using 1:2:5 with lines lc "red" title 'Hill-climbing'
+set zlabel "U(M)"
+splot  "data/welfareUtilitarian.csv" using 1:2:3 with lines lc "blue" title 'Selec. algo.',\
+       "data/welfareUtilitarian.csv" using 1:2:5 with lines lc "red" title 'MIQP'
 set output 'welfareEgalitarian.pdf'
-splot  "welfareEgalitarian.csv" using 1:2:3 with lines lc "blue" title 'Our algorithm',\
-       "welfareEgalitarian.csv" using 1:2:5 with lines lc "red" title 'Hill-climbing'
+set zlabel "E(M)"
+splot  "data/welfareEgalitarian.csv" using 1:2:3 with lines lc "blue" title 'Incl. algo.',\
+       "data/welfareEgalitarian.csv" using 1:2:5 with lines lc "red" title 'Hill-climbing'
 set output 'timeUtilitarian.pdf'
 set auto x
 set auto y
@@ -30,5 +31,8 @@ set style data lines
 set xlabel "Number of activities"
 set ylabel "Number of individuals"
 set zlabel "Time (ms)"
-splot "timeUtilitarian.csv" using 1:2:5 with lines lc "blue" title 'Centralized algorithm', \
-     "timeUtilitarian.csv" using 1:2:6 with lines lc "green" title 'Decentralized algorithm'
+splot "data/timeUtilitarian.csv" using 1:2:5 with lines lc "blue" title 'Cent. sel. algo.', \
+     "timeUtilitarian.csv" using 1:2:6 with lines lc "green" title 'Dec. sel. algo.'
+set output 'timeEgalitarian.pdf'
+splot "data/timeEgalitarian.csv" using 1:2:5 with lines lc "blue" title 'Cent. incl. algo.', \
+     "timeEgalitarian.csv" using 1:2:6 with lines lc "green" title 'Dec. incl. algo.'

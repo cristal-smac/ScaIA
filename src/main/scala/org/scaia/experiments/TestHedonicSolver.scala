@@ -3,13 +3,13 @@ package org.scaia.experiments
 
 import akka.actor.ActorSystem
 import org.scaia.asia._
-import org.scaia.solver._
-import org.scaia.solver.asia.{ExhaustiveSolver, MIQPSolver, SelectiveSolver, Utilitarian}
-
+import org.scaia.solver.ASIA2HedonicSolver
+import org.scaia.solver.asia._
+import org.scaia.solver.hedonic._
 /**
   * Main app to test multiples random examples
   * */
-object TestHedonicSolverWithRandomMatchings{
+object TestHedonicSolver{
   val debug= true
   val system = ActorSystem("ScaIA")//The Actor system
   def main(args: Array[String]): Unit = {
@@ -37,7 +37,6 @@ object TestHedonicSolverWithRandomMatchings{
           selectiveTime+=System.currentTimeMillis - startingTime
           selectiveU += selectiveResult.utilitarianWelfare()
 
-
           val hedonicSolver = new ASIA2HedonicSolver(pb)
           startingTime=System.currentTimeMillis()
           val hedonicResult = hedonicSolver.solve()
@@ -49,8 +48,6 @@ object TestHedonicSolverWithRandomMatchings{
           val miqpResult = miqpSolver.solve()
           timeMIQP+=System.currentTimeMillis - startingTime
           miqpU += miqpResult.utilitarianWelfare()
-
-
 
         }
         println(n + "," + m + "," + selectiveU/nbPb + "," +  hedonicU/nbPb + "," + miqpU/nbPb + "," +
