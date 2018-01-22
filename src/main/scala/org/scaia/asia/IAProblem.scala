@@ -329,8 +329,6 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
     }
     results
   }
-
-
 }
 
 /**
@@ -338,83 +336,47 @@ class IAProblem(val individuals: Group, val activities: Set[Activity]) extends S
   */
 object IAProblem {
 
-  /**
-    * The debugging of the random generation of preferences
-    */
   val debug = false
-
-  val THRESOLD=0.5
-
-  val r = scala.util.Random
+  val r = org.scaia.util.RandomUtils
 
   /**
-    *  Returns a pseudo-randomly generated Double in ]0;1]
-
-    */
-  def myRandom() : Double= {
-    val d=1 -r.nextDouble()
-    if (d > THRESOLD) return d
-    return d+THRESOLD
-  }
-
-  /**
-    *  Generates a pseudo-random problem instance with valuation in [-1;1]
+    *  Generates a pseudo-random problem instance with attractive activities/individuals
     *  @param n number of activities
     *  @param m number of individuals
+    *  @param attractiveActivities is true if all the activities are attractive
+    *  @param attractiveIndividuals is true if all the individuals are attrative
     */
-  def generateRandom(n: Int, m: Int): IAProblem = {
+  def randomProblem(n: Int, m: Int, attractiveActivities: Boolean = false, attractiveIndividuals: Boolean = false): IAProblem = {
+    // All the activities have the same capacity
+    val capacity= Math.ceil(m.toDouble/n.toDouble).toInt
     var activities = Set[Activity]()
-    val q: Int = m/n
-    for (k <- 0 to n - 1) {
-      val a = new Activity(s"${Random.alphanumeric take 10 mkString("")}", q)
-      activities += a
-    }
-    if (debug) println(activities)
-    var individuals = Group()
-    for (k <- 1 to m) { // Generate new individuals
-      val i = new Individual(k.toString,m) {
-        activities.foreach { a => // valuates the activities in [-1;1]
-          vMap += (a.name -> (r.nextDouble()*2-1))
-          if (debug) println("u_" + k.toString + "(" + a + ")=" + vMap(a.name))
-        }
-      }
-      individuals += i
-    }
-    individuals.foreach { i =>
-      individuals.filter(j => j != i).foreach { j => // valuates the individuals in  [-1;1]
-        i.wMap += (j.name -> (r.nextDouble()*2 -1))
-      }
-    }
-    return new IAProblem(individuals, activities)
-  }
-
-  /**
-    *  Generates a pseudo-random problem instance with valuation in  ]0;1]
-    *  @param n number of activities
-    *  @param m number of individuals
-    *  @param capacity of the activities
-    */
-  def generatePositiveRandom(n: Int, m: Int, capacity: Int): IAProblem = {
-    var activities = Set[Activity]()
-    for (k <- 0 to n - 1) {
+    for (k <- 0 to n - 1) { // Generate the activities
       val a = new Activity(s"${Random.alphanumeric take 10 mkString("")}", capacity)
       activities += a
     }
     if (debug) println(activities)
     var individuals = Group()
-    for (k <- 1 to m) {
+    for (k <- 1 to m) { // Generate the individuals
       if (debug) println("Generate new individual " + k.toString)
-      val i = new Individual(k.toString,m) {
-        activities.foreach { a =>
-          vMap += (a.name -> myRandom)
+      val i = new Individual(k.toString,m) { //
+        activities.foreach { a => // Generate the valuation of the activities
+          val v = attractiveActivities match {
+            case true => r.strictPositiveWeight()
+            case false => r.weight()
+          }
+          vMap += (a.name -> v)
           if (debug) println("u_" + k.toString + "(" + a + ")=" + vMap(a.name))
         }
       }
       individuals += i
     }
-    individuals.foreach { i =>
+    individuals.foreach { i => // Generate the valuations of the individuals
       individuals.filter(j => j != i).foreach { j =>
-        i.wMap += (j.name -> myRandom)
+        val w = attractiveIndividuals match {
+        case true => r.strictPositiveWeight()
+        case false => r.weight()
+      }
+        i.wMap += (j.name -> w)
       }
     }
     new IAProblem(individuals, activities)

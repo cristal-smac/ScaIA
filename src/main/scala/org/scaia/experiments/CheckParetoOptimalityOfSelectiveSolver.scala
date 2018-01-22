@@ -21,7 +21,7 @@ object CheckParetoOptimalityOfSelectiveSolver{
         var paretoRate = 0.0
         var o=0
         for (o <- 1 to nbPb) {
-          val pb = IAProblem.generateRandom(n, m)
+          val pb = IAProblem.randomProblem(n, m, true, false)
 
           val solver = new SelectiveSolver(pb, false, Utilitarian)
           val result = solver.solve()
@@ -33,7 +33,6 @@ object CheckParetoOptimalityOfSelectiveSolver{
           } else {
             paretoRate+=1
           }
-
         }
         println(n + "," + m + "," + paretoRate/nbPb )
       }

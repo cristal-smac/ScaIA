@@ -29,7 +29,7 @@ object TestHedonicSolver{
         var timeMIQP = 0.0
         var o=0
         for (o <- 1 to nbPb) {
-          val pb = IAProblem.generateRandom(n, m)
+          val pb = IAProblem.randomProblem(n, m)
 
           val selectiveSolver = new SelectiveSolver(pb,true,Utilitarian)
           var startingTime=System.currentTimeMillis()

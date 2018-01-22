@@ -1,0 +1,174 @@
+[0m[[0minfo[0m] [0mLoading project definition from /Users/morge/Documents/Lille/Recherche/PartENS/ScaIA/project/project[0m
+[0m[[0minfo[0m] [0mLoading project definition from /Users/morge/Documents/Lille/Recherche/PartENS/ScaIA/project[0m
+[0m[[0minfo[0m] [0mSet current project to ScaIA (in build file:/Users/morge/Documents/Lille/Recherche/PartENS/ScaIA/)[0m
+[0m[[0minfo[0m] [0mRunning org.scaia.experiments.Test Welfare Utilitarian[0m
+[0m[[0minfo[0m] [0mn,m,behaviourU,otherU,behaviourTime,otherTime[0m
+[0m[[0minfo[0m] [0m2,4,0.537357582658777,0.5422551155869969,1.83,5.09[0m
+[0m[[0minfo[0m] [0m2,5,0.5645692180586227,0.5121343555435435,3.09,3.58[0m
+[0m[[0minfo[0m] [0m2,6,0.5570800278148735,0.5614395406246122,0.68,7.5[0m
+[0m[[0minfo[0m] [0m2,7,0.5754289037384976,0.5255854705474583,1.57,6.05[0m
+[0m[[0minfo[0m] [0m2,8,0.5707689815802434,0.5747875314822564,1.17,11.42[0m
+[0m[[0minfo[0m] [0m2,9,0.5792406930396288,0.5367630647356957,1.78,7.89[0m
+[0m[[0minfo[0m] [0m2,10,0.5806801751726343,0.5846725745475904,1.15,18.61[0m
+[0m[[0minfo[0m] [0m2,11,0.5830177106528125,0.5430653666512696,1.47,14.93[0m
+[0m[[0minfo[0m] [0m2,12,0.5808883911571795,0.5844834632130165,2.89,60.22[0m
+[0m[[0minfo[0m] [0m2,13,0.5853877063769588,0.5438652485284221,4.37,46.12[0m
+[0m[[0minfo[0m] [0m2,14,0.5868465201219908,0.5907969467766697,3.07,61.91[0m
+[0m[[0minfo[0m] [0m2,15,0.5912391039791869,0.545391576975367,2.06,19.58[0m
+[0m[[0minfo[0m] [0m2,16,0.5866719392029726,0.5900494268197156,3.19,101.33[0m
+[0m[[0minfo[0m] [0m2,17,0.5900003418125982,0.5495275017539011,3.07,38.2[0m
+[0m[[0minfo[0m] [0m2,18,0.589940284315895,0.5932605714338369,4.89,152.89[0m
+[0m[[0minfo[0m] [0m2,19,0.5930801389508059,0.5501780434916032,6.84,65.92[0m
+[0m[[0minfo[0m] [0m2,20,0.5899393289698319,0.5927327782412262,5.91,199.78[0m
+[0m[[0minfo[0m] [0m3,6,0.49848937892458733,0.5039722863283435,0.73,4.73[0m
+[0m[[0minfo[0m] [0m3,7,0.5301429797949089,0.4644994331940599,0.23,2.72[0m
+[0m[[0minfo[0m] [0m3,8,0.5205024198389955,0.46154381426559804,0.26,3.24[0m
+[0m[[0minfo[0m] [0m3,9,0.5199228093534749,0.526111662552055,0.41,10.09[0m
+[0m[[0minfo[0m] [0m3,10,0.5382308851746825,0.46824534660018846,0.3,4.83[0m
+[0m[[0minfo[0m] [0m3,11,0.5335103448408184,0.4736063761341331,0.57,10.59[0m
+[0m[[0minfo[0m] [0m3,12,0.5320681023298328,0.5371200569061998,0.57,26.46[0m
+[0m[[0minfo[0m] [0m3,13,0.5427498235986531,0.47050840560794727,0.62,13.13[0m
+[0m[[0minfo[0m] [0m3,14,0.5397423198167565,0.47927586078174633,1.28,45.33[0m
+[0m[[0minfo[0m] [0m3,15,0.5372836264418815,0.5421117600351625,1.16,78.47[0m
+[0m[[0minfo[0m] [0m3,16,0.5470074749670035,0.475987359508305,1.21,30.56[0m
+[0m[[0minfo[0m] [0m3,17,0.5401695055095153,0.4795607463209127,1.43,61.75[0m
+[0m[[0minfo[0m] [0m3,18,0.5410579704172327,0.5460035437843159,2.4,223.02[0m
+[0m[[0minfo[0m] [0m3,19,0.545528902750303,0.47693941474130247,1.75,53.86[0m
+[0m[[0minfo[0m] [0m3,20,0.5440837098626266,0.48400789580490183,3.49,152.38[0m
+[0m[[0minfo[0m] [0m3,21,0.543328568906735,0.5476519147423486,2.78,348.75[0m
+[0m[[0minfo[0m] [0m3,22,0.547986526791746,0.4773895018859423,3.46,113.55[0m
+[0m[[0minfo[0m] [0m3,23,0.5457767035927699,0.48333561999199254,3.65,251.92[0m
+[0m[[0minfo[0m] [0m3,24,0.5467583733559853,0.5504508946906007,4.16,651.73[0m
+[0m[[0minfo[0m] [0m3,25,0.5500043878095557,0.48118260815968134,5.51,190.53[0m
+[0m[[0minfo[0m] [0m3,26,0.5492597778122108,0.48531013977448517,5.32,376.88[0m
+[0m[[0minfo[0m] [0m3,27,0.5485629542372251,0.5523962826245963,6.64,1196.08[0m
+[0m[[0minfo[0m] [0m3,28,0.5499855089052523,0.4829718806238211,6.86,335.38[0m
+[0m[[0minfo[0m] [0m3,29,0.5488836560065044,0.4871519178226478,8.79,850.51[0m
+[0m[[0minfo[0m] [0m3,30,0.5495988759056981,0.5531787284712311,8.76,1769.47[0m
+[0m[[0minfo[0m] [0m4,8,0.4915282209158097,0.4973713886112462,0.84,6.6[0m
+[0m[[0minfo[0m] [0m4,9,0.519455775670008,0.440902099395194,0.47,5.39[0m
+[0m[[0minfo[0m] [0m4,10,0.5170272439554128,0.4341074737343067,0.44,10.19[0m
+[0m[[0minfo[0m] [0m4,11,0.5085510530619863,0.43702995772987374,0.59,24.35[0m
+[0m[[0minfo[0m] [0m4,12,0.5073115241057976,0.5130400512429713,0.5,38.15[0m
+[0m[[0minfo[0m] [0m4,13,0.524271413087438,0.44194307633679597,0.45,14.03[0m
+[0m[[0minfo[0m] [0m4,14,0.5216418041270895,0.44049985287390486,0.58,21.75[0m
+[0m[[0minfo[0m] [0m4,15,0.5158913964438587,0.44394391711586195,0.56,48.25[0m
+[0m[[0minfo[0m] [0m4,16,0.5143430211514836,0.5200511957074286,0.94,108.03[0m
+[0m[[0minfo[0m] [0m4,17,0.5303858115930105,0.4450214033530212,1.13,44.39[0m
+[0m[[0minfo[0m] [0m4,18,0.5251538765743217,0.44319187225109835,1.81,99.6[0m
+[0m[[0minfo[0m] [0m4,19,0.5205214638673692,0.447446934066297,1.44,114.24[0m
+[0m[[0minfo[0m] [0m4,20,0.5188362634796093,0.5249202145784715,2.77,440.56[0m
+[0m[[0minfo[0m] [0m4,21,0.5289436520240328,0.44469098666832485,1.93,126.56[0m
+[0m[[0minfo[0m] [0m4,22,0.5279970719325915,0.4455240681750627,2.08,145.21[0m
+[0m[[0minfo[0m] [0m4,23,0.5235390888206389,0.4543232784898229,2.33,292.75[0m
+[0m[[0minfo[0m] [0m4,24,0.5238171324585561,0.5297646628505384,3.28,721.03[0m
+[0m[[0minfo[0m] [0m4,25,0.5301439917486881,0.44937735224364034,3.01,171.55[0m
+[0m[[0minfo[0m] [0m4,26,0.5284259192238724,0.44772437738246595,3.4,353.66[0m
+[0m[[0minfo[0m] [0m4,27,0.5267885213471947,0.45384692313801034,4.96,688.26[0m
+[0m[[0minfo[0m] [0m4,28,0.5245625598860356,0.529951471218652,5.92,1789.06[0m
+[0m[[0minfo[0m] [0m4,29,0.5330492076257642,0.4528889682218194,4.21,365.46[0m
+[0m[[0minfo[0m] [0m4,30,0.5314804977487467,0.4505369400085461,6.91,623.65[0m
+[0m[[0minfo[0m] [0m4,31,0.5298677888379945,0.45538151052814557,7.96,1406.05[0m
+[0m[[0minfo[0m] [0m4,32,0.5272152054712821,0.5320896227999993,8.33,3321.06[0m
+[0m[[0minfo[0m] [0m4,33,0.5334205406694518,0.4509529844482635,7.3,728.58[0m
+[0m[[0minfo[0m] [0m4,34,0.5325516004915575,0.4497719932701847,12.35,1436.76[0m
+[0m[[0minfo[0m] [0m4,35,0.5297420778683208,0.45593049449998047,8.59,2195.38[0m
+[0m[[0minfo[0m] [0m4,36,0.529561923825064,0.5338409905632487,12.29,5666.71[0m
+[0m[[0minfo[0m] [0m4,37,0.533943475161089,0.4511499125865045,9.83,1098.57[0m
+[0m[[0minfo[0m] [0m4,38,0.5314071105793032,0.45118992469051283,14.56,1749.77[0m
+[0m[[0minfo[0m] [0m4,39,0.5324702394351423,0.4583360867690703,14.55,3961.32[0m
+[0m[[0minfo[0m] [0m4,40,0.529974909375286,0.5344663201042781,18.55,8970.8[0m
+[0m[[0minfo[0m] [0m5,10,0.48348735505823676,0.49053549646766925,0.64,21.15[0m
+[0m[[0minfo[0m] [0m5,11,0.5150719374058873,0.4252316743712574,0.94,12.54[0m
+[0m[[0minfo[0m] [0m5,12,0.50990575494679,0.41880909261032523,0.45,22.88[0m
+[0m[[0minfo[0m] [0m5,13,0.5068230667948085,0.4156272633860403,0.69,38.74[0m
+[0m[[0minfo[0m] [0m5,14,0.5042286354512906,0.42223075378776537,0.43,36.84[0m
+[0m[[0minfo[0m] [0m5,15,0.49884391493211533,0.5055362035005718,0.69,82.52[0m
+[0m[[0minfo[0m] [0m5,16,0.5176285885892042,0.43076900718288547,0.73,40.67[0m
+[0m[[0minfo[0m] [0m5,17,0.5155260665349587,0.4244801375549808,0.66,48.09[0m
+[0m[[0minfo[0m] [0m5,18,0.5118358656819739,0.4205551344496363,0.85,77.55[0m
+[0m[[0minfo[0m] [0m5,19,0.509567151057898,0.4312979984717413,1.13,130.8[0m
+[0m[[0minfo[0m] [0m5,20,0.5067532186762879,0.5134498421324368,1.53,312.39[0m
+[0m[[0minfo[0m] [0m5,21,0.5183711270902416,0.4297551071088701,1.52,103.88[0m
+[0m[[0minfo[0m] [0m5,22,0.5170880434949283,0.42614664086795445,1.43,160.79[0m
+[0m[[0minfo[0m] [0m5,23,0.5138362227213906,0.4293660191236268,2.08,195.85[0m
+[0m[[0minfo[0m] [0m5,24,0.5124979923299255,0.4307621139533771,2.52,437.44[0m
+[0m[[0minfo[0m] [0m5,25,0.5109730356018016,0.5167148900901164,3.44,1102.14[0m
+[0m[[0minfo[0m] [0m5,26,0.5216413493917416,0.43074647656959464,2.54,221.0[0m
+[0m[[0minfo[0m] [0m5,27,0.519267452314759,0.43208397582026814,4.25,415.3[0m
+[0m[[0minfo[0m] [0m5,28,0.5163925599024861,0.4317191826212315,3.26,627.88[0m
+[0m[[0minfo[0m] [0m5,29,0.5152178680283241,0.43229284079837776,4.39,1075.32[0m
+[0m[[0minfo[0m] [0m5,30,0.5133620362120237,0.5190140132679436,6.35,2544.89[0m
+[0m[[0minfo[0m] [0m5,31,0.5213258990493125,0.4313587687696188,4.25,521.09[0m
+[0m[[0minfo[0m] [0m5,32,0.5207559037790672,0.43149239546923357,4.91,781.85[0m
+[0m[[0minfo[0m] [0m5,33,0.5189230828398235,0.4290771940496912,6.06,1287.07[0m
+[0m[[0minfo[0m] [0m5,34,0.5180108067726492,0.4358014189702965,7.22,2256.23[0m
+[0m[[0minfo[0m] [0m5,35,0.516038417976707,0.5212805685585095,15.76,12882.48[0m
+[0m[[0minfo[0m] [0m5,36,0.5230619457735051,0.43241281581467705,19.86,3796.38[0m
+[0m[[0minfo[0m] [0m5,37,0.5220361984386183,0.4333994839954823,11.07,2266.55[0m
+
+[0m[[33mwarn[0m] [0mCanceling execution...[0m
+java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.ExecutorCompletionService$QueueingFuture@57bdceaa rejected from java.util.concurrent.ThreadPoolExecutor@52909a97[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 246]
+	at java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2047)
+	at java.util.concurrent.ThreadPoolExecutor.reject(ThreadPoolExecutor.java:823)
+	at java.util.concurrent.ThreadPoolExecutor.execute(ThreadPoolExecutor.java:1369)
+	at java.util.concurrent.ExecutorCompletionService.submit(ExecutorCompletionService.java:181)
+	at sbt.CompletionService$.submit(CompletionService.scala:28)
+	at sbt.ConcurrentRestrictions$$anon$4.submitValid(ConcurrentRestrictions.scala:160)
+	at sbt.ConcurrentRestrictions$$anon$4.submit(ConcurrentRestrictions.scala:150)
+	at sbt.Execute.submit(Execute.scala:228)
+	at sbt.Execute.ready(Execute.scala:209)
+	at sbt.Execute.notifyDone(Execute.scala:156)
+	at sbt.Execute$$anonfun$retire$3.apply(Execute.scala:132)
+	at sbt.Execute$$anonfun$retire$3.apply(Execute.scala:132)
+	at scala.collection.immutable.List.foreach(List.scala:318)
+	at sbt.Execute.retire(Execute.scala:132)
+	at sbt.Execute$$anonfun$work$1.apply$mcV$sp(Execute.scala:245)
+	at sbt.Execute$$anon$1.process(Execute.scala:18)
+	at sbt.Execute.next$1(Execute.scala:85)
+	at sbt.Execute.processAll(Execute.scala:88)
+	at sbt.Execute.runKeep(Execute.scala:68)
+	at sbt.EvaluateTask$.liftedTree1$1(EvaluateTask.scala:359)
+	at sbt.EvaluateTask$.run$1(EvaluateTask.scala:358)
+	at sbt.EvaluateTask$.runTask(EvaluateTask.scala:378)
+	at sbt.Aggregation$$anonfun$3.apply(Aggregation.scala:69)
+	at sbt.Aggregation$$anonfun$3.apply(Aggregation.scala:67)
+	at sbt.EvaluateTask$.withStreams(EvaluateTask.scala:314)
+	at sbt.Aggregation$.timedRun(Aggregation.scala:67)
+	at sbt.Aggregation$.runTasks(Aggregation.scala:76)
+	at sbt.Aggregation$$anonfun$applyDynamicTasks$1.apply(Aggregation.scala:117)
+	at sbt.Aggregation$$anonfun$applyDynamicTasks$1.apply(Aggregation.scala:115)
+	at sbt.Command$$anonfun$applyEffect$2$$anonfun$apply$3.apply(Command.scala:61)
+	at sbt.Command$$anonfun$applyEffect$2$$anonfun$apply$3.apply(Command.scala:61)
+	at sbt.Act$$anonfun$sbt$Act$$actParser0$1$$anonfun$sbt$Act$$anonfun$$evaluate$1$1$$anonfun$apply$10.apply(Act.scala:253)
+	at sbt.Act$$anonfun$sbt$Act$$actParser0$1$$anonfun$sbt$Act$$anonfun$$evaluate$1$1$$anonfun$apply$10.apply(Act.scala:250)
+	at sbt.Command$.process(Command.scala:93)
+	at sbt.MainLoop$$anonfun$1$$anonfun$apply$1.apply(MainLoop.scala:96)
+	at sbt.MainLoop$$anonfun$1$$anonfun$apply$1.apply(MainLoop.scala:96)
+	at sbt.State$$anon$1.doX$1(State.scala:183)
+	at sbt.State$$anon$1.process(State.scala:190)
+	at sbt.MainLoop$$anonfun$1.apply(MainLoop.scala:96)
+	at sbt.MainLoop$$anonfun$1.apply(MainLoop.scala:96)
+	at sbt.ErrorHandling$.wideConvert(ErrorHandling.scala:17)
+	at sbt.MainLoop$.next(MainLoop.scala:96)
+	at sbt.MainLoop$.run(MainLoop.scala:89)
+	at sbt.MainLoop$$anonfun$runWithNewLog$1.apply(MainLoop.scala:68)
+	at sbt.MainLoop$$anonfun$runWithNewLog$1.apply(MainLoop.scala:63)
+	at sbt.Using.apply(Using.scala:24)
+	at sbt.MainLoop$.runWithNewLog(MainLoop.scala:63)
+	at sbt.MainLoop$.runAndClearLast(MainLoop.scala:46)
+	at sbt.MainLoop$.runLoggedLoop(MainLoop.scala:30)
+	at sbt.MainLoop$.runLogged(MainLoop.scala:22)
+	at sbt.StandardMain$.runManaged(Main.scala:109)
+	at sbt.xMain.run(Main.scala:38)
+	at xsbt.boot.Launch$$anonfun$run$1.apply(Launch.scala:109)
+	at xsbt.boot.Launch$.withContextLoader(Launch.scala:128)
+	at xsbt.boot.Launch$.run(Launch.scala:109)
+	at xsbt.boot.Launch$$anonfun$apply$1.apply(Launch.scala:35)
+	at xsbt.boot.Launch$.launch(Launch.scala:117)
+	at xsbt.boot.Launch$.apply(Launch.scala:18)
+	at xsbt.boot.Boot$.runImpl(Boot.scala:41)
+	at xsbt.boot.Boot$.main(Boot.scala:17)
+	at xsbt.boot.Boot.main(Boot.scala)
+[0m[[31merror[0m] [0mjava.util.concurrent.RejectedExecutionException: Task java.util.concurrent.ExecutorCompletionService$QueueingFuture@57bdceaa rejected from java.util.concurrent.ThreadPoolExecutor@52909a97[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 246][0m
+[0m[[31merror[0m] [0mUse 'last' for the full log.[0m

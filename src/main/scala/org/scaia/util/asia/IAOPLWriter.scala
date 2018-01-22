@@ -25,7 +25,7 @@ class IAOPLWriter(pathName: String, pb : IAProblem){
   */
 object IAOPLWriter extends App{
   val config = ConfigFactory.load()
-  import org.scaia.util.asia.DilemmaPref._
+  import org.scaia.util.asia.example.DilemmaPref._
   val writer=new IAOPLWriter(config.getString("path.scaia")+"/"+config.getString("path.input"),pb)
   writer.write()
 }

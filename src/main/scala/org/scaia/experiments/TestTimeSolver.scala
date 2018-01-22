@@ -11,9 +11,9 @@ import org.scaia.solver.asia._
   * */
 object TestTimeSolver{
   val debug= true
-  val system = ActorSystem("TestTimeSolver")//The Actor system
   def main(args: Array[String]): Unit = {
     val criterion=args(0)
+    val system = ActorSystem("TestTimeSolver"+criterion)//The Actor system
     val rule : SocialRule= criterion match {
       case "Utilitarian" => Utilitarian
       case "Egalitarian" => Egalitarian
@@ -33,7 +33,7 @@ object TestTimeSolver{
         var distributedTime = 0.0
         var o=0
         for (o <- 1 to nbPb) {
-          val pb = IAProblem.generateRandom(n, m)
+          val pb = IAProblem.randomProblem(n, m)
 
           val centralizedSolver : ASIASolver  = rule match {
             case Utilitarian => new SelectiveSolver(pb, true, rule)

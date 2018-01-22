@@ -101,7 +101,7 @@ object MIQPSolver extends App{
 
   val config = ConfigFactory.load()
 
-  val pb = IAProblem.generateRandom(2, 100)// n (2) activity m (200) individuals
+  val pb = IAProblem.randomProblem(2, 100)// n (2) activity m (200) individuals
   //import org.scaia.util.asia.DilemmaPref._
   //import org.scaia.util.asia.NotBestUtil._
   //import org.scaia.util.asia.CircularPref._

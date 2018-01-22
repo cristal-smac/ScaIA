@@ -12,7 +12,6 @@ import org.scaia.solver.asia._
   * */
 object TestWelfareSolver{
   val debug= false
-  val system = ActorSystem("TestWelfareSolver")//The Actor system
   def main(args: Array[String]): Unit = {
     val criterion=args(0)
     val rule : SocialRule= criterion match {
@@ -33,8 +32,7 @@ object TestWelfareSolver{
         var o=0
         for (o <- 1 to nbPb) {
           if (debug) println(s"Pb $o")
-          val c= Math.ceil(m.toDouble/n.toDouble).toInt
-          val pb = IAProblem.generatePositiveRandom(n, m, c)
+          val pb = IAProblem.randomProblem(n, m)
           val solverR : ASIASolver  = rule match {
             case Utilitarian => new SelectiveSolver(pb, true, rule)
             case Egalitarian => new InclusiveSolver(pb, rule)
