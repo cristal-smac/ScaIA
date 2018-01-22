@@ -17,11 +17,11 @@ object CheckParetoOptimalityOfSelectiveSolver{
     for (n <- 1 to 10) {
       var m = 0
       for (m <- 2 * n to 10 * n) {
-        val nbPb = 100
+        val nbPb = 1000
         var paretoRate = 0.0
         var o=0
         for (o <- 1 to nbPb) {
-          val pb = IAProblem.randomProblem(n, m, true, false)
+          val pb = IAProblem.randomProblem(n, m, true, true)
 
           val solver = new SelectiveSolver(pb, false, Utilitarian)
           val result = solver.solve()
