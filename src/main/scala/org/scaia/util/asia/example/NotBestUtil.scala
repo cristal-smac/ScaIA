@@ -1,5 +1,5 @@
 // Copyright (C) Maxime MORGE 2017
-package org.scaia.util.asia
+package org.scaia.util.asia.example
 
 import org.scaia.asia._
 
