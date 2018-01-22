@@ -1,6 +1,6 @@
 package asia
 
-import org.scaia.util.asia.NotBestUtil._
+import org.scaia.util.asia.example.NotBestUtil._
 import org.scaia.asia.{Activity, Coalition, Group, Matching}
 import org.scaia.solver.asia.{SelectiveSolver, Utilitarian}
 import org.scalatest.FlatSpec
