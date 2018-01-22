@@ -11,7 +11,7 @@ import org.scaia.solver.hedonic._
   * */
 object TestHedonicSolver{
   val debug= true
-  val system = ActorSystem("ScaIA")//The Actor system
+  val system = ActorSystem("TestHedonicSolver")//The Actor system
   def main(args: Array[String]): Unit = {
     println("n,m,selectiveU,hedoU,miqpU,selectiveTime,hedonicTime,miqpTime")
     var n = 0

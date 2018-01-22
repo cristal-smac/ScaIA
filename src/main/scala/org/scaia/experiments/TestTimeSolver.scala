@@ -11,7 +11,7 @@ import org.scaia.solver.asia._
   * */
 object TestTimeSolver{
   val debug= true
-  val system = ActorSystem("ScaIA")//The Actor system
+  val system = ActorSystem("TestTimeSolver")//The Actor system
   def main(args: Array[String]): Unit = {
     val criterion=args(0)
     val rule : SocialRule= criterion match {

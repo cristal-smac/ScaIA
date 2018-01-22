@@ -11,8 +11,8 @@ import org.scaia.solver.asia._
   * sbt "run org.scaia.test.TestWelfareSolver Utilitarian/Egalitarian"
   * */
 object TestWelfareSolver{
-  val debug= true
-  val system = ActorSystem("ScaIA")//The Actor system
+  val debug= false
+  val system = ActorSystem("TestWelfareSolver")//The Actor system
   def main(args: Array[String]): Unit = {
     val criterion=args(0)
     val rule : SocialRule= criterion match {
@@ -32,13 +32,15 @@ object TestWelfareSolver{
         var otherTime= 0.0
         var o=0
         for (o <- 1 to nbPb) {
-          val c= (Math.ceil(m.toDouble/n.toDouble)).toInt
+          if (debug) println(s"Pb $o")
+          val c= Math.ceil(m.toDouble/n.toDouble).toInt
           val pb = IAProblem.generatePositiveRandom(n, m, c)
-
           val solverR : ASIASolver  = rule match {
-            case Utilitarian => new DistributedSelectiveSolver(pb, system, true, rule)
-            case Egalitarian => new DistributedInclusiveSolver(pb, system, true, rule)
+            case Utilitarian => new SelectiveSolver(pb, true, rule)
+            case Egalitarian => new InclusiveSolver(pb, rule)
           }
+
+          if (debug) println(s"Behaviour")
           var startingTime=System.currentTimeMillis()
           var result = solverR.solve()
           behaviourTime+=System.currentTimeMillis - startingTime
@@ -47,8 +49,8 @@ object TestWelfareSolver{
             case Egalitarian => result.egalitarianWelfare()
           })
 
+          if (debug) println(s"Local search")
           val otherSolver = new HillClimbingInclusiveSolver(pb, rule)
-
           startingTime=System.currentTimeMillis()
           result = otherSolver.solve()
           otherTime+=System.currentTimeMillis - startingTime

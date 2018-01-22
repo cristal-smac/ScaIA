@@ -10,26 +10,34 @@ import org.scaia.asia._
   */
 class HillClimbingInclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
 
-  var step= 1
 
+  /**
+    * Returns a matching which maximizes the social rule
+    * @return
+    */
   override def solve() : Matching =  {
+    var step= 0
+    var found = false
     var current = pb.generateRandomPositiveInclusiveMatching()
-    //Returns a random matching with as much as possible active individual over a positive problem not overconstrainted
-    while(true){
-      val neighbor= highValueSuccessor(current)
-      val nu= rule match {
-        case Utilitarian => neighbor.utilitarianWelfare()
-        case Egalitarian => neighbor.egalitarianWelfare()
-      }
-      val cu= rule match {
+    do{
+      step += 1
+      if (debug) println(s"HillClimbingSolver: step $step")
+      val currentWelfare= rule match {
         case Utilitarian => current.utilitarianWelfare()
         case Egalitarian => current.egalitarianWelfare()
       }
-      if (nu <= cu) return current
-      step+=1
-      current= neighbor
-    }
-    return current//Only required for compilation
+      val neighbor= highValueSuccessor(current)
+      val neighborWelfare= rule match {
+        case Utilitarian => neighbor.utilitarianWelfare()
+        case Egalitarian => neighbor.egalitarianWelfare()
+      }
+      if (debug) println(s"currentWelfare: $currentWelfare neighborWelfare: $neighborWelfare")
+      if (neighborWelfare <= currentWelfare){// The neighbour do not improve
+        found = true
+      }
+      else current = neighbor
+    } while(! found)
+    current
   }
 
 
@@ -75,52 +83,5 @@ class HillClimbingInclusiveSolver(pb : IAProblem, rule: SocialRule) extends ASIA
     }
     bestMatching
   }
-  /*
-  def highValueSuccessor(current: Matching) = {
-    val inds : Array[Individual] = pb.individuals.toArray
-    var maxU = -1.0
-    var bestMatching = new Matching(pb)
-    pb.individuals.foreach{ i => //for each individual
-      val ai= current.a(i)
-      pb.activities.filterNot(_.equals(ai)).foreach{ a => //for each other activity
-        if (!current.full(a) && i.u(a.name)>0){//If the other activity is not full and attractive
-        val neighbor= current
-          //Move i to a
-          neighbor.a+=(i -> a)
-          //Build the groups
-          neighbor.g+=(i-> (current.p(a) + i))
-          current.p(a).foreach( j => neighbor.g+=(j -> (current.p(a) + i)))
-          current.p(ai).foreach( j => neighbor.g+=(j -> (current.p(ai) - i)))
-          val u= rule match {
-            case Utilitarian => neighbor.utilitarianWelfare()
-            case Egalitarian => neighbor.egalitarianWelfare()
-            case NashProduct => neighbor.nashWelfare()
-          }
-          if (u> maxU){
-            maxU=u
-            bestMatching=neighbor
-          }
-        }else{//If the other activity is full
-          //Switch candidate
-          current.p(a).foreach { j =>
-            if (i.u(a.name) > 0 && j.u(ai.name) >0 ) {// If the other activities are muttually attractive
-              val neighbor = current.swap(i, j)
-              val u = rule match {
-                case Utilitarian => neighbor.utilitarianWelfare()
-                case Egalitarian => neighbor.egalitarianWelfare()
-                case NashProduct => neighbor.nashWelfare()
-              }
-              if (u > maxU) {
-                maxU = u
-                bestMatching = neighbor
-              }
-            }
-          }
-        }
-      }
-    }
-    bestMatching
-  }
-  */
 }
 

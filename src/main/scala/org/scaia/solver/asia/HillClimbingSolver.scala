@@ -10,29 +10,33 @@ import org.scaia.asia._
   */
 class HillClimbingSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
 
-  var step= 1
   /**
     * Returns a matching which maximizes the social rule
     * @return
     */
   override def solve() : Matching =  {
+    var step= 0
+    var found = false
     var current = pb.generateRandomMatching()
-    while(true){
-      val neighbor= highValueSuccessor(current)
-      val nw= rule match {
-        case Utilitarian => neighbor.utilitarianWelfare()
-        case Egalitarian => neighbor.egalitarianWelfare()
-      }
-      val cw= rule match {
+    do{
+      step += 1
+      if (debug) println(s"HillClimbingSolver: step $step")
+      val currentWelfare= rule match {
         case Utilitarian => current.utilitarianWelfare()
         case Egalitarian => current.egalitarianWelfare()
       }
-      if (nw <= cw) return current
-      if (debug) println(s"HillClimbingSolver: step $step")
-      step+=1
-      current= neighbor
-    }
-    return current
+      val neighbor= highValueSuccessor(current)
+      val neighborWelfare= rule match {
+        case Utilitarian => neighbor.utilitarianWelfare()
+        case Egalitarian => neighbor.egalitarianWelfare()
+      }
+      if (debug) println(s"currentWelfare: $currentWelfare neighborWelfare: $neighborWelfare")
+      if (neighborWelfare <= currentWelfare){// The neighbour do not improve
+        found = true
+      }
+      else current = neighbor
+    } while(! found)
+    current
   }
 
   /**
