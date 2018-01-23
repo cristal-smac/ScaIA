@@ -43,6 +43,12 @@ Usage:
 
 ## Installation
 
+Add to ~/.sbt/0.13/global.sbt
+
+    resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
+
+Compile
+
     sbt compile
 
 then
