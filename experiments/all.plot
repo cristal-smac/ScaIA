@@ -14,7 +14,7 @@ set xlabel "Number of activities"
 set ylabel "Number of individuals"
 set zlabel "U(M)"
 splot  "data/welfareUtilitarian.csv" using 1:2:3 with lines lc "blue" title 'Selec. algo.',\
-       "data/welfareUtilitarian.csv" using 1:2:5 with lines lc "red" title 'MIQP'
+       "data/welfareUtilitarian.csv" using 1:2:5 with lines lc "red" title 'Hill-climbing'
 set output 'welfareEgalitarian.pdf'
 set zlabel "E(M)"
 splot  "data/welfareEgalitarian.csv" using 1:2:3 with lines lc "blue" title 'Incl. algo.',\
