@@ -15,7 +15,7 @@ object TestTimeSolver{
   def main(args: Array[String]): Unit = {
     val criterion=args(0)
     val r = scala.util.Random
-    val system = ActorSystem("TestTimeSolver"+criterion+r.nextString(5))//The Actor system
+    val system = ActorSystem("TestTimeSolver"+criterion+r.nextInt.toString)//The Actor system
     val rule : SocialRule= criterion match {
       case "Utilitarian" => Utilitarian
       case "Egalitarian" => Egalitarian
