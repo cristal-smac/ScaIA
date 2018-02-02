@@ -4,6 +4,7 @@ package org.scaia.experiments
 import akka.actor.ActorSystem
 import org.scaia.asia._
 import org.scaia.solver.asia._
+import scala.util.Random
 
 /**
   * Main app to test MSsolver vs DisMNSolver
@@ -13,7 +14,8 @@ object TestTimeSolver{
   val debug= true
   def main(args: Array[String]): Unit = {
     val criterion=args(0)
-    val system = ActorSystem("TestTimeSolver"+criterion)//The Actor system
+    val r = scala.util.Random
+    val system = ActorSystem("TestTimeSolver"+criterion+r.nextString(5))//The Actor system
     val rule : SocialRule= criterion match {
       case "Utilitarian" => Utilitarian
       case "Egalitarian" => Egalitarian
