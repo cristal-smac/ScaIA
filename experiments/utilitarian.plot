@@ -11,12 +11,12 @@ set style data lines
 set xlabel "Number of activities"
 set ylabel "Number of individuals"
 set zlabel "U(M)"
-set zrange [0:1]
+set zrange [-1:1]
 set output 'welfareUtilitarian.pdf'
 splot  "data/welfareUtilitarian.csv" using 1:2:3 with lines lc "blue" title 'Sel. algo.',\
-       "data/welfareUtilitarian.csv" using 1:2:4 with lines lc "red" title 'MIQP'
+       "data/welfareUtilitarian.csv" using 1:2:4 with lines lc "red" title 'Hill-Climbing.'
 set auto z
 set zlabel "Time (ms)"
-set output 'welfareUtilitarian.pdf'
+set output 'timeUtilitarian.pdf'
 splot  "data/timeUtilitarian.csv" using 1:2:6 with lines lc "green" title 'Dis. sel. algo. ',\
        "data/timeUtilitarian.csv" using 1:2:5 with lines lc "blue" title 'Centra. sel. algo.'
