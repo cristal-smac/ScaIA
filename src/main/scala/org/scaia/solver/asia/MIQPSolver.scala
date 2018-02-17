@@ -16,7 +16,7 @@ import com.typesafe.config.ConfigFactory
   *  @param pb to solved
   *  @param rule to apply, i.e. maximize the utilitarian welfare
   */
-class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
+class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIADualSolver(pb){
 
   val config = ConfigFactory.load()
   val inputPath =config.getString("path.scaia")+"/"+config.getString("path.input")
@@ -30,8 +30,10 @@ class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
       case _ =>
     }
     // 1 - Reformulate the problem
+    val startingTime = System.nanoTime()
     val writer=new IAOPLWriter(inputPath ,pb)
     writer.write()
+    preSolvingTime = System.nanoTime() - startingTime
     // 2 - Run the solver
     val command : String= config.getString("path.opl")+" "+
       miqpPath+" "+
@@ -47,6 +49,7 @@ class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
     * Return the matching based on the text output of OPL
     */
   def fromOPL() : Matching = {
+    val startingTime = System.nanoTime()
     val m = new Matching(pb)
     val bufferedSource = Source.fromFile(outputPath)
     // Activities/individuals sorted by names
@@ -90,6 +93,7 @@ class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIASolver(pb){
       }
     }
     if (debug) println(m)
+    postSolvingTime = System.nanoTime() - startingTime
     return m
   }
 }
