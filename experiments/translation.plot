@@ -15,16 +15,18 @@ set output 'translationWelfare.pdf'
 plot  "data/translation.csv" using 2:3 with line lc rgb '#006400' title 'Our welfare',\
       "data/translation.csv" using 2:4 with line lc rgb '#e56b5d' title 'CIS welfare',\
       "data/translation.csv" using 2:5 with line lc rgb '#3b518b' title 'MIQP welfare'
-set ylabel "Times (s)"
-set logscale y
+set ylabel "Runtime (s)"
 set key left top
-set output 'translationTimeCIS.pdf'
-plot  "data/translation.csv" using 2:($7+$8+$9)/1e9 title 'CIS runtime' w filledcurves x1 linestyle 3,\
-      "data/translation.csv" using 2:($7+$8)/1e9 title 'CIS pre/post-processing runtime' w filledcurves x1 linestyle 2,\
-      "data/translation.csv" using 2:($7)/1e9 title 'CIS pre-runtime' w filledcurves x1 linestyle 1,\
-      "data/translation.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Our runtime'
+set logscale y
 set output 'translationTimeMIQP.pdf'
-plot  "data/translation.csv" using 2:($10+$11+$12)/1e9 title 'MIQP runtime' w filledcurves x1 linestyle 6,\
-      "data/translation.csv" using 2:($10+$11)/1e9 title 'MIQP pre/post-processing runtime' w filledcurves x1 linestyle 5,\
-      "data/translation.csv" using 2:($10)/1e9 title 'MIQP pre-runtime' w filledcurves x1 linestyle 4,\
-      "data/translation.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Our runtime'
+plot  "data/translation.csv" using 2:($10+$11+$12)/1e9 title 'MIQP post-processing' w filledcurves x1 linestyle 6,\
+      "data/translation.csv" using 2:($12+$10)/1e9 title 'MIQP pre-processing' w filledcurves x1 linestyle 5,\
+      "data/translation.csv" using 2:($10)/1e9 title 'MIQP algo' w filledcurves x1 linestyle 4,\
+      "data/translation.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Selec. approx. alog.'
+set logscale y
+set output 'translationTimeCIS.pdf'
+plot  "data/translation.csv" using 2:($7+$8+$9)/1e9 title 'CIS post-processing' w filledcurves x1 linestyle 6,\
+      "data/translation.csv" using 2:($7+$9)/1e9 title 'CIS algo.' w filledcurves x1 linestyle 5,\
+      "data/translation.csv" using 2:($7)/1e9 title 'CIS pre-processing' w filledcurves x1 linestyle 4,\
+      "data/translation.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Selec. approx. algo.'
+
