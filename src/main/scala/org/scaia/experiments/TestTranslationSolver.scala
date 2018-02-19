@@ -23,7 +23,7 @@ object TestTranslationSolver{
     var n = 0
     for (n <- 2 to 2) {
       var m = 0
-      for (m <- 2 to 20 ) {
+      for (m <- 2 to 30 ) {
         val nbPb = 100
         val nbMatchings = 100
         var selectiveU=0.0
