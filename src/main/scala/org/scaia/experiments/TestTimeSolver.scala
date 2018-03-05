@@ -68,6 +68,7 @@ object TestTimeSolver{
 
         }
         bw.write("$n,$m,${centraliedU/nbPb},${distributedU/nbPb},${centralizeTime/nbPb},${distributedTime/nbPb}\n")
+        bw.flush()
       }
     }
   }

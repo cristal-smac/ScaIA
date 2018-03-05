@@ -65,6 +65,7 @@ object TestWelfareSolver{
 
         }
         bw.write(s"$n,$m,${behaviourU/nbPb},${otherU/nbPb},${behaviourTime/nbPb},${otherTime/nbPb}\n")
+        bw.flush()
       }
     }
   }
