@@ -50,7 +50,7 @@ object TestTimeSolver{
           })
           val distributedSolver : ASIASolver  = rule match {
             case Utilitarian => new DistributedSelectiveSolver(pb, system, true, rule)
-            case Egalitarian => new DistributedInclusiveSolver(pb, system, true, rule)
+            case Egalitarian => new DistributedInclusiveSolver(pb, system, rule)
           }
 
           startingTime=System.currentTimeMillis()

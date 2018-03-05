@@ -19,7 +19,7 @@ import scala.language.postfixOps
   *  @param rule to apply (maximize the utilitarian/egalitarian welfare
   *
   */
-class DistributedInclusiveSolver(pb : IAProblem, system: ActorSystem, approximation: Boolean, rule: SocialRule) extends ASIASolver(pb){
+class DistributedInclusiveSolver(pb : IAProblem, system: ActorSystem, rule: SocialRule) extends ASIASolver(pb){
 
   val TIMEOUTVALUE=100 seconds// default timeout of a run
   implicit val timeout = Timeout(TIMEOUTVALUE)
@@ -29,7 +29,7 @@ class DistributedInclusiveSolver(pb : IAProblem, system: ActorSystem, approximat
     // Launch a new supervisor
     DistributedInclusiveSolver.id+=1
     if (debug) system.eventStream.setLogLevel(akka.event.Logging.DebugLevel)
-    val supervisor = system.actorOf(Props(classOf[InclusiveSupervisor], pb, approximation, rule), name = "supervisor"+DistributedInclusiveSolver.id)
+    val supervisor = system.actorOf(Props(classOf[InclusiveSupervisor], pb, rule), name = "supervisor"+DistributedInclusiveSolver.id)
     // The current thread is blocked and it waits for the supervisor to "complete" the Future with it's reply.
     val future = supervisor ? Start
     val result = Await.result(future, timeout.duration).asInstanceOf[Result]

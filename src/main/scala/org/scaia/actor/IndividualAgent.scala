@@ -33,14 +33,16 @@ class IndividualAgent(individual: Individual) extends Actor with akka.actor.Acto
         solver ! Assignement(i,  Activity.VOID.name)
       }
       else {
-        if (debug)  log.debug(s"$i proposes itself to ${concessions.head}")
+        if (debug) log.debug(s"$i proposes itself to ${concessions.head}")
         addresses(concessions.head) ! Propose(i)
       }
     }
-    case Accept => { // Assignment is confirmed
+    case Accept => {
+      if (debug) log.debug(s"$i is assigned to ${concessions.head}")
       solver ! Assignement(i, concessions.head)
     }
-    case Reject => { // Assignment is rejected
+    case Reject => {
+      if (debug) log.debug(s"$i is rejected by ${concessions.head}")
       this.concede()
       if (this.isDesesperated) {//Either all concessions are made and i is inactive
         solver ! Assignement(i, Activity.VOID.name)
@@ -48,10 +50,12 @@ class IndividualAgent(individual: Individual) extends Actor with akka.actor.Acto
         addresses(this.preferredActiviy()) ! Propose(i)
       }
     }
-    case Withdraw => { // Assignment is withdrawn
+    case Withdraw => {
+      if (debug) log.debug(s"$i is ejected by ${concessions.head}")
       solver ! Disassignement(i)
     }
-    case Confirm => { // Disassignement has been taken into account by the solver
+    case Confirm => {
+      if (debug) log.debug(s"$i has received  the confirmation of the dissagnement")
       addresses(preferredActiviy()) ! Confirm
       this.concede()
       if (this.isDesesperated) { // Either all concessions are made and i is inactive

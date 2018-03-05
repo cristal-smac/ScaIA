@@ -108,7 +108,7 @@ class TestDilemmaPref extends FlatSpec {
   }
 
   "DistributedInclusive solver egalitarian" should "be club={blue,cyan} ball={magenta, red}" in {// Test distributed solver
-    val solver = new DistributedInclusiveSolver(pb, system, true, Egalitarian)
+    val solver = new DistributedInclusiveSolver(pb, system, Egalitarian)
     //solver.debug=true
     val result =solver.solve()
     assert(result.equals(m2))

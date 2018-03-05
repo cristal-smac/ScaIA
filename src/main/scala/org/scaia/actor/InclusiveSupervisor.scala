@@ -12,7 +12,7 @@ import org.scaia.solver.asia.SocialRule
   * @param restricted true if only subgroups of size -1 are investigated
   * @param rule to apply (maximize the utilitarian/egalitarian/nash welfare
   * */
-class InclusiveSupervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) extends Actor{
+class InclusiveSupervisor(pb: IAProblem, rule: SocialRule) extends Actor{
   val debug=false
 
   var solver : ActorRef = _
@@ -30,7 +30,7 @@ class InclusiveSupervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) 
   override def preStart(): Unit = {
     //Start the activity agents
     pb.activities.foreach { case a: Activity =>
-      val actor = context.actorOf(Props(classOf[InclusiveCoalitionAgent], a, restricted, rule), a.name)
+      val actor = context.actorOf(Props(classOf[InclusiveCoalitionAgent], a, rule), a.name)
       activityAgents :+= actor
       addressesActivityAgents += (a.name -> actor)
     }//Start the individual agents
@@ -48,20 +48,20 @@ class InclusiveSupervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) 
     */
   def receive = {
     //When the works should be done
-    case Start => {
+    case Start =>
       solver = sender
       //Signal all the individuals that they should start and run
       individualAgents.foreach(_ !  Start)
-    }
+
     //When an assignement is undone
-    case Disassignement(i) => {
+    case Disassignement(i) =>
       nbFree+= 1
       matching.a+= (pb.getIndividual(i) -> Activity.VOID)
       if (debug) println("Supervisor: "+i+" is disassigned ("+nbFree+")")
       sender ! Confirm
-    }
+
     // When an assignement is done
-    case Assignement(i,a) => {
+    case Assignement(i,a) =>
       nbFree-= 1
       if (debug) println("Supervisor: "+i+" is assigned ("+nbFree+")")
       matching.a+= (pb.getIndividual(i) -> pb.getActivity(a))
@@ -78,7 +78,7 @@ class InclusiveSupervisor(pb: IAProblem, restricted: Boolean, rule: SocialRule) 
         activityAgents.foreach(a => a ! Stop)
         context.stop(self)//stop the supervisor
       }
-    }
-    case msg@_ => println("Supervisor receives a message which was not expected: "+msg)
+
+    case msg@_ => println(s"Supervisor receives a message which was not expected: $msg")
   }
 }

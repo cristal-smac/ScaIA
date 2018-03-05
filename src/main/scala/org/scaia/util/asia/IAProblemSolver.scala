@@ -130,7 +130,7 @@ object IAProblemSolver extends App {
             inclusive match {
               case true =>
                 if (socialRule == Utilitarian) println(s"WARNING: socialRule($socialRule) and inclusive($inclusive) are contradictory")
-                new DistributedInclusiveSolver(pb,system, approximation, socialRule)
+                new DistributedInclusiveSolver(pb,system, socialRule)
               case false =>
                 if (socialRule == Egalitarian) println(s"WARNING: socialRule($socialRule) and inclusive($inclusive) are contradictory")
                 new DistributedSelectiveSolver(pb, system, approximation, socialRule)
