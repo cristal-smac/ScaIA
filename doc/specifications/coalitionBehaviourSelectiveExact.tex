@@ -1,0 +1,90 @@
+\begin{tikzpicture}[>=triangle 45]
+  \node (Disposing) at (0,7) [state,initial] {Disposing}; 
+
+  \node (Casting) at (15,7) [state] {Casting}; 
+
+  \node (Firing) at (15,0) [state] {Firing}; 
+
+  \path[->] 
+  (Disposing) 
+  edge [loop above] node[align=left] 
+  {\mintinline{scala}{Propose(i) if g.isEmpty} 
+    \trule\\ 
+    \mintinline{scala}{g+=i ; i ! Accept}
+  } 
+  () 
+
+  edge [above,out=45,in=135] node[align=left] 
+  {\mintinline{scala}{Propose(i) if 0 < g.size <= a.c} 
+    \trule\\ 
+    \mintinline{scala}{sg=subroups(g+i,1,g.size+1); nbR=0}\\
+    \mintinline{scala}{sgs.foreach(sg => sg.foreach(k => k! Query(sg,a); nbR+=1))}\\
+  } 
+  (Casting) 
+    
+  edge [above,out=0,in=180, looseness=0] node[align=left] 
+  {\mintinline{scala}{Propose(i) if g.size == a.c} 
+    \trule\\ 
+    \mintinline{scala}{sg=subroups(g+i,1,g.size); nbR=0}\\
+    \mintinline{scala}{sgs.foreach(sg => sg.foreach(k => k! Query(sg,a); nbR+=1))}
+  } 
+  (Casting) 
+
+  (Casting) edge [right, out=330, in=300,looseness=8] node 
+  {\mintinline{scala}{Propose(j)}
+    \trule 
+    \mintinline{scala}{stash()}} 
+  (Casting) 
+  
+  edge [right, out=25, in=55, looseness=8] node[align=left] 
+  {\mintinline{scala}{Reply(sg,a,u) if nbR != 1}
+    \trule\\
+    \mintinline{scala}{nbR-=1}\\
+    \mintinline{scala}{rule match}\{\\
+    ~~~\mintinline{scala}{case Utilitarian => usum(sg)+=u}\\
+    ~~~\mintinline{scala}{case Egalitarian => umin(sg)=min(umin(sg),u)}\\
+    \}\\
+  } (Casting) 
+  
+  edge [above,out=-130,in=-40, looseness=.5] node[align=left, yshift=.5cm] 
+  {\mintinline{scala}{Reply(sg,a,u) if nbR==1 && ! best().contains(i)}
+    \trule\\ 
+    \mintinline{scala}{j ! Reject; unStashAll()}} 
+  (Disposing) 
+
+  edge [above,out=-130,in=-40, looseness=1.2] node[align=left, yshift=-1cm] 
+  {\mintinline{scala}{Reply(sg,a,u)}\\
+    \mintinline{scala}{if nbR==1 && best().contains(i) && (g+i-best()).isEmpty} 
+    \trule\\ 
+    \mintinline{scala}{j ! Accept; g+=i ; unStashAll() }}
+  (Disposing) 
+
+  edge [right] node[align=left] 
+  {\mintinline{scala}{Reply(sg,a,u)}\\
+    \mintinline{scala}{if nbR==1 && best().contains(i) && !(g+i-best()).isEmpty}
+    \trule\\ 
+    \mintinline{scala}{nbC=0; (g+i-best()).foreach(k => k ! Eject; nbC+=1)}}
+  (Firing) 
+
+  (Firing) 
+  edge [loop below] node 
+  {\mintinline{scala}{Propose(j)} 
+    \trule 
+    \mintinline{scala}{stash()}} 
+  () 
+
+  edge [loop right] node[align=left] 
+  {\mintinline{scala}{Confirm if nbC != 1} 
+    \trule 
+    \mintinline{scala}{nbC-=1}
+  } 
+  () 
+
+  edge [below, out=-180,in=-90,looseness=1] node[align=left] 
+  {\mintinline{scala}{Confirm if nbC==1}
+    \trule\\
+    \mintinline{scala}{i ! Accept; g=best() ;unStashAll()}} 
+  (Disposing) 
+
+;
+\end{tikzpicture}

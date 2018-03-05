@@ -1,0 +1,53 @@
+\documentclass[a4paper,11pt,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usepackage[langlinenos=true]{minted}
+\usemintedstyle{vs}%%
+\usepackage{marvosym} % for bold arrow
+
+\newcommand{\trule}{\MVRightarrow~}% transition rule
+
+\begin{document}
+
+\begin{figure}
+\begin{center}
+  \scalebox{.7}{\input{coalitionBehaviourSelectiveExact}}
+\end{center}
+\label{algo:coalitionBehaviourSelectiveExact}
+\caption{Behaviour of the coalition agent $\langle a, g \rangle$ for
+  the selective matching mechanism without approximation.
+  \mintinline{scala}{subgroups(g,min,max)} returns the subgroups of
+  \mintinline{scala}{g} with the size between
+  \mintinline{scala}{min} and \mintinline{scala}{max}.}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+  \scalebox{.7}{\input{coalitionBehaviourSelectiveApproximation}}
+\end{center}
+\label{algo:coalitionBehaviourSelectiveApproximation}
+\caption{Behaviour of the individual de agent $i$ for the selective
+  matching mechanism with approximation which excludes no more than
+  one individual at each step. It distinguishes from
+  Fig.~\ref{algo:coalitionBehaviourSelectiveExact} due to the
+  post-conditions of the outcome transition of the Disposing state.}%
+\end{figure}
+
+\begin{figure}
+\begin{center}
+  \scalebox{.7}{\input{coalitionBehaviourInclusive}}
+\end{center}
+\label{algo:coalitionBehaviourInclusive}
+\caption{Behaviour of the individual de agent $i$ for the inclusive
+  matching making where the social decision rule is assessed only if
+  its capacity constraint is violated and the exclusion of a single
+  individual is envisaged for each individual integration. It
+  distinguishes from Fig.~\ref{algo:coalitionBehaviourSelectiveExact}
+  and Fig.~\ref{algo:coalitionBehaviourSelectiveApproximation} due to
+  the post-conditions of the outcome transition of the Disposing
+  state.}%
+\end{figure}
+
+
+\end{document}
