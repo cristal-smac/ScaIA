@@ -3,7 +3,15 @@ package org.scaia.solver.asia
 
 import org.scaia.asia.{IAProblem, Matching}
 
-class SocialRule
+class SocialRule{
+  /**
+    * Returns a string representation of the social rule
+    */
+  override def toString: String = this match{
+    case Utilitarian => "Utilitarian"
+    case Egalitarian => "Egalitarian"
+  }
+}
 case object Utilitarian extends SocialRule
 case object Egalitarian extends SocialRule
 
@@ -17,4 +25,6 @@ abstract class ASIASolver(pb: IAProblem) {
     * Returns a matching
     */
   def solve() : Matching
+
+
 }
