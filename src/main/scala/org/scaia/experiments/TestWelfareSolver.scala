@@ -1,8 +1,11 @@
 // Copyright (C) Maxime MORGE 2017
 package org.scaia.experiments
 
+import java.io.{BufferedWriter, FileWriter}
+
 import akka.actor.ActorSystem
 import org.scaia.asia._
+import org.scaia.experiments.TestTranslationSolver.file
 import org.scaia.solver._
 import org.scaia.solver.asia._
 
@@ -12,6 +15,7 @@ import org.scaia.solver.asia._
   * */
 object TestWelfareSolver{
   val debug= false
+
   def main(args: Array[String]): Unit = {
     val criterion=args(0)
     val rule : SocialRule= criterion match {
@@ -19,7 +23,9 @@ object TestWelfareSolver{
       case "Egalitarian" => Egalitarian
       case _ => throw new RuntimeException("The argument is not suppported")
     }
-    println("n,m,behaviourU,otherU,behaviourTime,otherTime")
+    val file = s"experiments/data/welfare$rule.csv"
+    val bw = new BufferedWriter(new FileWriter(file))
+    bw.write("n,m,behaviourU,otherU,behaviourTime,otherTime\n")
     var n = 0
     for (n <- 2 to 10){
       var m = 0
@@ -58,7 +64,7 @@ object TestWelfareSolver{
           })
 
         }
-        println(n+","+m+","+behaviourU/nbPb+","+otherU/nbPb+","+behaviourTime/nbPb+","+otherTime/nbPb)
+        bw.write(s"$n,$m,${behaviourU/nbPb},${otherU/nbPb},${behaviourTime/nbPb},${otherTime/nbPb}\n")
       }
     }
   }

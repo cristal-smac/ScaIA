@@ -22,7 +22,7 @@ set output 'translationTimeMIQP.pdf'
 plot  "data/translation.csv" using 2:($10+$11+$12)/1e9 title 'MIQP post-processing' w filledcurves x1 linestyle 6,\
       "data/translation.csv" using 2:($12+$10)/1e9 title 'MIQP pre-processing' w filledcurves x1 linestyle 5,\
       "data/translation.csv" using 2:($10)/1e9 title 'MIQP algo' w filledcurves x1 linestyle 4,\
-      "data/translation.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Selec. approx. alog.'
+      "data/translation.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Selec. approx. algo.'
 set logscale y
 set output 'translationTimeCIS.pdf'
 plot  "data/translation.csv" using 2:($7+$8+$9)/1e9 title 'CIS post-processing' w filledcurves x1 linestyle 6,\

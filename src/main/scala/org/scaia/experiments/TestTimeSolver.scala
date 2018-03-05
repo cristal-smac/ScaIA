@@ -1,9 +1,12 @@
 // Copyright (C) Maxime MORGE 2017
 package org.scaia.experiments
 
+import java.io.{BufferedWriter, FileWriter}
+
 import akka.actor.ActorSystem
 import org.scaia.asia._
 import org.scaia.solver.asia._
+
 import scala.util.Random
 
 /**
@@ -23,7 +26,9 @@ object TestTimeSolver{
         throw new RuntimeException("My argument ("+criterion+") is not suppported")
       }
     }
-    println("n,m,cU,dU,cTime,dTime")
+    val file = s"experiments/data/time$rule.csv"
+    val bw = new BufferedWriter(new FileWriter(file))
+    bw.write("n,m,cU,dU,cTime,dTime\n")
     var n = 0
     for (n <- 2 to 10) {
       var m = 0
@@ -62,7 +67,7 @@ object TestTimeSolver{
           })
 
         }
-        println(n+","+m+","+centraliedU/nbPb+","+distributedU/nbPb+","+centralizeTime/nbPb+","+distributedTime/nbPb)
+        bw.write("$n,$m,${centraliedU/nbPb},${distributedU/nbPb},${centralizeTime/nbPb},${distributedTime/nbPb}\n")
       }
     }
   }
