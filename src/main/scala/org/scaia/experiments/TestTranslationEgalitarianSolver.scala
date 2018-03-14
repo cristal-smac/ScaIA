@@ -12,7 +12,7 @@ import org.scaia.solver.asia._
   * Main app to test multiples random examples
   * TODO
   * */
-object TestTranslationUtilitarianSolver{
+object TestTranslationEgalitarianSolver{
   val debug= true
   val file = "experiments/data/translationEgalitarian.csv"
 
