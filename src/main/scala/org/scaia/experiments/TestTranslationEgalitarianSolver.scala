@@ -12,23 +12,23 @@ import org.scaia.solver.asia._
   * Main app to test multiples random examples
   * TODO
   * */
-object TestTranslationSolver{
+object TestTranslationUtilitarianSolver{
   val debug= true
-  val file = "experiments/data/translation.csv"
+  val file = "experiments/data/translationEgalitarian.csv"
 
-  val system = ActorSystem("TestTranslationSolver")//The Actor system
+  val system = ActorSystem("TestTranslationEgalitarianSolver")//The Actor system
   def main(args: Array[String]): Unit = {
     val bw = new BufferedWriter(new FileWriter(file))
-    bw.write("n,m,selectiveU,hedoU,miqpU,selectiveTime,preHedonicTime,postHedonic,hedonicTime,preMiqpTime,postMiqpTime,miqpTime\n")
+    bw.write("n,m,inclusiveE,hedoE,miqpE,inclusiveTime,preHedonicTime,postHedonic,hedonicTime,preMiqpTime,postMiqpTime,miqpTime\n")
     var n = 0
     for (n <- 2 to 2) {
       var m = 0
       for (m <- 2 to 30 ) {
         val nbPb = 100
         val nbMatchings = 100
-        var selectiveU=0.0
-        var hedonicU = 0.0
-        var miqpU = 0.0
+        var selectiveE=0.0
+        var hedonicE = 0.0
+        var miqpE = 0.0
 
         var selectiveTime = 0.0
         var hedonicTime = 0.0
@@ -43,11 +43,11 @@ object TestTranslationSolver{
         for (o <- 1 to nbPb) {
           val pb = IAProblem.randomProblem(n, m)
 
-          val selectiveSolver = new SelectiveSolver(pb,true,Utilitarian)
+          val inclusiveSolver = new InclusiveSolver(pb,Egalitarian)
           var startingTime=System.nanoTime
-          val selectiveResult = selectiveSolver.solve()
+          val inclusiveResult = inclusiveSolver.solve()
           selectiveTime+=System.nanoTime - startingTime
-          selectiveU += selectiveResult.utilitarianWelfare()
+          selectiveE += inclusiveResult.egalitarianWelfare()
 
           val hedonicSolver = new ASIA2HedonicSolver(pb)
           startingTime=System.nanoTime()
@@ -55,7 +55,7 @@ object TestTranslationSolver{
           hedonicTime+=System.nanoTime - startingTime
           preHedonicTime+=hedonicSolver.preSolvingTime
           postHedonicTime+=hedonicSolver.postSolvingTime
-          hedonicU += hedonicResult.utilitarianWelfare()
+          hedonicE += hedonicResult.egalitarianWelfare()
 
           val miqpSolver = new MIQPSolver(pb,Utilitarian)
           startingTime=System.nanoTime()
@@ -63,11 +63,11 @@ object TestTranslationSolver{
           miqpTime+=System.nanoTime - startingTime
           preMiqpTime+=miqpSolver.preSolvingTime
           postMiqpTime+=miqpSolver.postSolvingTime
-          miqpU += miqpResult.utilitarianWelfare()
+          miqpE += miqpResult.egalitarianWelfare()
 
 
         }
-        bw.write(n + "," + m + "," + selectiveU/nbPb + "," +  hedonicU/nbPb + "," + miqpU/nbPb + "," +
+        bw.write(n + "," + m + "," + selectiveE/nbPb + "," +  hedonicE/nbPb + "," + miqpE/nbPb + "," +
           selectiveTime/nbPb + "," +preHedonicTime/nbPb +"," +postHedonicTime/nbPb +"," +hedonicTime/nbPb + "," +
           preMiqpTime/nbPb +"," + postMiqpTime/nbPb + "," + miqpTime/nbPb + "\n"
         )

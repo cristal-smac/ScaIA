@@ -5,7 +5,7 @@ import java.io.{BufferedWriter, FileWriter}
 
 import akka.actor.ActorSystem
 import org.scaia.asia._
-import org.scaia.experiments.TestTranslationSolver.file
+import org.scaia.experiments.TestTranslationUtilitarianSolver.file
 import org.scaia.solver._
 import org.scaia.solver.asia._
 

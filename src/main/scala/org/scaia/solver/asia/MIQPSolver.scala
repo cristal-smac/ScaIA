@@ -20,14 +20,16 @@ class MIQPSolver(pb : IAProblem, rule: SocialRule) extends ASIADualSolver(pb){
 
   val config = ConfigFactory.load()
   val inputPath =config.getString("path.scaia")+"/"+config.getString("path.input")
-  val miqpPath = config.getString("path.scaia")+"/"+config.getString("path.miqp")
   val outputPath = config.getString("path.scaia")+"/"+config.getString("path.output")
+  var miqpPath : String = _
 
   @throws(classOf[RuntimeException])
   override def solve() : Matching = {
     rule match {
-      case Egalitarian => throw new RuntimeException("MIQPSolver cannot maximize the egalitarian welfare")
-      case _ =>
+      case Egalitarian =>
+        miqpPath = config.getString("path.scaia")+"/"+config.getString("path.miqpEgal")
+      case Utilitarian =>
+        miqpPath = config.getString("path.scaia")+"/"+config.getString("path.miqpUtil")
     }
     // 1 - Reformulate the problem
     val startingTime = System.nanoTime()
@@ -105,43 +107,55 @@ object MIQPSolver extends App{
 
   val config = ConfigFactory.load()
 
-  val pb = IAProblem.randomProblem(2, 100)// n (2) activity m (200) individuals
+  val pb = IAProblem.randomProblem(2, 200)// n (2) activity m (200) individuals
   //import org.scaia.util.asia.DilemmaPref._
   //import org.scaia.util.asia.NotBestUtil._
   //import org.scaia.util.asia.CircularPref._
 
   val system = ActorSystem("MIQPSolver")//The Actor system
 
-  val disselectiveSolver = new DistributedSelectiveSolver(pb, system, true, Utilitarian)
+  //val disSolver = new DistributedSelectiveSolver(pb, system, true, Utilitarian)
+  val disSolver = new DistributedInclusiveSolver(pb, system, Egalitarian)
 
-  val selectiveSolver = new SelectiveSolver(pb,  true, Utilitarian)
+  //val matchingSolver = new SelectiveSolver(pb,  true, Utilitarian)
+  val matchingSolver = new InclusiveSolver(pb,  Egalitarian)
+
 
   var startingTime=System.currentTimeMillis()
-  val resultSelective = selectiveSolver.solve()
-  val selectiveTime=System.currentTimeMillis - startingTime
-  val selectiveUW=resultSelective.utilitarianWelfare()
+  val resultMatching = matchingSolver.solve()
+  val matchingTime=System.currentTimeMillis - startingTime
+  //val matchingW=resultMatching.utilitarianWelfare()
+  val matchingW=resultMatching.egalitarianWelfare()
 
-  println("SelectiveSolver: U/T")
-  println(selectiveUW)
-  println(selectiveTime)
+
+  println("MatchingSolver: W/T")
+  println(matchingW)
+  println(matchingTime)
+
 
   startingTime=System.currentTimeMillis()
-  val disresultSelective = disselectiveSolver.solve()
-  val disselectiveTime=System.currentTimeMillis - startingTime
-  val disselectiveUW=disresultSelective.utilitarianWelfare()
+  val disresult = disSolver.solve()
+  val disTime=System.currentTimeMillis - startingTime
+  //val disW=disresult.utilitarianWelfare()
+  val disW=disresult.egalitarianWelfare()
 
-  println("DisSelectiveSolver: U/T")
-  println(disselectiveUW)
-  println(disselectiveTime)
+  println("DisMatchingSolver: W/T")
+  println(disW)
+  println(disTime)
 
 
-  val miqpSolver = new MIQPSolver(pb, Utilitarian)
+  //val miqpSolver = new MIQPSolver(pb, Utilitarian)
+  val miqpSolver = new MIQPSolver(pb, Egalitarian)
+
   //miqpSolver.debug = true
   startingTime=System.currentTimeMillis()
   val miqpResult=miqpSolver.solve()
   val miqpTime=System.currentTimeMillis - startingTime
-  val miqpUW=miqpResult.utilitarianWelfare()
-  println("MIQPSolver: U/T")
-  println(miqpUW)
+  //val miqpW=miqpResult.utilitarianWelfare()
+  val miqpW=miqpResult.egalitarianWelfare()
+  println("MIQPSolver: W/T")
+  println(miqpW)
   println(miqpTime)
+
+  System.exit(0)
 }

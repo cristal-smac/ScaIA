@@ -12,7 +12,8 @@ float V[I][A] = ...; // The individuals valuate the interest of the activities
 float W[I][I] = ...; // The individuals valuate the affinity of the peers
 int C[A] = ...; // The capacityes of the activities 
 
-dvar int X[I][A] in 0..1; // The decision variables 
+dvar int X[I][A] in 0..1; // The decision variables
+dvar float uMin;
 
 /* Preprocessing */
 float startingTime;
@@ -22,16 +23,18 @@ execute{
 }
 
 /* Solving the model */
-maximize 
-	// the utilitarian welfare
-	1.0/M * sum(i in I) sum(a in A)  0.5 * (X[i][a]*V[i][a] + 1.0/(M-1) * sum(j in I) X[i][a]*X[j][a]*W[i][j]);
+maximize
+	uMin;// the egalitarian welfare
 subject to {
 	forall(a in A)
-	  ct_capacity:
-	  	sum(i in I) X[i][a] <= C[a];
+		 ct_capacity:
+			sum(i in I) X[i][a] <= C[a];
 	forall(i in I)
-	  ct_singleAssignement:
-	  	sum(a in A) X[i][a] <=1;
+		 ct_singleAssignement:
+			sum(a in A) X[i][a] <=1;
+	forall(i in I)
+		 ct_welfare:
+			sum(a in A)  0.5 * (X[i][a]*V[i][a] + 1.0/(M-1) * sum(j in I) X[i][a]*X[j][a]*W[i][j]) >= uMin;
 }
 
 /* Postprocessing */
