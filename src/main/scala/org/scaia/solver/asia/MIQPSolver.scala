@@ -108,24 +108,21 @@ object MIQPSolver extends App{
   val config = ConfigFactory.load()
 
   val pb = IAProblem.randomProblem(2, 200)// n (2) activity m (200) individuals
-  //import org.scaia.util.asia.DilemmaPref._
-  //import org.scaia.util.asia.NotBestUtil._
-  //import org.scaia.util.asia.CircularPref._
 
   val system = ActorSystem("MIQPSolver")//The Actor system
 
-  //val disSolver = new DistributedSelectiveSolver(pb, system, true, Utilitarian)
-  val disSolver = new DistributedInclusiveSolver(pb, system, Egalitarian)
+  val disSolver = new DistributedSelectiveSolver(pb, system, true, Utilitarian)
+  //val disSolver = new DistributedInclusiveSolver(pb, system, Egalitarian)
 
-  //val matchingSolver = new SelectiveSolver(pb,  true, Utilitarian)
-  val matchingSolver = new InclusiveSolver(pb,  Egalitarian)
+  val matchingSolver = new SelectiveSolver(pb,  true, Utilitarian)
+  //val matchingSolver = new InclusiveSolver(pb,  Egalitarian)
 
 
   var startingTime=System.currentTimeMillis()
   val resultMatching = matchingSolver.solve()
   val matchingTime=System.currentTimeMillis - startingTime
-  //val matchingW=resultMatching.utilitarianWelfare()
-  val matchingW=resultMatching.egalitarianWelfare()
+  val matchingW=resultMatching.utilitarianWelfare()
+  //val matchingW=resultMatching.egalitarianWelfare()
 
 
   println("MatchingSolver: W/T")
@@ -136,23 +133,22 @@ object MIQPSolver extends App{
   startingTime=System.currentTimeMillis()
   val disresult = disSolver.solve()
   val disTime=System.currentTimeMillis - startingTime
-  //val disW=disresult.utilitarianWelfare()
-  val disW=disresult.egalitarianWelfare()
+  val disW=disresult.utilitarianWelfare()
+  //val disW=disresult.egalitarianWelfare()
 
   println("DisMatchingSolver: W/T")
   println(disW)
   println(disTime)
 
 
-  //val miqpSolver = new MIQPSolver(pb, Utilitarian)
-  val miqpSolver = new MIQPSolver(pb, Egalitarian)
-
+  val miqpSolver = new MIQPSolver(pb, Utilitarian)
+  //val miqpSolver = new MIQPSolver(pb, Egalitarian)
   //miqpSolver.debug = true
   startingTime=System.currentTimeMillis()
   val miqpResult=miqpSolver.solve()
   val miqpTime=System.currentTimeMillis - startingTime
-  //val miqpW=miqpResult.utilitarianWelfare()
-  val miqpW=miqpResult.egalitarianWelfare()
+  val miqpW=miqpResult.utilitarianWelfare()
+  //val miqpW=miqpResult.egalitarianWelfare()
   println("MIQPSolver: W/T")
   println(miqpW)
   println(miqpTime)
