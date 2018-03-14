@@ -23,11 +23,21 @@ abstract class CoalitionAgent(a: Activity, rule: SocialRule) extends Actor with 
 
   /**
     * Returns the subgroups of g with the size between min and max
-    * @param min size of the subgroups
-    * @param max size of the subgroups
+    * @param min size of the subgroups is 1 or group.size-1
+    * @param max size of the subgroups is group.size-1 or group.size
     */
   def subgroups(group: Set[String], min: Int, max: Int) : Set[Set[String]]= {
-    group.subsets().filter{sg =>
+    if (min != 1){// Remove at most one individual
+      var subgroups = Set[Set[String]]()
+      group.foreach { j => // Each groupe with a single removed individual
+        val s = group.filterNot(_.equals(j))
+        subgroups += s
+      }
+      if (min == max) subgroups
+      else subgroups + group
+    }
+    else // returns all the non-empty subgroups of size <= max
+      group.subsets().filter{sg =>
       sg.size >= min && sg.size <= max
     }.toSet
   }
