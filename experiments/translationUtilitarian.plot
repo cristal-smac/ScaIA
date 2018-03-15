@@ -25,8 +25,8 @@ plot  "data/translationUtilitarian.csv" using 2:($10+$11+$12)/1e9 title 'MIQP po
       "data/translationUtilitarian.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Selec. approx. algo.'
 set logscale y
 set output 'translationTimeCISUtilitarian.pdf'
-plot  "data/translation.csv" using 2:($7+$8+$9)/1e9 title 'CIS post-processing' w filledcurves x1 linestyle 6,\
-      "data/translation.csv" using 2:($7+$9)/1e9 title 'CIS algo.' w filledcurves x1 linestyle 5,\
-      "data/translation.csv" using 2:($7)/1e9 title 'CIS pre-processing' w filledcurves x1 linestyle 4,\
-      "data/translation.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Selec. approx. algo.'
+plot  "data/translationUtilitarian.csv" using 2:($7+$8+$9)/1e9 title 'CIS post-processing' w filledcurves x1 linestyle 6,\
+      "data/translationUtilitarian.csv" using 2:($7+$9)/1e9 title 'CIS algo.' w filledcurves x1 linestyle 5,\
+      "data/translationUtilitarian.csv" using 2:($7)/1e9 title 'CIS pre-processing' w filledcurves x1 linestyle 4,\
+      "data/translationUtilitarian.csv" using 2:($6)/1e9 with line lc rgb '#006400' title 'Selec. approx. algo.'
 
