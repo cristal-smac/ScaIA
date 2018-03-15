@@ -13,7 +13,6 @@ set ylabel "Welfare"
 set key left center
 set output 'translationWelfareEgalitarian.pdf'
 plot  "data/translationEgalitarian.csv" using 2:3 with line lc rgb '#006400' title 'Our welfare',\
-      "data/translationEgalitarian.csv" using 2:4 with line lc rgb '#e56b5d' title 'CIS welfare',\
       "data/translationEgalitarian.csv" using 2:5 with line lc rgb '#3b518b' title 'MIQP welfare'
 set ylabel "Runtime (s)"
 set key left top
