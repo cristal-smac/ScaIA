@@ -59,8 +59,7 @@ object TestSenioreva{
     startingTime = System.currentTimeMillis()
     outcome = MIQPSolverEgal.solve()
     time = System.currentTimeMillis - startingTime
-    println(s"MIQPSolverUtil E(M)=${outcome.egalitarianWelfare()} T(ms)=$time")
-
+    println(s"MIQPSolverEgal E(M)=${outcome.egalitarianWelfare()} T(ms)=$time")
 
     System.exit(0)
   }
