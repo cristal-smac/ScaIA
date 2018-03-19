@@ -41,26 +41,33 @@ object TestSenioreva{
     time = System.currentTimeMillis - startingTime
     println(s"HillSolverUtil U(M)=${outcome.utilitarianWelfare()} T(ms)=$time")
 
+    /*
     startingTime = System.currentTimeMillis()
     outcome = MIQPSolverUtil.solve()
     time = System.currentTimeMillis - startingTime
     println(s"MIQPSolverUtil U(M)=${outcome.utilitarianWelfare()} T(ms)=$time")
-
+    */
     startingTime = System.currentTimeMillis()
     outcome = inclusiveSolver.solve()
     time = System.currentTimeMillis - startingTime
     println(s"Inclusive: E(M)=${outcome.egalitarianWelfare()} T(ms)=$time")
 
     startingTime = System.currentTimeMillis()
+    outcome = disInclusiveSolver.solve()
+    time = System.currentTimeMillis - startingTime
+    println(s"DisInclusive E(M)=${outcome.egalitarianWelfare()} T(ms)=$time")
+
+
+    startingTime = System.currentTimeMillis()
     outcome = hillSolverEgal.solve()
     time = System.currentTimeMillis - startingTime
     println(s"HillSolverEgal E(M)=${outcome.egalitarianWelfare()} T(ms)=$time")
-
+    /*
     startingTime = System.currentTimeMillis()
     outcome = MIQPSolverEgal.solve()
     time = System.currentTimeMillis - startingTime
     println(s"MIQPSolverEgal E(M)=${outcome.egalitarianWelfare()} T(ms)=$time")
-
+    */
     System.exit(0)
   }
 }
