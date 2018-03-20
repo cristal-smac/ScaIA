@@ -9,7 +9,7 @@ import org.scaia.solver._
 import org.scaia.solver.asia._
 
 /**
-  * Main app to check the Pareto-optimality of the outcome of the selective solver
+  * Main app to check if the outcome of the selective solver is MaxUtil, PO or IR
   * */
 object EvaluateSelectiveSolver{
   val debug= true
