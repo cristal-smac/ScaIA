@@ -40,7 +40,6 @@ object TestSenioreva{
     outcome = hillSolverUtil.solve()
     time = System.currentTimeMillis - startingTime
     println(s"HillSolverUtil U(M)=${outcome.utilitarianWelfare()} T(ms)=$time")
-
     /*
     startingTime = System.currentTimeMillis()
     outcome = MIQPSolverUtil.solve()
