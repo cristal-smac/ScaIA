@@ -27,12 +27,13 @@ In order to compile the code you need:
 
 ## Test
 
-    java -jar ScaIA-assembly-X.Y.jar org.scaia.util.asia.IAProblemSolver -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
+    java -jar ScaIA-assembly-X.Y.jar org.scaia.util.asia.IAProblemSolver -m -a -t -h -i -v -e -d examples/asia/undesiredGuestPb.txt  examples/asia/undesiredGuestMatching.txt
 
 Usage: 
 
     Usage: java -jar ScaIA-assembly-X.Y.jar [-athived] inputFilename outputFilename
     The following options are available:
+    -m: mathematical
     -a: approximation (false by default)
     -t: trace (false by default)
     -h: hillclimbing (false by default)
@@ -62,7 +63,7 @@ and eventually
 
 ## Contributors
 
-Copyright (C) Maxime MORGE 2017
+Copyright (C) Maxime MORGE 2018
 
 ## License
 

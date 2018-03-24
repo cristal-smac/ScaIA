@@ -1,6 +1,6 @@
 name := "ScaIA"
 
-version := "0.4"
+version := "0.5"
 
 scalacOptions += "-deprecation"
 scalacOptions += "-feature"
@@ -9,8 +9,8 @@ scalacOptions += "-Yrepl-sync"
 javaOptions in run += "-Xms8G"
 javaOptions in run += "-Xmx8G"
 
-//mainClass in (Compile,run) := Some("org.scaia.util.asia.IAProblemSolver")
-mainClass in (Compile,run) := Some("org.scaia.experiments.Test")
+mainClass in (Compile,run) := Some("org.scaia.util.asia.IAProblemSolver")
+//mainClass in (Compile,run) := Some("org.scaia.experiments.Test")
 mainClass in assembly := Some("org.scaia.util.asia.IAProblemSolver")
 
 fork := true
